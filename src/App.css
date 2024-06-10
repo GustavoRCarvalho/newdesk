@@ -1,6 +1,8 @@
 body {
+  --side-menu-color: #fff;
   --side-menu-background: #363131;
-  --side-menu-background-select: #4e4e4e;
+
+  --side-menu-item-background-select: #4e4e4e;
   --side-menu-item-select: #fa02ff;
   --side-menu-item: #ffffff;
   --side-menu-background-tooltip: #ffffff;
