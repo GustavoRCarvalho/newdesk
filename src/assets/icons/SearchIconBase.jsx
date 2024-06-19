@@ -5,7 +5,7 @@ export const SearchIconBase = () => {
     <motion.svg
       stroke="currentColor"
       fill="currentColor"
-      stroke-width="0"
+      strokeWidth="0"
       viewBox="0 0 512 512"
       class="sc-gEvDqW bmnbty"
       height="1em"
