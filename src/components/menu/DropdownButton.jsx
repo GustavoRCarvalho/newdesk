@@ -3,18 +3,24 @@ import { useState } from "react"
 import { IoIosArrowDown } from "react-icons/io"
 import styled from "styled-components"
 import { DropdownOption } from "./DropdownOption"
+import { CardOption } from "./CardOption"
 
 export const DropdownButton = ({ isOpen, Icon, title, options }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false)
+  const [isHover, setIsHover] = useState()
 
   return isOpen ? (
     <DropdownContainer>
-      <Dropdown layout>
+      <Dropdown layout $isopen={dropdownOpen}>
         <DropText layout>
           <Icon />
           <motion.span> {title}</motion.span>
         </DropText>
-        <ButtonOpen onClick={() => setDropdownOpen((state) => !state)} />
+        <ButtonOpen
+          $isvisible={options.length > 0}
+          $isopen={dropdownOpen}
+          onClick={() => setDropdownOpen((state) => !state)}
+        />
       </Dropdown>
       {dropdownOpen &&
         options.map((data, index) => (
@@ -22,8 +28,13 @@ export const DropdownButton = ({ isOpen, Icon, title, options }) => {
         ))}
     </DropdownContainer>
   ) : (
-    <DropdownIcon layout>
+    <DropdownIcon
+      layout
+      onMouseEnter={() => setIsHover(true)}
+      onMouseLeave={() => setIsHover(false)}
+    >
       <Icon />
+      {isHover && options.length !== 0 && <CardOption options={options} />}
     </DropdownIcon>
   )
 }
@@ -31,8 +42,12 @@ export const DropdownButton = ({ isOpen, Icon, title, options }) => {
 const DropdownContainer = styled(AnimatePresence)``
 
 const ButtonOpen = styled(IoIosArrowDown)`
+  display: ${(props) => (props.$isvisible ? "block" : "none")};
   width: 1.3em;
   height: 1.3em;
+
+  transform: ${(props) => (props.$isopen ? "rotateZ(180deg)" : "none")};
+  transition: transform 0.5s;
 `
 
 const DropText = styled(motion.div)`
@@ -49,7 +64,8 @@ const DropText = styled(motion.div)`
 const Dropdown = styled(motion.div)`
   font-size: 1.4em;
 
-  color: var(--side-menu-item);
+  color: ${(props) =>
+    props.$isopen ? "var(--side-menu-item-select)" : "var(--side-menu-item)"};
 
   display: flex;
   justify-content: space-between;
@@ -77,6 +93,7 @@ const Dropdown = styled(motion.div)`
 `
 
 const DropdownIcon = styled(motion.div)`
+  position: relative;
   font-size: 1.4em;
 
   color: var(--side-menu-item);

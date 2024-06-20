@@ -2,16 +2,28 @@ import { motion } from "framer-motion"
 import styled from "styled-components"
 import { SearchIconBase } from "../../assets/icons/SearchIconBase"
 import { onEnterSearch } from "../../utils/SearchFunction"
+import { useRef } from "react"
 
-export const Search = ({ isOpen }) => {
+export const Search = ({ isOpen, setIsOpen }) => {
+  const searchInputRef = useRef(null)
+
   return isOpen ? (
     <SearchContainer
+      ref={searchInputRef}
       onKeyPress={onEnterSearch}
       placeholder="Pesquisar"
       layout
     ></SearchContainer>
   ) : (
-    <SearchIconContainer layout>
+    <SearchIconContainer
+      layout
+      onClick={() => {
+        setIsOpen(true)
+        setTimeout(() => {
+          searchInputRef.current.focus()
+        }, 0)
+      }}
+    >
       <SearchIconBase />
     </SearchIconContainer>
   )

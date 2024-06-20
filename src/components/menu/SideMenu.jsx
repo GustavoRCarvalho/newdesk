@@ -72,7 +72,7 @@ export const SideMenu = () => {
           <IoIosArrowBack />
         </CloseButton>
         <SideHeader isOpen={isOpen} />
-        <Search isOpen={isOpen} />
+        <Search isOpen={isOpen} setIsOpen={setIsOpen} />
         {menuOptions.map((data, index) => {
           return (
             <DropdownButton
@@ -95,7 +95,6 @@ const CloseButton = styled(motion.button)`
 
   display: flex;
   align-items: center;
-  justify-content: center;
 
   width: 2em;
   height: 2em;
@@ -107,6 +106,8 @@ const CloseButton = styled(motion.button)`
   box-shadow: 2px 2px 10px #00000087;
 
   svg {
+    padding-left: ${(props) => (props.$isopen ? "0.2em" : "0")};
+    padding-right: ${(props) => (props.$isopen ? "0" : "0.25em")};
     width: 1.5em;
     height: 1.5em;
 

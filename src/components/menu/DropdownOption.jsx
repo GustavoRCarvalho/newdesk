@@ -3,19 +3,22 @@ import { useState } from "react"
 import { GiOpenBook } from "react-icons/gi"
 import { IoIosArrowForward } from "react-icons/io"
 import styled from "styled-components"
-import { ArticlesCard } from "./ArticlesCard"
+import { CardArticle } from "./CardArticle"
 
 export const DropdownOption = ({ title, options }) => {
   const [articleOpen, setArticleOpen] = useState(false)
 
   return (
     <DropdownOptionContainer onMouseLeave={() => setArticleOpen(false)}>
-      <DropText layout>
+      <DropText layout onMouseEnter={() => setArticleOpen(false)}>
         <GiOpenBook />
         <motion.span> {title}</motion.span>
       </DropText>
-      <OptionButtonOpen onClick={() => setArticleOpen(true)} />
-      {articleOpen && options.length > 0 && <ArticlesCard options={options} />}
+      <OptionButtonOpen
+        $isvisible={options.length > 0}
+        onMouseEnter={() => setArticleOpen(true)}
+      />
+      {articleOpen && options.length > 0 && <CardArticle options={options} />}
     </DropdownOptionContainer>
   )
 }
@@ -54,6 +57,8 @@ const DropdownOptionContainer = styled(motion.div)`
 `
 
 const OptionButtonOpen = styled(IoIosArrowForward)`
+  display: ${(props) => (props.$isvisible ? "block" : "none")};
+
   width: 1.3em;
   height: 1.3em;
 `

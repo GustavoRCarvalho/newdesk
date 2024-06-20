@@ -1,13 +1,13 @@
 import { motion } from "framer-motion"
 import styled from "styled-components"
-import { WiStars } from "react-icons/wi"
+import { GiOpenBook } from "react-icons/gi"
 
-export const ArticlesCard = ({ options }) => {
+export const CardOption = ({ options }) => {
   return (
     <Card>
       {options.map(({ title }) => (
         <Title>
-          <WiStars />
+          <GiOpenBook />
           {title}
         </Title>
       ))}
@@ -17,7 +17,7 @@ export const ArticlesCard = ({ options }) => {
 
 const Title = styled(motion.span)`
   display: flex;
-  gap: 0.3em;
+  gap: 0.5em;
 
   &:hover {
     color: var(--side-menu-item-select);
