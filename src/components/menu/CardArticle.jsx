@@ -5,8 +5,8 @@ import { WiStars } from "react-icons/wi"
 export const CardArticle = ({ options }) => {
   return (
     <Card>
-      {options.map(({ title }) => (
-        <Title>
+      {options.map(({ title }, index) => (
+        <Title key={title + index}>
           <WiStars />
           {title}
         </Title>

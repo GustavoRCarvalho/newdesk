@@ -5,8 +5,8 @@ import { GiOpenBook } from "react-icons/gi"
 export const CardOption = ({ options }) => {
   return (
     <Card>
-      {options.map(({ title }) => (
-        <Title>
+      {options.map(({ title }, index) => (
+        <Title key={title + index}>
           <GiOpenBook />
           {title}
         </Title>
