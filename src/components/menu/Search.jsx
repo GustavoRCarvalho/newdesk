@@ -1,7 +1,7 @@
 import { motion } from "framer-motion"
 import styled from "styled-components"
-import { SearchIconBase } from "../../assets/icons/SearchIconBase"
-import { onEnterSearch } from "../../utils/SearchFunction"
+import { IoMdSearch } from "react-icons/io"
+import { onEnterSearch } from "../../utils/functions"
 import { useRef } from "react"
 
 export const Search = ({ isOpen, setIsOpen }) => {
@@ -24,7 +24,7 @@ export const Search = ({ isOpen, setIsOpen }) => {
         }, 0)
       }}
     >
-      <SearchIconBase />
+      <IoMdSearch />
     </SearchIconContainer>
   )
 }
