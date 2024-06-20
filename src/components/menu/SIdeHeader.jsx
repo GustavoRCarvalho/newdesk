@@ -4,27 +4,28 @@ import { motion } from "framer-motion"
 
 export const SideHeader = ({ isOpen }) => {
   return (
-    <Header isOpen={isOpen}>
-      <Logo isOpen={isOpen} src={LogoImg} layout />
+    <Header $isopen={isOpen}>
+      <Logo $isopen={isOpen} src={LogoImg} layout />
       {isOpen && <Title>ZZ HELP</Title>}
     </Header>
   )
 }
 
 const Header = styled(motion.div)`
-  padding: ${(props) => (props.isOpen ? "1em" : "0")};
+  padding: ${(props) => (props.$isopen ? "1em" : "0")};
 
   display: flex;
   align-items: center;
+  justify-content: center;
 
   gap: 1em;
 `
 
 const Logo = styled(motion.img)`
-  width: ${(props) => (props.isOpen ? "6em" : "3em")};
-  height: ${(props) => (props.isOpen ? "6em" : "3em")};
+  width: ${(props) => (props.$isopen ? "6em" : "3em")};
+  height: ${(props) => (props.$isopen ? "6em" : "3em")};
 
-  margin-bottom: ${(props) => (props.isOpen ? "0em" : "4em")};
+  margin-bottom: ${(props) => (props.$isopen ? "0em" : "4em")};
 `
 
 const Title = styled(motion.h2)`

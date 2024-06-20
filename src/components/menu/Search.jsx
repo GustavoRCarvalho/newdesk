@@ -1,10 +1,15 @@
 import { motion } from "framer-motion"
 import styled from "styled-components"
 import { SearchIconBase } from "../../assets/icons/SearchIconBase"
+import { onEnterSearch } from "../../utils/SearchFunction"
 
 export const Search = ({ isOpen }) => {
   return isOpen ? (
-    <SearchContainer placeholder="Pesquisar" layout></SearchContainer>
+    <SearchContainer
+      onKeyPress={onEnterSearch}
+      placeholder="Pesquisar"
+      layout
+    ></SearchContainer>
   ) : (
     <SearchIconContainer layout>
       <SearchIconBase />
