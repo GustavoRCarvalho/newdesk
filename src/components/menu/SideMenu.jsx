@@ -59,7 +59,7 @@ const menuOptions = [
 ]
 
 export const SideMenu = () => {
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(false)
 
   return (
     <LayoutGroup>
