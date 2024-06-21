@@ -6,6 +6,8 @@ body {
   --side-menu-item-select: #fa02ff;
   --side-menu-item: #ffffff;
   --side-menu-background-tooltip: #ffffff;
+
+  --alert-background: #ffceff;
 }
 
 #root {
