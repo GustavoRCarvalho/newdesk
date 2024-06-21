@@ -1,18 +1,12 @@
 import { Route, Routes } from "react-router-dom"
 import styled from "styled-components"
+import { Home } from "../components/home/Homee"
 
 export default function Content(props) {
   return (
     <MainContainer>
       <Routes>
-        <Route
-          path="/"
-          element={
-            <div>
-              <div style={{ height: "200vh", width: "100%" }}>home</div>
-            </div>
-          }
-        ></Route>
+        <Route path="/" element={<Home />}></Route>
         {/* <Route path="roupas">
           <Route path="id=:id" element={<Product />} />
         </Route> */}
