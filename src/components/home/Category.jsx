@@ -25,8 +25,8 @@ const SectionContainer = styled.section`
 `
 
 const SectionTitle = styled.h2`
-  font-size: 1.4em;
-  font-weight: normal;
+  font-size: 1.6em;
+  font-weight: 500;
 
   margin: 0 0 0 0.2em;
 `
@@ -34,9 +34,7 @@ const SectionTitle = styled.h2`
 const SectionLine = styled.hr`
   width: 20%;
 
-  margin: 0;
+  margin: 0 0 0.5em 0.35em;
   border-width: 0;
-  border-top: 1px solid black;
-
-  margin-block: 0em 0.5em;
+  border-top: 1px solid var(--home-card-color);
 `

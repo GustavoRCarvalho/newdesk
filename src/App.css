@@ -1,19 +1,61 @@
 body {
-  --side-menu-color: #fff;
-  --side-menu-background: #363131;
+  margin: 0;
+  font-family: "Jost", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 
-  --side-menu-item-background-select: #4e4e4e;
-  --side-menu-item-select: #fa02ff;
-  --side-menu-item: #ffffff;
-  --side-menu-background-tooltip: #ffffff;
-
-  --alert-background: #ffceff;
-
-  --card-button-background: #7801b0;
-  --card-button-color: #fff;
+  button {
+    font-family: "Jost", sans-serif;
+  }
 }
 
 #root {
   display: flex;
   overflow: hidden;
+}
+
+.themePink {
+  --side-menu-item-select: #fa02ff;
+
+  --alert-background: #ffceff;
+
+  --card-button-background: #7801b0;
+}
+
+.themeBlue {
+  --side-menu-item-select: #02a2ff;
+
+  --alert-background: #cefdff;
+
+  --card-button-background: #1b01b0;
+}
+
+.lightMode {
+  --home-background: #fff;
+  --home-card-background: #fff;
+  --home-card-color: #000;
+
+  --side-menu-color: #fff;
+  --side-menu-background: #363636;
+
+  --side-menu-item-background-select: #4e4e4e;
+  --side-menu-item: #ffffff;
+  --side-menu-background-tooltip: #ffffff;
+
+  --card-button-color: #fff;
+}
+
+.darkMode {
+  --home-background: #222;
+  --home-card-background: #323232;
+  --home-card-color: #fff;
+
+  --side-menu-color: #fff;
+  --side-menu-background: #323232;
+
+  --side-menu-item-background-select: #4e4e4e;
+  --side-menu-item: #ffffff;
+  --side-menu-background-tooltip: #ffffff;
+
+  --card-button-color: #fff;
 }

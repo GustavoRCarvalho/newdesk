@@ -20,7 +20,8 @@ export const Card = ({ title, date }) => {
 
 const CardContainer = styled.div`
   position: relative;
-  background-color: #ffffff;
+  background-color: var(--home-card-background);
+  color: var(--home-card-color);
 
   display: flex;
   flex-direction: column;
@@ -62,7 +63,7 @@ const CardLine = styled.hr`
   margin-block: 0.4em 0.2em;
 
   border-width: 0;
-  border-top: 2px solid black;
+  border-top: 2px solid var(--home-card-color);
 `
 
 const CardDate = styled.span`

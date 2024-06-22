@@ -17,6 +17,8 @@ export default function Content(props) {
 }
 
 const MainContainer = styled.main`
+  background-color: var(--home-background);
+
   height: 100dvh;
   width: 100%;
   overflow-y: scroll;
