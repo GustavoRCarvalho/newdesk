@@ -58,7 +58,7 @@ const AlertTitle = styled.span`
 
   width: 80%;
 
-  font-family: "Dosis";
+  font-family: "Jost", sans-serif;
 `
 
 const AlertText = styled.span`
@@ -68,5 +68,5 @@ const AlertText = styled.span`
 
   width: 80%;
 
-  font-family: "Dosis";
+  font-family: "Jost", sans-serif;
 `

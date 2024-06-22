@@ -11,14 +11,16 @@ function App() {
 
   return (
     <BrowserRouter>
-      {isDesktop ? (
+      {
+        //isDesktop ? (
         <>
           <SideMenu />
           <Content />
         </>
-      ) : (
-        <DesktopAlert />
-      )}
+        // ) : (
+        //   <DesktopAlert />
+        // )
+      }
     </BrowserRouter>
   )
 }

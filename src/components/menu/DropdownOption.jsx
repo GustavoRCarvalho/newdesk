@@ -1,24 +1,31 @@
 import { motion } from "framer-motion"
 import { useState } from "react"
-import { GiOpenBook } from "react-icons/gi"
+import { MdOutlineLibraryBooks } from "react-icons/md"
 import { IoIosArrowForward } from "react-icons/io"
 import styled from "styled-components"
 import { CardArticle } from "./CardArticle"
 
-export const DropdownOption = ({ title, options }) => {
+export const DropdownOption = ({ dropdownOpen, title, articles }) => {
   const [articleOpen, setArticleOpen] = useState(false)
 
   return (
-    <DropdownOptionContainer onMouseLeave={() => setArticleOpen(false)}>
-      <DropText layout onMouseEnter={() => setArticleOpen(false)}>
-        <GiOpenBook />
-        <motion.span> {title}</motion.span>
+    <DropdownOptionContainer
+      layout={"size"}
+      $isopen={dropdownOpen}
+      onMouseLeave={() => setArticleOpen(false)}
+    >
+      <DropText layout={"size"} onMouseEnter={() => setArticleOpen(false)}>
+        <MdOutlineLibraryBooks />
+        <motion.span>{title}</motion.span>
       </DropText>
       <OptionButtonOpen
-        $isvisible={options.length > 0}
+        $isvisible={articles.length > 0}
         onMouseEnter={() => setArticleOpen(true)}
       />
-      {articleOpen && options.length > 0 && <CardArticle options={options} />}
+      <CardArticle
+        isopen={articleOpen && articles.length > 0}
+        articles={articles}
+      />
     </DropdownOptionContainer>
   )
 }
@@ -29,7 +36,7 @@ const DropdownOptionContainer = styled(motion.div)`
 
   color: var(--side-menu-item);
 
-  display: flex;
+  display: ${(props) => (props.$isopen ? "flex" : "none")};
   justify-content: space-between;
   align-items: center;
 

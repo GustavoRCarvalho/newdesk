@@ -8,8 +8,12 @@ body {
   --side-menu-background-tooltip: #ffffff;
 
   --alert-background: #ffceff;
+
+  --card-button-background: #7801b0;
+  --card-button-color: #fff;
 }
 
 #root {
   display: flex;
+  overflow: hidden;
 }

@@ -2,10 +2,10 @@ import { motion } from "framer-motion"
 import styled from "styled-components"
 import { WiStars } from "react-icons/wi"
 
-export const CardArticle = ({ options }) => {
+export const CardArticle = ({ isopen, articles }) => {
   return (
-    <Card>
-      {options.map(({ title }, index) => (
+    <Card $isopen={isopen} layout={"size"}>
+      {articles.map(({ title }, index) => (
         <Title key={title + index}>
           <WiStars />
           {title}
@@ -31,7 +31,7 @@ const Title = styled(motion.span)`
 const Card = styled(motion.div)`
   position: absolute;
 
-  display: flex;
+  display: ${(props) => (props.$isopen ? "flex" : "none")};
   flex-direction: column;
   align-items: start;
   justify-content: space-between;

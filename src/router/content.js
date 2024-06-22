@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom"
 import styled from "styled-components"
-import { Home } from "../components/home/Homee"
+import { Home } from "../components/home/Home"
 
 export default function Content(props) {
   return (

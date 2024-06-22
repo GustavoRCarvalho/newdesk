@@ -2,69 +2,31 @@ import styled from "styled-components"
 import { Search } from "./Search"
 import { SideHeader } from "./SideHeader"
 import { LayoutGroup, motion } from "framer-motion"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { IoIosArrowBack, IoIosHeart } from "react-icons/io"
-import { FaBoxOpen } from "react-icons/fa6"
-import { GiShop, GiHighHeel } from "react-icons/gi"
 import { DropdownButton } from "./DropdownButton"
-
-const menuOptions = [
-  {
-    title: "Favoritos",
-    Icon: IoIosHeart,
-    options: [
-      {
-        title: "Favoritos",
-        options: [
-          {
-            title: "Como realizar um Case?",
-          },
-          {
-            title: "O que é uma Retratação?",
-          },
-          {
-            title: "Consertos",
-          },
-        ],
-      },
-      {
-        title: "Encantamento",
-        options: [],
-      },
-      {
-        title: "Integração de Canais",
-        options: [],
-      },
-      {
-        title: "Produtos",
-        options: [],
-      },
-    ],
-  },
-  {
-    title: "Encantamento",
-    Icon: FaBoxOpen,
-    options: [],
-  },
-  {
-    title: "Integração de Canais",
-    Icon: GiShop,
-    options: [],
-  },
-  {
-    title: "Produtos",
-    Icon: GiHighHeel,
-    options: [],
-  },
-]
+import { data } from "../../assets/data"
 
 export const SideMenu = () => {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(true)
+  const [delayComplete, setDelayComplete] = useState(false)
+
+  useEffect(() => {
+    if (isOpen) {
+      setDelayComplete(false)
+      const timer = setTimeout(() => {
+        setDelayComplete(true)
+      }, 400)
+
+      return () => clearTimeout(timer)
+    }
+  }, [isOpen])
 
   return (
     <LayoutGroup>
-      <SideContainer $isopen={isOpen} layout>
+      <SideContainer $delaycomplete={delayComplete} $isopen={isOpen} layout>
         <CloseButton
+          title="close"
           layout
           $isopen={isOpen}
           onClick={() => setIsOpen((state) => !state)}
@@ -73,7 +35,13 @@ export const SideMenu = () => {
         </CloseButton>
         <SideHeader isOpen={isOpen} />
         <Search isOpen={isOpen} setIsOpen={setIsOpen} />
-        {menuOptions.map((data, index) => {
+        <DropdownButton
+          isOpen={isOpen}
+          Icon={IoIosHeart}
+          title={"Favoritos"}
+          subCategories={[]}
+        />
+        {data.map((data, index) => {
           return (
             <DropdownButton
               key={data.title + index}
@@ -122,7 +90,7 @@ const SideContainer = styled(motion.div)`
   position: relative;
   background-color: var(--side-menu-background);
   height: calc(100dvh - 2em);
-  width: ${(props) => (props.$isopen ? "400px" : "min-content")};
+  min-width: min-content;
 
   padding: 1em;
   display: grid;
@@ -130,4 +98,7 @@ const SideContainer = styled(motion.div)`
   gap: 0.5em;
 
   user-select: none;
+
+  overflow: ${(props) => (props.$delaycomplete ? "" : "hidden")};
+  z-index: 1;
 `

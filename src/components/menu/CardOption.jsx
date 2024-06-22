@@ -2,10 +2,10 @@ import { motion } from "framer-motion"
 import styled from "styled-components"
 import { GiOpenBook } from "react-icons/gi"
 
-export const CardOption = ({ options }) => {
+export const CardOption = ({ subCategories }) => {
   return (
     <Card>
-      {options.map(({ title }, index) => (
+      {subCategories.map(({ title }, index) => (
         <Title key={title + index}>
           <GiOpenBook />
           {title}

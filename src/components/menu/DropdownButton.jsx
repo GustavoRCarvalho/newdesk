@@ -1,31 +1,34 @@
-import { AnimatePresence, motion } from "framer-motion"
+import { motion } from "framer-motion"
 import { useState } from "react"
 import { IoIosArrowDown } from "react-icons/io"
 import styled from "styled-components"
 import { DropdownOption } from "./DropdownOption"
 import { CardOption } from "./CardOption"
 
-export const DropdownButton = ({ isOpen, Icon, title, options }) => {
+export const DropdownButton = ({ isOpen, Icon, title, subCategories }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [isHover, setIsHover] = useState()
 
   return isOpen ? (
-    <DropdownContainer>
+    <DropdownContainer layout>
       <Dropdown layout $isopen={dropdownOpen}>
         <DropText layout>
           <Icon />
-          <motion.span> {title}</motion.span>
+          <motion.span layout> {title}</motion.span>
         </DropText>
         <ButtonOpen
-          $isvisible={options.length > 0}
+          $isvisible={subCategories.length > 0}
           $isopen={dropdownOpen}
           onClick={() => setDropdownOpen((state) => !state)}
         />
       </Dropdown>
-      {dropdownOpen &&
-        options.map((data, index) => (
-          <DropdownOption key={data.title + index} {...data}></DropdownOption>
-        ))}
+      {subCategories.map((data, index) => (
+        <DropdownOption
+          dropdownOpen={dropdownOpen}
+          key={data.title + index}
+          {...data}
+        ></DropdownOption>
+      ))}
     </DropdownContainer>
   ) : (
     <DropdownIcon
@@ -34,12 +37,16 @@ export const DropdownButton = ({ isOpen, Icon, title, options }) => {
       onMouseLeave={() => setIsHover(false)}
     >
       <Icon />
-      {isHover && options.length !== 0 && <CardOption options={options} />}
+      {isHover && subCategories.length !== 0 && (
+        <CardOption subCategories={subCategories} />
+      )}
     </DropdownIcon>
   )
 }
 
-const DropdownContainer = styled(AnimatePresence)``
+const DropdownContainer = styled(motion.div)`
+  position: relative;
+`
 
 const ButtonOpen = styled(IoIosArrowDown)`
   display: ${(props) => (props.$isvisible ? "block" : "none")};
