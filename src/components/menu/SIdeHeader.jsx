@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import LogoImg from "../../assets/images/Logo.svg"
+import LogoImg from "../../assets/images/Logo.png"
 import { motion } from "framer-motion"
 
 export const SideHeader = ({ isOpen }) => {
@@ -22,8 +22,8 @@ const Header = styled(motion.div)`
 `
 
 const Logo = styled(motion.img)`
-  width: ${(props) => (props.$isopen ? "6em" : "3em")};
-  height: ${(props) => (props.$isopen ? "6em" : "3em")};
+  width: ${(props) => (props.$isopen ? "7em" : "3em")};
+  height: ${(props) => (props.$isopen ? "7em" : "3em")};
 
   margin-bottom: ${(props) => (props.$isopen ? "0em" : "4em")};
 `
