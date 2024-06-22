@@ -4,8 +4,14 @@ import { MdOutlineLibraryBooks } from "react-icons/md"
 import { IoIosArrowForward } from "react-icons/io"
 import styled from "styled-components"
 import { CardArticle } from "./CardArticle"
+import { NoStyleLinkRouter } from "../../router/NoStyleLinkRouter"
 
-export const DropdownOption = ({ dropdownOpen, title, articles }) => {
+export const DropdownOption = ({
+  categoryTitle,
+  dropdownOpen,
+  title,
+  articles,
+}) => {
   const [articleOpen, setArticleOpen] = useState(false)
 
   return (
@@ -14,10 +20,12 @@ export const DropdownOption = ({ dropdownOpen, title, articles }) => {
       $isopen={dropdownOpen}
       onMouseLeave={() => setArticleOpen(false)}
     >
-      <DropText layout={"size"} onMouseEnter={() => setArticleOpen(false)}>
-        <MdOutlineLibraryBooks />
-        <motion.span>{title}</motion.span>
-      </DropText>
+      <NoStyleLinkRouter to={categoryTitle + title}>
+        <DropText layout={"size"} onMouseEnter={() => setArticleOpen(false)}>
+          <MdOutlineLibraryBooks />
+          <motion.span>{title}</motion.span>
+        </DropText>
+      </NoStyleLinkRouter>
       <OptionButtonOpen
         $isvisible={articles.length > 0}
         onMouseEnter={() => setArticleOpen(true)}

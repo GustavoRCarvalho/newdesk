@@ -4,6 +4,7 @@ import { IoIosArrowDown } from "react-icons/io"
 import styled from "styled-components"
 import { DropdownOption } from "./DropdownOption"
 import { CardOption } from "./CardOption"
+import { NoStyleLinkRouter } from "../../router/NoStyleLinkRouter"
 
 export const DropdownButton = ({ isOpen, Icon, title, subCategories }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false)
@@ -11,19 +12,22 @@ export const DropdownButton = ({ isOpen, Icon, title, subCategories }) => {
 
   return isOpen ? (
     <DropdownContainer layout>
-      <Dropdown layout $isopen={dropdownOpen}>
-        <DropText layout>
-          <Icon />
-          <motion.span layout> {title}</motion.span>
-        </DropText>
-        <ButtonOpen
-          $isvisible={subCategories.length > 0}
-          $isopen={dropdownOpen}
-          onClick={() => setDropdownOpen((state) => !state)}
-        />
-      </Dropdown>
+      <NoStyleLinkRouter to={title}>
+        <Dropdown layout $isopen={dropdownOpen}>
+          <DropText layout>
+            <Icon />
+            <motion.span layout> {title}</motion.span>
+          </DropText>
+          <ButtonOpen
+            $isvisible={subCategories.length > 0}
+            $isopen={dropdownOpen}
+            onClick={() => setDropdownOpen((state) => !state)}
+          />
+        </Dropdown>
+      </NoStyleLinkRouter>
       {subCategories.map((data, index) => (
         <DropdownOption
+          categoryTitle={title}
           dropdownOpen={dropdownOpen}
           key={data.title + index}
           {...data}

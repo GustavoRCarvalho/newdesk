@@ -1,15 +1,22 @@
 import styled from "styled-components"
 import { SubCaregory } from "./SubCategory"
+import { Element } from "react-scroll"
 
 export const Category = ({ title, subCategories }) => {
   return (
-    <SectionContainer>
-      <SectionTitle>{title}</SectionTitle>
-      <SectionLine />
-      {subCategories.map((data, index) => (
-        <SubCaregory key={data.title + index} {...data} />
-      ))}
-    </SectionContainer>
+    <Element name={title}>
+      <SectionContainer>
+        <SectionTitle>{title}</SectionTitle>
+        <SectionLine />
+        {subCategories.map((data, index) => (
+          <SubCaregory
+            categoryTitle={title}
+            key={data.title + index}
+            {...data}
+          />
+        ))}
+      </SectionContainer>
+    </Element>
   )
 }
 

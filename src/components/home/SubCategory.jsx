@@ -1,10 +1,11 @@
 import styled from "styled-components"
 import { Card } from "./Card"
 import { MdOutlineLibraryBooks } from "react-icons/md"
+import { Element } from "react-scroll"
 
-export const SubCaregory = ({ title, articles }) => {
+export const SubCaregory = ({ categoryTitle, title, articles }) => {
   return (
-    <SubCategoriesContainer>
+    <SubCategoriesContainer name={categoryTitle + title}>
       <SectionSubtitle>
         <MdOutlineLibraryBooks /> {title} ({articles.length})
       </SectionSubtitle>
@@ -33,7 +34,7 @@ const SectionSubtitle = styled.h3`
   }
 `
 
-const SubCategoriesContainer = styled.div`
+const SubCategoriesContainer = styled(Element)`
   margin-bottom: 1em;
 `
 
