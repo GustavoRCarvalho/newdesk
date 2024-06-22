@@ -9,6 +9,7 @@ import { data } from "../../assets/data"
 
 export const SideMenu = () => {
   const [isOpen, setIsOpen] = useState(true)
+  const [openDropdownLabel, setOpenDropdownLabel] = useState("")
   const [delayComplete, setDelayComplete] = useState(false)
 
   useEffect(() => {
@@ -40,12 +41,16 @@ export const SideMenu = () => {
           Icon={IoIosHeart}
           title={"Favoritos"}
           subCategories={[]}
+          setOpenDropdownLabel={setOpenDropdownLabel}
+          openDropdownLabel={openDropdownLabel}
         />
         {data.map((data, index) => {
           return (
             <DropdownButton
               key={data.title + index}
               isOpen={isOpen}
+              setOpenDropdownLabel={setOpenDropdownLabel}
+              openDropdownLabel={openDropdownLabel}
               {...data}
             />
           )

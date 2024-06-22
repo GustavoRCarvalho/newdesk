@@ -1,14 +1,27 @@
 import { motion } from "framer-motion"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { IoIosArrowDown } from "react-icons/io"
 import styled from "styled-components"
 import { DropdownOption } from "./DropdownOption"
 import { CardOption } from "./CardOption"
 import { NoStyleLinkRouter } from "../../router/NoStyleLinkRouter"
 
-export const DropdownButton = ({ isOpen, Icon, title, subCategories }) => {
+export const DropdownButton = ({
+  isOpen,
+  Icon,
+  title,
+  subCategories,
+  openDropdownLabel,
+  setOpenDropdownLabel,
+}) => {
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [isHover, setIsHover] = useState()
+
+  useEffect(() => {
+    if (openDropdownLabel !== "" && openDropdownLabel !== title) {
+      setDropdownOpen(false)
+    }
+  }, [openDropdownLabel, title])
 
   return isOpen ? (
     <DropdownContainer layout>
@@ -21,7 +34,10 @@ export const DropdownButton = ({ isOpen, Icon, title, subCategories }) => {
           <ButtonOpen
             $isvisible={subCategories.length > 0}
             $isopen={dropdownOpen}
-            onClick={() => setDropdownOpen((state) => !state)}
+            onClick={() => {
+              setOpenDropdownLabel(title)
+              setDropdownOpen((state) => !state)
+            }}
           />
         </Dropdown>
       </NoStyleLinkRouter>
