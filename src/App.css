@@ -1,4 +1,5 @@
 body {
+  background-color: var(--home-background);
   margin: 0;
   font-family: "Jost", sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -15,19 +16,35 @@ body {
 }
 
 .themePink {
-  --side-menu-item-select: #fa02ff;
+  --side-menu-item-select: #fd84f5;
 
   --alert-background: #ffceff;
 
-  --card-button-background: #7801b0;
+  --card-button-background: #d409d4;
 }
 
 .themeBlue {
-  --side-menu-item-select: #02a2ff;
+  --side-menu-item-select: #84f5fd;
 
   --alert-background: #cefdff;
 
-  --card-button-background: #1b01b0;
+  --card-button-background: #06acb8;
+}
+
+.themeYellow {
+  --side-menu-item-select: #fdeb84;
+
+  --alert-background: #fff6c0;
+
+  --card-button-background: #cfb209;
+}
+
+.themeRed {
+  --side-menu-item-select: #f55d5d;
+
+  --alert-background: #ffbcbc;
+
+  --card-button-background: #c00c0c;
 }
 
 .lightMode {

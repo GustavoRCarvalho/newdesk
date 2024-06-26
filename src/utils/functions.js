@@ -31,3 +31,32 @@ export function onEnterSearch(e) {
   const text = e.target.value
   console.log(text)
 }
+
+export function changeTheme(theme) {
+  const body = document.body.classList
+  body.add(`theme${theme}`)
+  if (theme !== "Blue") {
+    body.remove("themeBlue")
+  }
+  if (theme !== "Pink") {
+    body.remove("themePink")
+  }
+  if (theme !== "Yellow") {
+    body.remove("themeYellow")
+  }
+  if (theme !== "Red") {
+    body.remove("themeRed")
+  }
+}
+
+export function changeDarkLightMode(isLight) {
+  const body = document.body.classList
+
+  if (isLight) {
+    body.add("darkMode")
+    body.remove("lightMode")
+  } else {
+    body.add("lightMode")
+    body.remove("darkMode")
+  }
+}
