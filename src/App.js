@@ -16,8 +16,6 @@ function App() {
   const { width } = useWindowDimensions()
   const isDesktop = width > 768
 
-  console.log(cookies)
-
   useEffect(() => {
     const isDark =
       window.matchMedia("(prefers-color-scheme: dark)") &&
