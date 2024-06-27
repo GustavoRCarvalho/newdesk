@@ -17,7 +17,7 @@ export const SideMenu = () => {
       setDelayComplete(false)
       const timer = setTimeout(() => {
         setDelayComplete(true)
-      }, 400)
+      }, 300)
 
       return () => clearTimeout(timer)
     }
