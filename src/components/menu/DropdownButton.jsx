@@ -25,22 +25,22 @@ export const DropdownButton = ({
 
   return isOpen ? (
     <DropdownContainer layout>
-      <NoStyleLinkRouter to={title}>
-        <Dropdown layout $isopen={dropdownOpen}>
+      <Dropdown layout $isopen={dropdownOpen}>
+        <NoStyleLinkRouter to={title}>
           <DropText layout>
             <Icon />
             <motion.span layout> {title}</motion.span>
           </DropText>
-          <ButtonOpen
-            $isvisible={subCategories.length > 0}
-            $isopen={dropdownOpen}
-            onClick={() => {
-              setOpenDropdownLabel(title)
-              setDropdownOpen((state) => !state)
-            }}
-          />
-        </Dropdown>
-      </NoStyleLinkRouter>
+        </NoStyleLinkRouter>
+        <ButtonOpen
+          $isvisible={subCategories.length > 0}
+          $isopen={dropdownOpen}
+          onClick={() => {
+            setOpenDropdownLabel(title)
+            setDropdownOpen((state) => !state)
+          }}
+        />
+      </Dropdown>
       {subCategories.map((data, index) => (
         <DropdownOption
           categoryTitle={title}
@@ -56,9 +56,11 @@ export const DropdownButton = ({
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
-      <Icon />
+      <NoStyleLinkRouter to={title}>
+        <Icon />
+      </NoStyleLinkRouter>
       {isHover && subCategories.length !== 0 && (
-        <CardOption subCategories={subCategories} />
+        <CardOption categoryTitle={title} subCategories={subCategories} />
       )}
     </DropdownIcon>
   )
