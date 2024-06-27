@@ -49,10 +49,10 @@ export function changeTheme(theme) {
   }
 }
 
-export function changeDarkLightMode(isLight) {
+export function changeDarkLightMode(isDark) {
   const body = document.body.classList
 
-  if (isLight) {
+  if (isDark) {
     body.add("darkMode")
     body.remove("lightMode")
   } else {
