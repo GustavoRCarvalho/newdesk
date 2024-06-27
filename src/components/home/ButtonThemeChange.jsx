@@ -3,15 +3,17 @@ import { changeTheme } from "../../utils/functions"
 import { useEffect, useState } from "react"
 import { FaCheck } from "react-icons/fa6"
 import { motion } from "framer-motion"
+import { useCookies } from "react-cookie"
 
 export const ButtonThemeChange = () => {
+  const [cookies, setCookies] = useCookies()
   const [colorList, setColorList] = useState([
     { color: "Pink", hexColor: "#fd84f5" },
     { color: "Blue", hexColor: "#84f5fd" },
     { color: "Yellow", hexColor: "#fdeb84" },
     { color: "Red", hexColor: "#f55d5d" },
   ])
-  const [colorTheme, setColorTheme] = useState("Pink")
+  const [colorTheme, setColorTheme] = useState(cookies.themeColor ?? "Pink")
   const [isOpen, setIsOpen] = useState(false)
 
   useEffect(() => {
@@ -43,13 +45,14 @@ export const ButtonThemeChange = () => {
               return
             }
             if (isOpen && colorTheme === color) {
-              changeTheme(color)
               setIsOpen(false)
               return
             }
             if (!isOpen) return
+
             changeTheme(color)
             setColorTheme(color)
+            setCookies("themeColor", color)
           }}
         >
           <FaCheck />

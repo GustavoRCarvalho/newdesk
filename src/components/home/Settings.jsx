@@ -36,7 +36,7 @@ export const Settings = ({ children }) => {
         }}
       >
         {isOpen && <ButtonClose onClick={() => setIsOpen(false)} />}
-        {children}
+        {isOpen && children}
       </SettingsContainer>
     </>
   )

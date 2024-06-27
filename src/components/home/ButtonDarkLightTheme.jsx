@@ -1,22 +1,17 @@
 import { useEffect, useState } from "react"
 import { useCookies } from "react-cookie"
 import styled, { css, keyframes } from "styled-components"
-import { changeDarkLightMode } from "../../utils/functions"
 import { HiOutlineMoon, HiOutlineSun } from "react-icons/hi2"
+import { changeDarkLightMode } from "../../utils/functions"
 
 export const ButtonDarkLightTheme = () => {
-  const [cookies, setCookies] = useCookies("darkTheme")
-  const [darkTheme, setDarkTheme] = useState(
-    window.matchMedia("(prefers-color-scheme: dark)") &&
-      cookies.darkTheme !== null &&
-      cookies.darkTheme
-  )
+  const [cookies, setCookies] = useCookies()
+  const [darkTheme, setDarkTheme] = useState(cookies.darkTheme)
   const [isRotating, setIsRotating] = useState(false)
 
   useEffect(() => {
-    changeDarkLightMode(darkTheme)
-
     setCookies("darkTheme", darkTheme)
+    changeDarkLightMode(darkTheme)
 
     setIsRotating(true)
     setTimeout(() => {
