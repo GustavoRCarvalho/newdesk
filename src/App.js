@@ -27,6 +27,7 @@ function App() {
     const themeColor = cookies.themeColor ?? "Pink"
     changeTheme(themeColor)
     setCookies("themeColor", themeColor)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
