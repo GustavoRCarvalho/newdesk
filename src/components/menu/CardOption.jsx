@@ -7,8 +7,8 @@ export const CardOption = ({ categoryTitle, subCategories }) => {
   return (
     <Card>
       {subCategories.map(({ title }, index) => (
-        <NoStyleLinkRouter to={categoryTitle + title}>
-          <Title key={title + index}>
+        <NoStyleLinkRouter key={title + index} to={categoryTitle + title}>
+          <Title>
             <GiOpenBook />
             {title}
           </Title>
