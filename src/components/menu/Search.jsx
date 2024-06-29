@@ -1,16 +1,21 @@
 import { motion } from "framer-motion"
 import styled from "styled-components"
 import { IoMdSearch } from "react-icons/io"
-import { onEnterSearch } from "../../utils/functions"
+import { search } from "../../utils/functions"
 import { useRef } from "react"
+import { useDispatch } from "react-redux"
+import { changeData } from "../../store/homeDataSlice"
 
 export const Search = ({ isOpen, setIsOpen }) => {
+  const dispatch = useDispatch()
   const searchInputRef = useRef(null)
 
   return isOpen ? (
     <SearchContainer
       ref={searchInputRef}
-      onKeyPress={onEnterSearch}
+      onChange={(e) => {
+        dispatch(changeData(search(e.target.value)))
+      }}
       placeholder="Pesquisar"
       layout
     ></SearchContainer>

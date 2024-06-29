@@ -48,7 +48,7 @@ export const data = [
     Icon: GiShop,
     subCategories: [
       {
-        title: "Produtividade",
+        title: "Produtividade2",
         articles: [
           {
             title: "O que é uma Retratação?",
@@ -69,7 +69,7 @@ export const data = [
     Icon: GiHighHeel,
     subCategories: [
       {
-        title: "Produtividade",
+        title: "Produtividade3",
         articles: [
           {
             title: "O que é uma Retratação?",

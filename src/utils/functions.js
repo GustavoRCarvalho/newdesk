@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { data } from "../assets/data"
 
 function getWindowDimensions() {
   const { innerWidth: width, innerHeight: height } = window
@@ -23,13 +24,6 @@ export default function useWindowDimensions() {
   }, [])
 
   return windowDimensions
-}
-
-export function onEnterSearch(e) {
-  if (e.key !== "Enter") return
-
-  const text = e.target.value
-  console.log(text)
 }
 
 export function changeTheme(theme) {
@@ -59,4 +53,42 @@ export function changeDarkLightMode(isDark) {
     body.add("lightMode")
     body.remove("darkMode")
   }
+}
+
+export function search(text) {
+  if (text === "") return data
+  const searchTermLower = text.toLowerCase()
+  return data
+    .map((category) => {
+      if (category.title.toLowerCase().includes(searchTermLower)) {
+        return category
+      }
+      const filteredSubCategories = category.subCategories
+        .map((subCategory) => {
+          if (subCategory.title.toLowerCase().includes(searchTermLower)) {
+            return subCategory
+          }
+          const filteredArticles = subCategory.articles.filter(
+            (article) =>
+              article.title.toLowerCase().includes(searchTermLower) ||
+              article.date.toLowerCase().includes(searchTermLower)
+          )
+          if (
+            subCategory.title.toLowerCase().includes(searchTermLower) ||
+            filteredArticles.length > 0
+          ) {
+            return { ...subCategory, articles: filteredArticles }
+          }
+          return null
+        })
+        .filter((subCategory) => subCategory !== null)
+      if (
+        category.title.toLowerCase().includes(searchTermLower) ||
+        filteredSubCategories.length > 0
+      ) {
+        return { ...category, subCategories: filteredSubCategories }
+      }
+      return null
+    })
+    .filter((category) => category !== null)
 }

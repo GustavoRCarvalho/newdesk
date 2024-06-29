@@ -5,9 +5,10 @@ import { LayoutGroup, motion } from "framer-motion"
 import { useEffect, useState } from "react"
 import { IoIosArrowBack, IoIosHeart } from "react-icons/io"
 import { DropdownButton } from "./DropdownButton"
-import { data } from "../../assets/data"
+import { useSelector } from "react-redux"
 
 export const SideMenu = () => {
+  const homeData = useSelector((state) => state.homeData.data)
   const [isOpen, setIsOpen] = useState(true)
   const [openDropdownLabel, setOpenDropdownLabel] = useState("")
   const [delayComplete, setDelayComplete] = useState(false)
@@ -44,7 +45,7 @@ export const SideMenu = () => {
           setOpenDropdownLabel={setOpenDropdownLabel}
           openDropdownLabel={openDropdownLabel}
         />
-        {data.map((data, index) => {
+        {homeData.map((data, index) => {
           return (
             <DropdownButton
               key={data.title + index}

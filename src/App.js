@@ -9,6 +9,8 @@ import useWindowDimensions, {
 import { DesktopAlert } from "./router/DesktopAlert"
 import { useCookies } from "react-cookie"
 import { useEffect } from "react"
+import { store } from "./store/store"
+import { Provider } from "react-redux"
 
 function App() {
   const [cookies, setCookies] = useCookies()
@@ -31,18 +33,20 @@ function App() {
   }, [])
 
   return (
-    <BrowserRouter>
-      {
-        //isDesktop ? (
-        <>
-          <SideMenu />
-          <Content />
-        </>
-        // ) : (
-        //   <DesktopAlert />
-        // )
-      }
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        {
+          //isDesktop ? (
+          <>
+            <SideMenu />
+            <Content />
+          </>
+          // ) : (
+          //   <DesktopAlert />
+          // )
+        }
+      </BrowserRouter>
+    </Provider>
   )
 }
 

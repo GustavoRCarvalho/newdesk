@@ -1,18 +1,19 @@
 import styled from "styled-components"
 import { Category } from "./Category"
-import { data } from "../../assets/data"
 import { Settings } from "./Settings"
 import { ButtonThemeChange } from "./ButtonThemeChange"
 import { ButtonDarkLightTheme } from "./ButtonDarkLightTheme"
+import { useSelector } from "react-redux"
 
 export const Home = () => {
+  const homeData = useSelector((state) => state.homeData.data)
   return (
     <HomeContainer>
       <Settings>
         <ButtonThemeChange />
         <ButtonDarkLightTheme />
       </Settings>
-      {data.map((data, index) => (
+      {homeData.map((data, index) => (
         <Category key={data.title + index} {...data} />
       ))}
     </HomeContainer>
