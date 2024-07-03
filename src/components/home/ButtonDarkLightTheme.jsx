@@ -20,62 +20,86 @@ export const ButtonDarkLightTheme = () => {
   }, [darkTheme, setCookies])
 
   return (
-    <ButtonChangelightTheme
-      title="change light or dark mode"
-      onClick={() => {
-        if (!isRotating) setDarkTheme((state) => !state)
-      }}
-      $isvisible={!darkTheme}
-      $isrotating={isRotating}
-    >
-      <HiOutlineSun />
-      <HiOutlineMoon />
-    </ButtonChangelightTheme>
+    <LightThemeContainer>
+      Modo escuro
+      <ButtonChangelightTheme
+        title="change light or dark mode"
+        onClick={() => {
+          if (!isRotating) setDarkTheme((state) => !state)
+        }}
+        $isvisible={!darkTheme}
+        $isrotating={isRotating}
+      >
+        <HiOutlineMoon />
+        <HiOutlineSun />
+      </ButtonChangelightTheme>
+    </LightThemeContainer>
   )
 }
 
+const LightThemeContainer = styled.div`
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+
 const rotate = keyframes`
   0% {
-    transform: translate(-50%, -50%) rotate(0deg);
+    transform: translate(-0%, -47%) rotate(0deg);
   }
   100% {
-    transform: translate(-50%, -50%) rotate(360deg);
+    transform: translate(-100%, -47%) rotate(-360deg);
+  }
+`
+const rotateReverse = keyframes`
+  0% {
+    transform: translate(-100%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-0%, -50%) rotate(360deg);
   }
 `
 
 const ButtonChangelightTheme = styled.button`
   position: relative;
-  background-color: var(--home-background);
-  color: var(--home-card-color);
+  background-color: transparent;
+  color: var(--home-dark-button);
 
-  border: 2px solid gray;
+  border: 1px solid var(--home-dark-button-background);
   border-radius: 3em;
 
-  width: 3em;
-  height: 3em;
-
-  margin: 0.3em;
+  width: 3.6em;
+  height: 2em;
 
   svg {
     position: absolute;
-    width: 2em;
-    height: 2em;
+    width: 1.6em;
+    height: 1.6em;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transition: transform 0.5s;
+  }
+  svg:nth-child(1) {
     animation: ${(props) =>
       props.$isrotating
         ? css`
             ${rotate} 1s forwards
           `
         : ""};
-    transition: 0.5s;
-  }
-  svg:nth-child(1) {
     opacity: ${(props) => (props.$isvisible ? "0" : "1")};
+    transform: translate(-100%, -47%);
   }
   svg:nth-child(2) {
+    animation: ${(props) =>
+      props.$isrotating
+        ? css`
+            ${rotateReverse} 1s forwards
+          `
+        : ""};
     opacity: ${(props) => (props.$isvisible ? "1" : "0")};
+    transform: translate(-0%, -50%);
   }
 
   cursor: pointer;

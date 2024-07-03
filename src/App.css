@@ -52,6 +52,12 @@ body {
   --home-card-background: #fff;
   --home-card-color: #000;
 
+  --home-settings-line: #5a5a5a;
+  --home-settings-logout: #797979;
+
+  --home-settings-line: #5a5a5a;
+  --home-dark-button-background: #808080;
+
   --side-menu-color: #fff;
   --side-menu-background: #363636;
 
@@ -66,6 +72,12 @@ body {
   --home-background: #222;
   --home-card-background: #323232;
   --home-card-color: #fff;
+
+  --home-settings-line: #5a5a5a;
+  --home-settings-logout: #797979;
+
+  --home-dark-button: #ffffff;
+  --home-dark-button-background: #808080;
 
   --side-menu-color: #fff;
   --side-menu-background: #323232;

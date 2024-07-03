@@ -1,85 +1,63 @@
 import styled from "styled-components"
 import { changeTheme } from "../../utils/functions"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { FaCheck } from "react-icons/fa6"
-import { motion } from "framer-motion"
 import { useCookies } from "react-cookie"
+
+const colorList = [
+  { color: "Pink", hexColor: "#fd84f5" },
+  { color: "Blue", hexColor: "#84f5fd" },
+  { color: "Yellow", hexColor: "#fdeb84" },
+  { color: "Red", hexColor: "#f55d5d" },
+]
 
 export const ButtonThemeChange = () => {
   const [cookies, setCookies] = useCookies()
-  const [colorList, setColorList] = useState([
-    { color: "Pink", hexColor: "#fd84f5" },
-    { color: "Blue", hexColor: "#84f5fd" },
-    { color: "Yellow", hexColor: "#fdeb84" },
-    { color: "Red", hexColor: "#f55d5d" },
-  ])
   const [colorTheme, setColorTheme] = useState(cookies.themeColor ?? "Pink")
-  const [isOpen, setIsOpen] = useState(false)
-
-  useEffect(() => {
-    if (isOpen) return
-
-    setColorList((state) => {
-      const index = state.map((obj) => obj.color).indexOf(colorTheme)
-      let newListColors = [...state]
-      newListColors.splice(index, 1)
-      newListColors.unshift(state[index])
-      return newListColors
-    })
-  }, [isOpen, colorTheme])
 
   return (
-    <ThemeColorContainer layout="size">
-      {colorList.map(({ color, hexColor }, index) => (
-        <ButtonChangeThemeColor
-          layout="size"
-          transition={{ duration: 0 }}
-          key={color + index}
-          title="change color"
-          $color={hexColor}
-          $isvisible={isOpen || index === 0}
-          $ischeck={colorTheme === color && isOpen}
-          onClick={() => {
-            if (!isOpen && index === 0) {
-              setIsOpen(true)
-              return
-            }
-            if (isOpen && colorTheme === color) {
-              setIsOpen(false)
-              return
-            }
-            if (!isOpen) return
-
-            changeTheme(color)
-            setColorTheme(color)
-            setCookies("themeColor", color)
-          }}
-        >
-          <FaCheck />
-        </ButtonChangeThemeColor>
-      ))}
+    <ThemeColorContainer>
+      Tema
+      <ColorContainer>
+        {colorList.map(({ color, hexColor }, index) => (
+          <ButtonChangeThemeColor
+            key={color + index}
+            title="change color"
+            $color={hexColor}
+            $ischeck={colorTheme === color}
+            onClick={() => {
+              changeTheme(color)
+              setColorTheme(color)
+              setCookies("themeColor", color)
+            }}
+          >
+            <FaCheck />
+          </ButtonChangeThemeColor>
+        ))}
+      </ColorContainer>
     </ThemeColorContainer>
   )
 }
 
-const ThemeColorContainer = styled(motion.div)`
+const ColorContainer = styled.div`
+  display: flex;
+  gap: 0.4em;
+`
+
+const ThemeColorContainer = styled.div`
   background-color: var(--home-card-background);
 
-  width: max-content;
+  width: 100%;
 
   display: flex;
   align-items: center;
-
-  border-radius: 3em;
-  gap: 0.5em;
-
-  padding: 0.3em;
-  box-shadow: 0em 0em 1em 0em #0000004b;
+  justify-content: space-between;
+  gap: 2em;
 
   overflow: hidden;
 `
 
-const ButtonChangeThemeColor = styled(motion.button)`
+const ButtonChangeThemeColor = styled.button`
   background-color: ${(props) => props.$color ?? "#fff"};
 
   /* border: ${(props) =>
@@ -87,10 +65,10 @@ const ButtonChangeThemeColor = styled(motion.button)`
   border: none;
   border-radius: 3em;
 
-  width: 3em;
-  height: 3em;
+  width: 1.6em;
+  height: 1.6em;
 
-  display: ${(props) => (props.$isvisible ? "flex" : "none")};
+  display: flex;
   align-items: center;
   justify-content: center;
 
@@ -101,8 +79,8 @@ const ButtonChangeThemeColor = styled(motion.button)`
   svg {
     display: ${(props) => (props.$ischeck ? "block" : "none")};
 
-    width: 1.5em;
-    height: 1.5em;
+    width: 1em;
+    height: 1em;
 
     color: #fff;
   }
