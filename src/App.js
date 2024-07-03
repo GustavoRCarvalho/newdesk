@@ -20,9 +20,8 @@ function App() {
 
   useEffect(() => {
     const isDark =
-      window.matchMedia("(prefers-color-scheme: dark)") &&
-      cookies.darkTheme !== null &&
-      cookies.darkTheme
+      !window.matchMedia("(prefers-color-scheme: dark)").matches ||
+      (cookies.darkTheme !== undefined && cookies.darkTheme)
     changeDarkLightMode(isDark)
     setCookies("darkTheme", isDark)
 
