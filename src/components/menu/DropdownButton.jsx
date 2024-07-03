@@ -4,7 +4,7 @@ import { IoIosArrowDown } from "react-icons/io"
 import styled from "styled-components"
 import { DropdownOption } from "./DropdownOption"
 import { CardOption } from "./CardOption"
-import { NoStyleLinkRouter } from "../../router/NoStyleLinkRouter"
+import { NoStyleLinkScroll } from "../../router/NoStyleLinkScroll"
 
 export const DropdownButton = ({
   isOpen,
@@ -26,12 +26,12 @@ export const DropdownButton = ({
   return isOpen ? (
     <DropdownContainer layout>
       <Dropdown layout $isopen={dropdownOpen}>
-        <NoStyleLinkRouter to={title}>
+        <NoStyleLinkScroll to={title}>
           <DropText layout>
             <Icon />
             <motion.span layout> {title}</motion.span>
           </DropText>
-        </NoStyleLinkRouter>
+        </NoStyleLinkScroll>
         <ButtonOpen
           $isvisible={subCategories.length > 0}
           $isopen={dropdownOpen}
@@ -56,9 +56,9 @@ export const DropdownButton = ({
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
-      <NoStyleLinkRouter to={title}>
+      <NoStyleLinkScroll to={title}>
         <Icon />
-      </NoStyleLinkRouter>
+      </NoStyleLinkScroll>
       {isHover && subCategories.length !== 0 && (
         <CardOption categoryTitle={title} subCategories={subCategories} />
       )}

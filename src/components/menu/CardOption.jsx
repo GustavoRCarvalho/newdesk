@@ -1,18 +1,18 @@
 import { motion } from "framer-motion"
 import styled from "styled-components"
 import { GiOpenBook } from "react-icons/gi"
-import { NoStyleLinkRouter } from "../../router/NoStyleLinkRouter"
+import { NoStyleLinkScroll } from "../../router/NoStyleLinkScroll"
 
 export const CardOption = ({ categoryTitle, subCategories }) => {
   return (
     <Card>
       {subCategories.map(({ title }, index) => (
-        <NoStyleLinkRouter key={title + index} to={categoryTitle + title}>
+        <NoStyleLinkScroll key={title + index} to={categoryTitle + title}>
           <Title>
             <GiOpenBook />
             {title}
           </Title>
-        </NoStyleLinkRouter>
+        </NoStyleLinkScroll>
       ))}
     </Card>
   )

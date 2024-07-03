@@ -1,8 +1,9 @@
 import styled from "styled-components"
 import { HiOutlineArrowUp } from "react-icons/hi"
 import backgroundImage from "../../assets/images/cardBackgroundImage.png"
+import { NoStyleLinkRouter } from "../../router/NoStyleLinkRouter"
 
-export const Card = ({ title, date }) => {
+export const Card = ({ title, date, textURL }) => {
   return (
     <CardContainer>
       <img src={backgroundImage} alt="background card" />
@@ -11,9 +12,11 @@ export const Card = ({ title, date }) => {
         <CardLine />
         <CardDate>{date}</CardDate>
       </CardTextGroup>
-      <CardButton>
-        Ver mais <HiOutlineArrowUp />
-      </CardButton>
+      <NoStyleLinkRouter to={`articles/${textURL}`}>
+        <CardButton>
+          Ver mais <HiOutlineArrowUp />
+        </CardButton>
+      </NoStyleLinkRouter>
     </CardContainer>
   )
 }

@@ -1,18 +1,26 @@
 import styled from "styled-components"
 import LogoImg from "../../assets/images/Logo.png"
 import { motion } from "framer-motion"
+import { NoStyleLinkRouter } from "../../router/NoStyleLinkRouter"
 
 export const SideHeader = ({ isOpen }) => {
   return (
     <Header $isopen={isOpen}>
-      <Logo $isopen={isOpen} src={LogoImg} layout />
-      {isOpen && <Title>ZZ HELP</Title>}
+      <NoStyleLinkRouter to="/">
+        <Logo $isopen={isOpen} src={LogoImg} layout />
+      </NoStyleLinkRouter>
+      {isOpen && (
+        <NoStyleLinkRouter to="/">
+          <Title>ZZ HELP</Title>
+        </NoStyleLinkRouter>
+      )}
     </Header>
   )
 }
 
-const Header = styled(motion.div)`
+const Header = styled(motion.header)`
   padding: ${(props) => (props.$isopen ? "1em" : "0")};
+  margin-bottom: ${(props) => (props.$isopen ? "0em" : "4em")};
 
   display: flex;
   align-items: center;
@@ -24,8 +32,6 @@ const Header = styled(motion.div)`
 const Logo = styled(motion.img)`
   width: ${(props) => (props.$isopen ? "7em" : "3em")};
   height: ${(props) => (props.$isopen ? "7em" : "3em")};
-
-  margin-bottom: ${(props) => (props.$isopen ? "0em" : "4em")};
 `
 
 const Title = styled(motion.h2)`

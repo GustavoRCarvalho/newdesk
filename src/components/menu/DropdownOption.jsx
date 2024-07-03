@@ -4,7 +4,7 @@ import { MdOutlineLibraryBooks } from "react-icons/md"
 import { IoIosArrowForward } from "react-icons/io"
 import styled from "styled-components"
 import { CardArticle } from "./CardArticle"
-import { NoStyleLinkRouter } from "../../router/NoStyleLinkRouter"
+import { NoStyleLinkScroll } from "../../router/NoStyleLinkScroll"
 
 export const DropdownOption = ({
   categoryTitle,
@@ -20,12 +20,12 @@ export const DropdownOption = ({
       $isopen={dropdownOpen}
       onMouseLeave={() => setArticleOpen(false)}
     >
-      <NoStyleLinkRouter to={categoryTitle + title}>
+      <NoStyleLinkScroll to={categoryTitle + title}>
         <DropText layout={"size"} onMouseEnter={() => setArticleOpen(false)}>
           <MdOutlineLibraryBooks />
           <motion.span>{title}</motion.span>
         </DropText>
-      </NoStyleLinkRouter>
+      </NoStyleLinkScroll>
       <OptionButtonOpen
         $isvisible={articles.length > 0}
         onMouseEnter={() => setArticleOpen(true)}
