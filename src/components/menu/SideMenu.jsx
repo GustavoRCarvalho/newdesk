@@ -2,16 +2,24 @@ import styled from "styled-components"
 import { Search } from "./Search"
 import { SideHeader } from "./SideHeader"
 import { LayoutGroup, motion } from "framer-motion"
-import { useEffect, useState } from "react"
+import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { IoIosArrowBack, IoIosHeart } from "react-icons/io"
 import { DropdownButton } from "./DropdownButton"
 import { useSelector } from "react-redux"
+import { useResizeDetector } from "react-resize-detector"
 
-export const SideMenu = () => {
+export const SideMenu = ({ setHeight }) => {
+  const { height, ref } = useResizeDetector()
   const homeData = useSelector((state) => state.homeData.data)
   const [isOpen, setIsOpen] = useState(true)
   const [openDropdownLabel, setOpenDropdownLabel] = useState("")
   const [delayComplete, setDelayComplete] = useState(false)
+
+  useLayoutEffect(() => {
+    if (ref) {
+      setHeight(height)
+    }
+  }, [setHeight, height, ref])
 
   useEffect(() => {
     if (isOpen) {
@@ -26,7 +34,12 @@ export const SideMenu = () => {
 
   return (
     <LayoutGroup>
-      <SideContainer $delaycomplete={delayComplete} $isopen={isOpen} layout>
+      <SideContainer
+        ref={ref}
+        $delaycomplete={delayComplete}
+        $isopen={isOpen}
+        layout
+      >
         <CloseButton
           title="close"
           layout
@@ -37,29 +50,39 @@ export const SideMenu = () => {
         </CloseButton>
         <SideHeader isOpen={isOpen} />
         <Search isOpen={isOpen} setIsOpen={setIsOpen} />
-        <DropdownButton
-          isOpen={isOpen}
-          Icon={IoIosHeart}
-          title={"Favoritos"}
-          subCategories={[]}
-          setOpenDropdownLabel={setOpenDropdownLabel}
-          openDropdownLabel={openDropdownLabel}
-        />
-        {homeData.map((data, index) => {
-          return (
-            <DropdownButton
-              key={data.title + index}
-              isOpen={isOpen}
-              setOpenDropdownLabel={setOpenDropdownLabel}
-              openDropdownLabel={openDropdownLabel}
-              {...data}
-            />
-          )
-        })}
+        <OptionsContainer>
+          <DropdownButton
+            isOpen={isOpen}
+            Icon={IoIosHeart}
+            title={"Favoritos"}
+            subCategories={[]}
+            setOpenDropdownLabel={setOpenDropdownLabel}
+            openDropdownLabel={openDropdownLabel}
+          />
+          {homeData.map((data, index) => {
+            return (
+              <DropdownButton
+                key={data.title + index}
+                isOpen={isOpen}
+                setOpenDropdownLabel={setOpenDropdownLabel}
+                openDropdownLabel={openDropdownLabel}
+                {...data}
+              />
+            )
+          })}
+        </OptionsContainer>
       </SideContainer>
     </LayoutGroup>
   )
 }
+
+const OptionsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  gap: 0.5em;
+`
 
 const CloseButton = styled(motion.button)`
   position: absolute;
@@ -95,7 +118,8 @@ const CloseButton = styled(motion.button)`
 const SideContainer = styled(motion.div)`
   position: relative;
   background-color: var(--side-menu-background);
-  height: calc(100dvh - 2em);
+  min-height: calc(100dvh - 2em);
+  height: max-content;
   min-width: min-content;
 
   padding: 1em;
@@ -105,6 +129,6 @@ const SideContainer = styled(motion.div)`
 
   user-select: none;
 
-  overflow: ${(props) => (props.$delaycomplete ? "" : "hidden")};
+  overflow-x: ${(props) => (props.$delaycomplete ? "" : "hidden")};
   z-index: 1;
 `

@@ -15,6 +15,10 @@ body {
   overflow: hidden;
 }
 
+body::-webkit-scrollbar {
+  display: none;
+}
+
 .themePink {
   --side-menu-item-select: #fd84f5;
 
