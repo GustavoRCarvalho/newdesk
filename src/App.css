@@ -11,6 +11,8 @@ body {
 }
 
 #root {
+  position: relative;
+
   display: flex;
   overflow: hidden;
 }

@@ -2,10 +2,17 @@ import { Route, Routes } from "react-router-dom"
 import styled from "styled-components"
 import { Home } from "../components/home/Home"
 import { Article } from "../components/article/Article"
+import { resetCard } from "../store/cardSlice"
+import { useDispatch } from "react-redux"
 
-export default function Content({ height }) {
+export default function Content() {
+  const dispatch = useDispatch()
+
   return (
-    <MainContainer id="containerElement" $height={height}>
+    <MainContainer
+      id="containerElement"
+      onMouseEnter={() => dispatch(resetCard())}
+    >
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/articles/:article" element={<Article />}></Route>
@@ -21,9 +28,8 @@ export default function Content({ height }) {
 const MainContainer = styled.main`
   background-color: var(--home-background);
 
-  min-height: 100dvh;
-  height: ${(props) => `${props.$height}px` ?? "100dvh"};
-  width: 100%;
+  height: 100dvh;
+  flex: 1;
   overflow-y: scroll;
   display: flex;
   flex-direction: column;

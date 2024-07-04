@@ -2,24 +2,16 @@ import styled from "styled-components"
 import { Search } from "./Search"
 import { SideHeader } from "./SideHeader"
 import { LayoutGroup, motion } from "framer-motion"
-import { useEffect, useLayoutEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { IoIosArrowBack, IoIosHeart } from "react-icons/io"
 import { DropdownButton } from "./DropdownButton"
 import { useSelector } from "react-redux"
-import { useResizeDetector } from "react-resize-detector"
 
-export const SideMenu = ({ setHeight }) => {
-  const { height, ref } = useResizeDetector()
+export const SideMenu = () => {
   const homeData = useSelector((state) => state.homeData.data)
   const [isOpen, setIsOpen] = useState(true)
   const [openDropdownLabel, setOpenDropdownLabel] = useState("")
   const [delayComplete, setDelayComplete] = useState(false)
-
-  useLayoutEffect(() => {
-    if (ref) {
-      setHeight(height)
-    }
-  }, [setHeight, height, ref])
 
   useEffect(() => {
     if (isOpen) {
@@ -34,12 +26,7 @@ export const SideMenu = ({ setHeight }) => {
 
   return (
     <LayoutGroup>
-      <SideContainer
-        ref={ref}
-        $delaycomplete={delayComplete}
-        $isopen={isOpen}
-        layout
-      >
+      <SideContainer $delaycomplete={delayComplete} $isopen={isOpen} layout>
         <CloseButton
           title="close"
           layout
@@ -82,6 +69,28 @@ const OptionsContainer = styled.div`
   width: 100%;
 
   gap: 0.5em;
+
+  overflow: hidden;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 5px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #888;
+
+    border-radius: 1em;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #aaa;
+  }
 `
 
 const CloseButton = styled(motion.button)`
@@ -118,8 +127,7 @@ const CloseButton = styled(motion.button)`
 const SideContainer = styled(motion.div)`
   position: relative;
   background-color: var(--side-menu-background);
-  min-height: calc(100dvh - 2em);
-  height: max-content;
+  height: calc(100dvh - 2em);
   min-width: min-content;
 
   padding: 1em;
@@ -129,6 +137,6 @@ const SideContainer = styled(motion.div)`
 
   user-select: none;
 
-  overflow-x: ${(props) => (props.$delaycomplete ? "" : "hidden")};
+  overflow: ${(props) => (props.$delaycomplete ? "" : "hidden")};
   z-index: 1;
 `

@@ -6,6 +6,7 @@ import useWindowDimensions, {
   changeTheme,
   changeDarkLightMode,
 } from "./utils/functions"
+import { CardMenu } from "./components/menu/CardMenu"
 import { DesktopAlert } from "./router/DesktopAlert"
 import { useCookies } from "react-cookie"
 import { useEffect, useState } from "react"
@@ -14,7 +15,6 @@ import { Provider } from "react-redux"
 
 function App() {
   const [cookies, setCookies] = useCookies()
-  const [height, setHeight] = useState(window.innerHeight)
 
   const { width } = useWindowDimensions()
   const isDesktop = width > 768
@@ -38,8 +38,9 @@ function App() {
         {
           //isDesktop ? (
           <>
-            <SideMenu setHeight={setHeight} />
-            <Content height={height} />
+            <SideMenu />
+            <Content />
+            <CardMenu />
           </>
           // ) : (
           //   <DesktopAlert />

@@ -1,10 +1,11 @@
 import { motion } from "framer-motion"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { IoIosArrowDown } from "react-icons/io"
 import styled from "styled-components"
 import { DropdownOption } from "./DropdownOption"
-import { CardOption } from "./CardOption"
 import { NoStyleLinkScroll } from "../../router/NoStyleLinkScroll"
+import { changeCard, resetCard } from "../../store/cardSlice"
+import { useDispatch } from "react-redux"
 
 export const DropdownButton = ({
   isOpen,
@@ -14,8 +15,9 @@ export const DropdownButton = ({
   openDropdownLabel,
   setOpenDropdownLabel,
 }) => {
+  const refSideIcon = useRef(null)
+  const dispatch = useDispatch()
   const [dropdownOpen, setDropdownOpen] = useState(false)
-  const [isHover, setIsHover] = useState()
 
   useEffect(() => {
     if (openDropdownLabel !== "" && openDropdownLabel !== title) {
@@ -25,7 +27,11 @@ export const DropdownButton = ({
 
   return isOpen ? (
     <DropdownContainer layout>
-      <Dropdown layout $isopen={dropdownOpen}>
+      <Dropdown
+        layout
+        $isopen={dropdownOpen}
+        onMouseEnter={() => dispatch(resetCard())}
+      >
         <NoStyleLinkScroll to={title}>
           <DropText layout>
             <Icon />
@@ -51,17 +57,26 @@ export const DropdownButton = ({
       ))}
     </DropdownContainer>
   ) : (
-    <DropdownIcon
-      layout
-      onMouseEnter={() => setIsHover(true)}
-      onMouseLeave={() => setIsHover(false)}
-    >
-      <NoStyleLinkScroll to={title}>
+    <DropdownIcon ref={refSideIcon} layout>
+      <NoStyleLinkScroll
+        to={title}
+        onMouseEnter={() => {
+          var rect = refSideIcon.current.getBoundingClientRect()
+          var x = rect.x + rect.width
+          var y = rect.y + rect.height - 50
+          dispatch(
+            changeCard({
+              title: title,
+              options: subCategories,
+              x: x,
+              y: y,
+              isArticle: false,
+            })
+          )
+        }}
+      >
         <Icon />
       </NoStyleLinkScroll>
-      {isHover && subCategories.length !== 0 && (
-        <CardOption categoryTitle={title} subCategories={subCategories} />
-      )}
     </DropdownIcon>
   )
 }

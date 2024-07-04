@@ -1,10 +1,11 @@
 import { motion } from "framer-motion"
-import { useState } from "react"
 import { MdOutlineLibraryBooks } from "react-icons/md"
 import { IoIosArrowForward } from "react-icons/io"
 import styled from "styled-components"
-import { CardArticle } from "./CardArticle"
 import { NoStyleLinkScroll } from "../../router/NoStyleLinkScroll"
+import { useDispatch } from "react-redux"
+import { changeCard, resetCard } from "../../store/cardSlice"
+import { useRef } from "react"
 
 export const DropdownOption = ({
   categoryTitle,
@@ -12,27 +13,37 @@ export const DropdownOption = ({
   title,
   articles,
 }) => {
-  const [articleOpen, setArticleOpen] = useState(false)
+  const refDownIcon = useRef(null)
+  const dispatch = useDispatch()
 
   return (
     <DropdownOptionContainer
       layout={"size"}
       $isopen={dropdownOpen}
-      onMouseLeave={() => setArticleOpen(false)}
+      ref={refDownIcon}
     >
       <NoStyleLinkScroll to={categoryTitle + title}>
-        <DropText layout={"size"} onMouseEnter={() => setArticleOpen(false)}>
+        <DropText layout={"size"} onMouseEnter={() => dispatch(resetCard())}>
           <MdOutlineLibraryBooks />
           <motion.span>{title}</motion.span>
         </DropText>
       </NoStyleLinkScroll>
       <OptionButtonOpen
         $isvisible={articles.length > 0}
-        onMouseEnter={() => setArticleOpen(true)}
-      />
-      <CardArticle
-        isopen={articleOpen && articles.length > 0}
-        articles={articles}
+        onMouseEnter={() => {
+          var rect = refDownIcon.current.getBoundingClientRect()
+          var x = rect.x + rect.width
+          var y = rect.y + rect.height - 50
+          dispatch(
+            changeCard({
+              title: title,
+              options: articles,
+              x: x,
+              y: y,
+              isArticle: true,
+            })
+          )
+        }}
       />
     </DropdownOptionContainer>
   )
