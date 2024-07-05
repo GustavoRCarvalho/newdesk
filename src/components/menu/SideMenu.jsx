@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import { Search } from "./Search"
-import { SideHeader } from "./SideHeader"
+import { SideHeader } from "./SideHead"
 import { LayoutGroup, motion } from "framer-motion"
 import { useEffect, useState } from "react"
 import { IoIosArrowBack, IoIosHeart } from "react-icons/io"
