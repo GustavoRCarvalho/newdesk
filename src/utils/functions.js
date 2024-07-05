@@ -41,6 +41,12 @@ export function changeTheme(theme) {
   if (theme !== "Red") {
     body.remove("themeRed")
   }
+  if (theme !== "Purple") {
+    body.remove("themePurple")
+  }
+  if (theme !== "Green") {
+    body.remove("themeGreen")
+  }
 }
 
 export function changeDarkLightMode(isDark) {

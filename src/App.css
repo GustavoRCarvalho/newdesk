@@ -21,6 +21,22 @@ body::-webkit-scrollbar {
   display: none;
 }
 
+.themePurple {
+  --side-menu-item-select: #db8fff;
+
+  --alert-background: #e9b9ff;
+
+  --card-button-background: #8d17c4;
+}
+
+.themeGreen {
+  --side-menu-item-select: #d4ffaa;
+
+  --alert-background: #e1ffc2;
+
+  --card-button-background: #68aa25;
+}
+
 .themePink {
   --side-menu-item-select: #fd84f5;
 
@@ -34,7 +50,7 @@ body::-webkit-scrollbar {
 
   --alert-background: #cefdff;
 
-  --card-button-background: #06acb8;
+  --card-button-background: #18a7c0;
 }
 
 .themeYellow {
@@ -42,7 +58,7 @@ body::-webkit-scrollbar {
 
   --alert-background: #fff6c0;
 
-  --card-button-background: #cfb209;
+  --card-button-background: #ccb014;
 }
 
 .themeRed {

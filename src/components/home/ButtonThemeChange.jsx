@@ -5,10 +5,12 @@ import { FaCheck } from "react-icons/fa6"
 import { useCookies } from "react-cookie"
 
 const colorList = [
-  { color: "Pink", hexColor: "#fd84f5" },
-  { color: "Blue", hexColor: "#84f5fd" },
-  { color: "Yellow", hexColor: "#fdeb84" },
   { color: "Red", hexColor: "#f55d5d" },
+  { color: "Yellow", hexColor: "#fdeb84" },
+  { color: "Green", hexColor: "#D4FFAA" },
+  { color: "Blue", hexColor: "#84f5fd" },
+  { color: "Pink", hexColor: "#fd84f5" },
+  { color: "Purple", hexColor: "#D784FD" },
 ]
 
 export const ButtonThemeChange = () => {

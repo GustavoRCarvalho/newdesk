@@ -10,8 +10,8 @@ export const Home = () => {
   return (
     <HomeContainer>
       <Settings>
-        <ButtonThemeChange />
         <ButtonDarkLightTheme />
+        <ButtonThemeChange />
       </Settings>
       {homeData.map((data, index) => (
         <Category key={data.title + index} {...data} />

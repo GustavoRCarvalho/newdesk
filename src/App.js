@@ -26,7 +26,7 @@ function App() {
     changeDarkLightMode(isDark)
     setCookies("darkTheme", isDark)
 
-    const themeColor = cookies.themeColor ?? "Pink"
+    const themeColor = cookies.themeColor ?? "Blue"
     changeTheme(themeColor)
     setCookies("themeColor", themeColor)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -35,17 +35,15 @@ function App() {
   return (
     <Provider store={store}>
       <BrowserRouter>
-        {
-          //isDesktop ? (
+        {isDesktop ? (
           <>
             <SideMenu />
             <Content />
             <CardMenu />
           </>
-          // ) : (
-          //   <DesktopAlert />
-          // )
-        }
+        ) : (
+          <DesktopAlert />
+        )}
       </BrowserRouter>
     </Provider>
   )
