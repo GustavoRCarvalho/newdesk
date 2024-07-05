@@ -77,7 +77,7 @@ body::-webkit-scrollbar {
   --home-settings-line: #5a5a5a;
   --home-settings-logout: #797979;
 
-  --home-settings-line: #5a5a5a;
+  --home-dark-button: #000;
   --home-dark-button-background: #808080;
 
   --side-menu-color: #fff;
