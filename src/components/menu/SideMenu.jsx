@@ -2,7 +2,7 @@ import styled from "styled-components"
 import { Search } from "./Search"
 import { SideHeader } from "./SideHead"
 import { LayoutGroup, motion } from "framer-motion"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { IoIosArrowBack, IoIosHeart } from "react-icons/io"
 import { DropdownButton } from "./DropdownButton"
 import { useSelector } from "react-redux"
@@ -11,22 +11,10 @@ export const SideMenu = () => {
   const homeData = useSelector((state) => state.homeData.data)
   const [isOpen, setIsOpen] = useState(false)
   const [openDropdownLabel, setOpenDropdownLabel] = useState("")
-  const [delayComplete, setDelayComplete] = useState(true)
-
-  useEffect(() => {
-    if (isOpen) {
-      setDelayComplete(false)
-      const timer = setTimeout(() => {
-        setDelayComplete(true)
-      }, 300)
-
-      return () => clearTimeout(timer)
-    }
-  }, [isOpen])
 
   return (
     <LayoutGroup>
-      <SideContainer $delaycomplete={delayComplete} $isopen={isOpen} layout>
+      <SideContainer $isopen={isOpen} layout>
         <CloseButton
           title="close"
           layout
@@ -37,7 +25,7 @@ export const SideMenu = () => {
         </CloseButton>
         <SideHeader isOpen={isOpen} />
         <Search isOpen={isOpen} setIsOpen={setIsOpen} />
-        <OptionsContainer>
+        <OptionsContainer layout>
           <DropdownButton
             isOpen={isOpen}
             Icon={IoIosHeart}
@@ -63,7 +51,7 @@ export const SideMenu = () => {
   )
 }
 
-const OptionsContainer = styled.div`
+const OptionsContainer = styled(motion.div)`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -137,6 +125,5 @@ const SideContainer = styled(motion.div)`
 
   user-select: none;
 
-  overflow: ${(props) => (props.$delaycomplete ? "" : "hidden")};
   z-index: 1;
 `

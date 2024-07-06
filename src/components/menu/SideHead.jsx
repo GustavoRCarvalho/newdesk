@@ -2,10 +2,16 @@ import styled from "styled-components"
 import LogoImg from "../../assets/images/Logo.png"
 import { motion } from "framer-motion"
 import { NoStyleLinkRouter } from "../../router/NoStyleLinkRouter"
+import { animateScroll } from "react-scroll"
 
 export const SideHeader = ({ isOpen }) => {
   return (
-    <Header $isopen={isOpen}>
+    <Header
+      $isopen={isOpen}
+      onClick={() =>
+        animateScroll.scrollToTop({ containerId: "containerElement" })
+      }
+    >
       <NoStyleLinkRouter to="/">
         <Logo $isopen={isOpen} src={LogoImg} layout />
       </NoStyleLinkRouter>
@@ -19,11 +25,13 @@ export const SideHeader = ({ isOpen }) => {
 }
 
 const Header = styled(motion.header)`
-  padding: ${(props) => (props.$isopen ? "1em" : "0")};
-  margin-bottom: ${(props) => (props.$isopen ? "0em" : "4em")};
+  /* padding: ${(props) => (props.$isopen ? "1em" : "0")}; */
+  /* margin-bottom: ${(props) => (props.$isopen ? "0em" : "4em")}; */
+
+  min-height: 8em;
 
   display: flex;
-  align-items: center;
+  align-items: ${(props) => (props.$isopen ? "center" : "start")};
   justify-content: center;
 
   gap: 1em;

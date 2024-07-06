@@ -10,32 +10,37 @@ export const Search = ({ isOpen, setIsOpen }) => {
   const dispatch = useDispatch()
   const searchInputRef = useRef(null)
 
-  return isOpen ? (
-    <SearchContainer
-      ref={searchInputRef}
-      onChange={(e) => {
-        dispatch(changeData(search(e.target.value)))
-      }}
-      placeholder="Pesquisar"
-      layout
-    ></SearchContainer>
-  ) : (
-    <SearchIconContainer
-      layout
-      onClick={() => {
-        setIsOpen(true)
-        setTimeout(() => {
-          searchInputRef.current.focus()
-        }, 0)
-      }}
-    >
-      <IoMdSearch />
-    </SearchIconContainer>
+  return (
+    <SearchContainer layout>
+      {isOpen ? (
+        <SearchInput
+          ref={searchInputRef}
+          onChange={(e) => {
+            dispatch(changeData(search(e.target.value)))
+          }}
+          placeholder="Pesquisar"
+        />
+      ) : (
+        <SearchIconContainer
+          layout
+          onClick={() => {
+            setIsOpen(true)
+            setTimeout(() => {
+              searchInputRef.current.focus()
+            }, 0)
+          }}
+        >
+          <IoMdSearch />
+        </SearchIconContainer>
+      )}
+    </SearchContainer>
   )
 }
 
-const SearchContainer = styled(motion.input)`
+const SearchInput = styled.input`
   background-color: #fff;
+  width: calc(100% - 2em);
+  height: 1.5em;
 
   padding: 0.85em 1em;
 
@@ -43,6 +48,11 @@ const SearchContainer = styled(motion.input)`
   border: none;
 
   outline: none;
+`
+
+const SearchContainer = styled(motion.div)`
+  width: 100%;
+  height: 3.5em;
 `
 
 const SearchIconContainer = styled(motion.div)`

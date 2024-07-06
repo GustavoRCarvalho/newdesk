@@ -137,7 +137,6 @@ const Dropdown = styled(motion.div)`
 `
 
 const DropdownIcon = styled(motion.div)`
-  position: relative;
   font-size: 1.4em;
 
   color: var(--side-menu-item);
