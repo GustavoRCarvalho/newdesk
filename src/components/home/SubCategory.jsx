@@ -11,7 +11,12 @@ export const SubCaregory = ({ categoryTitle, title, articles }) => {
       </SectionSubtitle>
       <SectionCardList>
         {articles.map((data, index) => (
-          <Card key={data.title + index} {...data} />
+          <Card
+            key={data.title + index}
+            categoryTitle={categoryTitle}
+            subCategory={title}
+            {...data}
+          />
         ))}
       </SectionCardList>
     </SubCategoriesContainer>

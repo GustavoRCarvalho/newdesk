@@ -12,12 +12,13 @@ import { useCookies } from "react-cookie"
 import { useEffect, useState } from "react"
 import { store } from "./store/store"
 import { Provider } from "react-redux"
+import "react-quill/dist/quill.snow.css"
 
 function App() {
   const [cookies, setCookies] = useCookies()
 
   const { width } = useWindowDimensions()
-  const isDesktop = width > 768
+  const isDesktop = width > 720
 
   useEffect(() => {
     const isDark =

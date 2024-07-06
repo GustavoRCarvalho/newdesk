@@ -15,7 +15,10 @@ export default function Content() {
     >
       <Routes>
         <Route path="/" element={<Home />}></Route>
-        <Route path="/articles/:article" element={<Article />}></Route>
+        <Route
+          path="/:category/:subcategory/:article"
+          element={<Article />}
+        ></Route>
         {/* <Route path="roupas">
           <Route path="id=:id" element={<Product />} />
         </Route> */}

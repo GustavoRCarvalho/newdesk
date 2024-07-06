@@ -9,9 +9,9 @@ import { useSelector } from "react-redux"
 
 export const SideMenu = () => {
   const homeData = useSelector((state) => state.homeData.data)
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(false)
   const [openDropdownLabel, setOpenDropdownLabel] = useState("")
-  const [delayComplete, setDelayComplete] = useState(false)
+  const [delayComplete, setDelayComplete] = useState(true)
 
   useEffect(() => {
     if (isOpen) {

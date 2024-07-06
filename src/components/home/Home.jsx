@@ -4,9 +4,27 @@ import { Settings } from "./Settings"
 import { ButtonThemeChange } from "./ButtonThemeChange"
 import { ButtonDarkLightTheme } from "./ButtonDarkLightTheme"
 import { useSelector } from "react-redux"
+import { useLocation } from "react-router-dom"
+import { useEffect } from "react"
+import { scroller } from "react-scroll"
 
 export const Home = () => {
   const homeData = useSelector((state) => state.homeData.data)
+  const location = useLocation()
+  const scrollTo = location.state?.scrollTo
+
+  useEffect(() => {
+    if (scrollTo) {
+      scroller.scrollTo(scrollTo, {
+        duration: 500,
+        smooth: true,
+        spy: true,
+        offset: -50,
+        containerId: "containerElement",
+      })
+    }
+  }, [scrollTo])
+
   return (
     <HomeContainer>
       <Settings>

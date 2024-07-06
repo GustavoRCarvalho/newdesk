@@ -21,6 +21,15 @@ body::-webkit-scrollbar {
   display: none;
 }
 
+.ql-video {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+}
+
+.quill {
+  max-width: 920px;
+}
+
 .themePurple {
   --side-menu-item-select: #db8fff;
 
