@@ -1,29 +1,26 @@
 import { BrowserRouter } from "react-router-dom"
 import "./App.css"
-import { SideMenu } from "./components/menu/SideMenu"
 import Content from "./router/content"
 import useWindowDimensions, {
   changeTheme,
   changeDarkLightMode,
 } from "./utils/functions"
-import { CardMenu } from "./components/menu/CardMenu"
 import { DesktopAlert } from "./router/DesktopAlert"
 import { useCookies } from "react-cookie"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { store } from "./store/store"
 import { Provider } from "react-redux"
 import "react-quill/dist/quill.snow.css"
 
 function App() {
-  const [cookies, setCookies] = useCookies()
-
   const { width } = useWindowDimensions()
   const isDesktop = width > 720
 
+  const [cookies, setCookies] = useCookies()
+
   useEffect(() => {
-    const isDark =
-      !window.matchMedia("(prefers-color-scheme: dark)").matches ||
-      (cookies.darkTheme !== undefined && cookies.darkTheme)
+    let isDark = window.matchMedia("(prefers-color-scheme: dark)").matches
+    if (cookies.darkTheme !== undefined) isDark = cookies.darkTheme
     changeDarkLightMode(isDark)
     setCookies("darkTheme", isDark)
 
@@ -36,15 +33,7 @@ function App() {
   return (
     <Provider store={store}>
       <BrowserRouter>
-        {isDesktop ? (
-          <>
-            <SideMenu />
-            <Content />
-            <CardMenu />
-          </>
-        ) : (
-          <DesktopAlert />
-        )}
+        {isDesktop ? <Content /> : <DesktopAlert />}
       </BrowserRouter>
     </Provider>
   )
