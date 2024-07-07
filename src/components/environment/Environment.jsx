@@ -33,6 +33,7 @@ const EnvironmentContainer = styled.div`
   width: 100%;
 
   color: var(--home-card-color);
+  background-color: var(--side-menu-background);
 `
 
 const MainContainer = styled.main`

@@ -102,4 +102,11 @@ const DropText = styled(motion.div)`
   align-items: center;
 
   gap: 0.5em;
+
+  span {
+    width: 9em;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
 `

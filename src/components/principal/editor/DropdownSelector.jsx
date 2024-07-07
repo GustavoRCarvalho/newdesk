@@ -5,37 +5,32 @@ import { FaIcons } from "react-icons/fa6"
 import { GoCheck, GoPencil, GoPlus, GoTrash } from "react-icons/go"
 import styled from "styled-components"
 
-const initialItems = ["name1", "name2"]
-
-export const DropdownSelector = () => {
-  const [isOpen, setIsOpen] = useState()
+export const DropdownSelector = ({
+  options = [],
+  disabled = false,
+  placeholder = "select",
+  onSelect,
+  handleChange,
+  handleAdd,
+  handleRemove,
+}) => {
+  const [isOpen, setIsOpen] = useState(false)
   const [editable, setEditable] = useState()
   const [newNameValue, setNewNameValue] = useState("")
-  const [items, setItems] = useState(initialItems)
-  const handleAdd = () => {
-    setItems([...items, handleNewName()])
-  }
 
-  const handleNewName = () => {
-    return `Nova categoria${items.length + 1}`
-  }
-
-  const handleChangeName = (newName, itemName) => {
-    const index = items.indexOf(itemName)
-    setItems((state) => {
-      let copyList = JSON.parse(JSON.stringify(state))
-      copyList[index] = newName
-      return copyList
-    })
-  }
+  useEffect(() => {
+    if (JSON.stringify(options) === "[]" && disabled) {
+      setIsOpen(false)
+    }
+  }, [options, disabled])
 
   const handleCheck = () => {
-    handleChangeName(newNameValue, editable)
+    if (options.indexOf(newNameValue) > -1) {
+      setEditable("")
+      return
+    }
+    handleChange(newNameValue, editable)
     setEditable("")
-  }
-
-  const handleRemoveSelf = (itemName) => {
-    setItems([...items].filter((name) => name !== itemName))
   }
 
   useEffect(() => {
@@ -49,31 +44,36 @@ export const DropdownSelector = () => {
     <DropdownContainer layout>
       <ButtonDropdown
         layout
-        onClick={() => setIsOpen((state) => !state)}
+        onClick={() => !disabled && setIsOpen((state) => !state)}
+        $disabled={disabled}
         $isOpen={isOpen}
       >
-        Categoria
+        <span>{placeholder}</span>
         <FaCaretDown />
       </ButtonDropdown>
       <DropdownOptions
         layout
         animate={isOpen ? "open" : "closed"}
+        initial={{
+          height: "0em",
+        }}
         variants={{
           open: {
-            width: "auto",
+            width: "100%",
             height: "auto",
           },
           closed: {
+            width: "100%",
             height: "0em",
           },
         }}
       >
         <AnimatePresence>
-          {[...items].map((item) => {
+          {[...options].map((item) => {
             const isEditable = editable === item
             return (
               <Item key={item} isEditable={isEditable}>
-                <DropdownText>
+                <DropdownText onClick={() => onSelect(item)}>
                   <FaIcons />
                   <DropdownInput
                     type="text"
@@ -81,6 +81,7 @@ export const DropdownSelector = () => {
                     onChange={(e) => setNewNameValue(e.target.value)}
                     disabled={!isEditable}
                   />
+                  <InputClick $disabled={isEditable}></InputClick>
                 </DropdownText>
                 <OptionIcons>
                   {isEditable ? (
@@ -88,8 +89,7 @@ export const DropdownSelector = () => {
                   ) : (
                     <GoPencil onClick={() => setEditable(item)} />
                   )}
-
-                  <GoTrash onClick={() => handleRemoveSelf(item)} />
+                  <GoTrash onClick={() => handleRemove(item)} />
                 </OptionIcons>
               </Item>
             )
@@ -109,7 +109,7 @@ export const DropdownSelector = () => {
   )
 }
 
-const Item = ({ children, onClick, isEditable }) => {
+const Item = ({ children, isEditable }) => {
   const isPresent = useIsPresent()
   const animations = {
     style: {
@@ -119,29 +119,32 @@ const Item = ({ children, onClick, isEditable }) => {
     animate: { scale: 1, opacity: 1 },
   }
   return (
-    <DropdownItem
-      {...animations}
-      layout
-      onClick={onClick}
-      $isEditable={isEditable}
-    >
+    <DropdownItem {...animations} layout $isEditable={isEditable}>
       {children}
     </DropdownItem>
   )
 }
 
 const ButtonDropdown = styled(motion.div)`
-  width: calc(100% - 2em);
+  width: 15em;
   padding: 0.5em 1em;
+
+  color: ${(props) =>
+    props.$disabled ? "var(--edit-dropdown-editable)" : "unset"};
 
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  border: 1px solid black;
+  border: ${(props) =>
+    props.$isOpen ? "2px solid black" : "2px solid transparent"};
   border-radius: 0.5em;
 
-  box-shadow: 0em 0.5em 1em 0em #0000002f;
+  span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
   cursor: pointer;
 
@@ -173,6 +176,8 @@ const OptionIcons = styled.div`
 `
 
 const DropdownContainer = styled(motion.div)`
+  height: min-content;
+
   min-width: 15em;
   max-height: 20em;
 
@@ -232,6 +237,8 @@ const DropdownItem = styled(motion.div)`
 `
 
 const AddDropdown = styled(DropdownItem)`
+  width: calc(100% - 2em);
+
   border-bottom: none;
   margin: 0;
   padding: 1em 1em 0.8em 1em;
@@ -243,6 +250,8 @@ const AddDropdown = styled(DropdownItem)`
 `
 
 const DropdownText = styled.div`
+  position: relative;
+
   display: flex;
   align-items: center;
 
@@ -269,4 +278,16 @@ const DropdownInput = styled.input`
   &:disabled {
     color: var(--edit-dropdown);
   }
+`
+
+const InputClick = styled.div`
+  position: absolute;
+  display: ${(props) => (props.$disabled ? "none" : "block")};
+
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  cursor: unset;
 `

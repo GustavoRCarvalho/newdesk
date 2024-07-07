@@ -34,9 +34,9 @@ export const DropdownButton = ({
         onMouseEnter={() => dispatch(resetCard())}
       >
         <NoStyleLinkRouter to="/environment" state={{ scrollTo: title }}>
-          <DropText layout>
+          <DropText>
             <DynaminicIcon iconName={Icon} />
-            <motion.span layout> {title}</motion.span>
+            <motion.span>{title}</motion.span>
           </DropText>
         </NoStyleLinkRouter>
         <ButtonOpen
@@ -105,6 +105,12 @@ const DropText = styled(motion.div)`
   align-items: center;
 
   gap: 0.5em;
+  span {
+    width: 10em;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
 `
 
 const Dropdown = styled(motion.div)`

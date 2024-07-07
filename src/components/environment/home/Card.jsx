@@ -55,11 +55,15 @@ const CardContainer = styled.div`
 `
 
 const CardTitle = styled.h3`
+  width: 100%;
+  max-height: 4.5em;
   font-size: 1.45em;
 
   font-weight: 500;
 
   margin: 0;
+  text-overflow: ellipsis;
+  overflow: hidden;
 `
 
 const CardLine = styled.hr`
@@ -81,6 +85,7 @@ const CardDate = styled.span`
 `
 
 const CardTextGroup = styled.div`
+  width: 100%;
   height: 100%;
 
   display: flex;

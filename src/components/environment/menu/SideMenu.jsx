@@ -14,7 +14,7 @@ export const SideMenu = () => {
 
   return (
     <LayoutGroup>
-      <SideContainer $isopen={isOpen} layout>
+      <SideContainer layout>
         <CloseButton
           title="close"
           layout
@@ -34,10 +34,10 @@ export const SideMenu = () => {
             setOpenDropdownLabel={setOpenDropdownLabel}
             openDropdownLabel={openDropdownLabel}
           />
-          {homeData.map((data, index) => {
+          {[...homeData].map((data, index) => {
             return (
               <DropdownButton
-                key={data.title + index}
+                key={data.title}
                 isOpen={isOpen}
                 setOpenDropdownLabel={setOpenDropdownLabel}
                 openDropdownLabel={openDropdownLabel}
@@ -54,7 +54,6 @@ export const SideMenu = () => {
 const OptionsContainer = styled(motion.div)`
   display: flex;
   flex-direction: column;
-  width: 100%;
 
   gap: 0.5em;
 
