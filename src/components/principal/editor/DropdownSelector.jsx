@@ -25,7 +25,7 @@ export const DropdownSelector = ({
   }, [options, disabled])
 
   const handleCheck = () => {
-    if (options.indexOf(newNameValue) > -1) {
+    if (options.indexOf(newNameValue) > -1 || newNameValue === "") {
       setEditable("")
       return
     }

@@ -11,6 +11,7 @@ import { useEffect } from "react"
 import { store } from "./store/store"
 import { Provider } from "react-redux"
 import "react-quill/dist/quill.snow.css"
+import { Modal } from "./router/Modal"
 
 function App() {
   const { width } = useWindowDimensions()
@@ -34,6 +35,7 @@ function App() {
     <Provider store={store}>
       <BrowserRouter>
         {isDesktop ? <Content /> : <DesktopAlert />}
+        <Modal />
       </BrowserRouter>
     </Provider>
   )
