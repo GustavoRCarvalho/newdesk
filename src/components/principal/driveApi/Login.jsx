@@ -1,10 +1,23 @@
 import styled from "styled-components"
-import { handleSignIn, handleSignOut } from "../../../utils/googleDriveApi"
+import {
+  handleIsSignIn,
+  handleSignIn,
+  handleSignOut,
+} from "../../../utils/googleDriveApi"
 import { useDispatch } from "react-redux"
 import { toggleLogin } from "../../../store/modalSlice"
 
 export const Login = () => {
   const dispatch = useDispatch()
+
+  async function onLogin() {
+    try {
+      await handleSignIn()
+      dispatch(toggleLogin())
+    } catch (e) {
+      console.log(e)
+    }
+  }
 
   return (
     <LoginModal
@@ -13,8 +26,11 @@ export const Login = () => {
     >
       <LoginContainer>
         Conta do Google {}
-        <button onClick={handleSignIn}>Login</button>
-        <button onClick={handleSignOut}>Deslogar</button>
+        {handleIsSignIn() ? (
+          <button onClick={handleSignOut}>Deslogar</button>
+        ) : (
+          <button onClick={onLogin}>Login</button>
+        )}
       </LoginContainer>
     </LoginModal>
   )

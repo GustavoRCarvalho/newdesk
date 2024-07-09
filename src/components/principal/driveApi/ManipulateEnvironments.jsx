@@ -10,13 +10,27 @@ import { useDispatch } from "react-redux"
 import { toggleManipulate } from "../../../store/modalSlice"
 import { useEffect, useState } from "react"
 import { data } from "../../../assets/data"
-import { FaTrash, FaLock, FaGlobeAmericas, FaCopy } from "react-icons/fa"
+import {
+  FaTrash,
+  FaLock,
+  FaGlobeAmericas,
+  FaCopy,
+  FaSpinner,
+} from "react-icons/fa"
 
 export const ManipulateEnvironments = () => {
   const [newEnvironments, setNewEnvironments] = useState({})
   const inputValue = newEnvironments.name
   const [list, setList] = useState([])
   const [isExecuting, setIsExecuting] = useState(false)
+  const [isExecutingAnimation, setIsExecutingAnimation] = useState({
+    create: false,
+    delete: "",
+    share: "",
+  })
+  const createExecuting = isExecutingAnimation.create
+  const deleteExecuting = isExecutingAnimation.delete !== ""
+  const shareExecuting = isExecutingAnimation.share !== ""
   const dispatch = useDispatch()
 
   function handleChangeValue(value) {
@@ -24,7 +38,9 @@ export const ManipulateEnvironments = () => {
   }
 
   async function handleCreate() {
+    if (createExecuting || isExecuting) return
     setIsExecuting(true)
+    setIsExecutingAnimation((state) => ({ ...state, create: true }))
     try {
       await handleUploadJson(data, inputValue)
     } finally {
@@ -34,7 +50,9 @@ export const ManipulateEnvironments = () => {
   }
 
   async function handleDelete(id) {
+    if (deleteExecuting || isExecuting) return
     setIsExecuting(true)
+    setIsExecutingAnimation((state) => ({ ...state, delete: id }))
     try {
       await deleteFile(id)
     } finally {
@@ -43,7 +61,9 @@ export const ManipulateEnvironments = () => {
   }
 
   async function handleSwitchShare(value) {
+    if (shareExecuting || isExecuting) return
     setIsExecuting(true)
+    setIsExecutingAnimation((state) => ({ ...state, share: value.id }))
     try {
       if (value.shared) {
         await removeSharing(value.id)
@@ -59,6 +79,11 @@ export const ManipulateEnvironments = () => {
     try {
       const files = await listFiles()
       setList(files)
+      setIsExecutingAnimation({
+        create: false,
+        delete: "",
+        share: "",
+      })
     } catch (error) {
       console.error("Error fetching files:", error)
     } finally {
@@ -95,13 +120,23 @@ export const ManipulateEnvironments = () => {
                       <FaCopy />
                     </button>
                     <button onClick={() => handleSwitchShare(value)}>
-                      {value.shared ? <FaGlobeAmericas /> : <FaLock />}
+                      {isExecutingAnimation.share === value.id ? (
+                        <FaSpinner />
+                      ) : value.shared ? (
+                        <FaGlobeAmericas />
+                      ) : (
+                        <FaLock />
+                      )}
                     </button>
                     <span>
                       id:{value.id}name:{value.name}
                     </span>
                     <button onClick={() => handleDelete(value.id)}>
-                      <FaTrash />
+                      {isExecutingAnimation.delete === value.id ? (
+                        <FaSpinner />
+                      ) : (
+                        <FaTrash />
+                      )}
                     </button>
                   </div>
                 )
@@ -113,7 +148,9 @@ export const ManipulateEnvironments = () => {
           value={inputValue || ""}
           onChange={(e) => handleChangeValue(e.target.value)}
         />
-        <button onClick={handleCreate}>Create Test File</button>
+        <button onClick={handleCreate}>
+          Create Test File {createExecuting && <FaSpinner />}
+        </button>
       </Container>
     </Modal>
   )

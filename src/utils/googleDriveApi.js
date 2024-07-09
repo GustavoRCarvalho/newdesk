@@ -30,8 +30,12 @@ export const initClient = () => {
   })
 }
 
-export const handleSignIn = () => {
-  gapi.auth2.getAuthInstance().signIn()
+export const handleSignIn = async () => {
+  try {
+    await gapi.auth2.getAuthInstance().signIn()
+  } catch (e) {
+    console.log(e)
+  }
 }
 
 export const handleIsSignIn = () => {
@@ -64,13 +68,14 @@ export const listFiles = async () => {
 }
 
 export const handleUploadJson = async (jsonObject, name) => {
+  const newName = name === "" ? "data" : name
   const boundary = "-------314159265358979323846"
   const delimiter = `\r\n--${boundary}\r\n`
   const closeDelimiter = `\r\n--${boundary}--`
 
   const contentType = "application/json"
   const metadata = {
-    name: `${name === "" ? "data" : name}.json`, // Nome do arquivo que será salvo no Google Drive
+    name: `${newName}.json`, // Nome do arquivo que será salvo no Google Drive
     mimeType: contentType,
   }
 
