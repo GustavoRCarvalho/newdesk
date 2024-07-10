@@ -50,7 +50,7 @@ export const ArticleDropdown = () => {
     ].articles.splice(articleIndex, 1)
 
     dispatch(setEditor(newCopy))
-    if (itemName === editorState.selectedArticle) {
+    if (articleIndex === editorState.selectedArticle) {
       dispatch(selectArticleIndex(-1))
     }
   }

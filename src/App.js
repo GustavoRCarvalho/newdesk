@@ -12,6 +12,7 @@ import { store } from "./store/store"
 import { Provider } from "react-redux"
 import "react-quill/dist/quill.snow.css"
 import { Modal } from "./router/Modal"
+import { initClient } from "./utils/googleDriveApi"
 
 function App() {
   const { width } = useWindowDimensions()
@@ -28,6 +29,8 @@ function App() {
     const themeColor = cookies.themeColor ?? "Blue"
     changeTheme(themeColor)
     setCookies("themeColor", themeColor)
+
+    initClient()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

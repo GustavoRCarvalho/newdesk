@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import { Link } from "react-router-dom"
 import {
   deleteFile,
   handleUploadJson,
@@ -128,9 +129,12 @@ export const ManipulateEnvironments = () => {
                         <FaLock />
                       )}
                     </button>
-                    <span>
+                    <Link
+                      onClick={() => dispatch(toggleManipulate())}
+                      to={`/edit?environment=${value.id}`}
+                    >
                       id:{value.id}name:{value.name}
-                    </span>
+                    </Link>
                     <button onClick={() => handleDelete(value.id)}>
                       {isExecutingAnimation.delete === value.id ? (
                         <FaSpinner />

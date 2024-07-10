@@ -110,22 +110,27 @@ export const handleUploadJson = async (jsonObject, name) => {
 
 export const readJsonFile = async (fileId) => {
   try {
-    fetch(
+    const response = await fetch(
       `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media&key=${API_KEY}`,
       {
         headers: {
           "Content-Type": "application/json; charset=utf-8",
         },
       }
-    ).then((response) =>
-      response.arrayBuffer().then((buffer) => {
-        const decoder = new TextDecoder("utf-8")
-        const decodedString = decoder.decode(buffer)
-        console.log(JSON.parse(decodedString))
-      })
     )
+    if (!response.ok) {
+      return null
+    }
+
+    const buffer = await response.arrayBuffer()
+
+    const decoder = new TextDecoder("utf-8")
+    const decodedString = decoder.decode(buffer)
+
+    return JSON.parse(decodedString)
   } catch (error) {
     console.error("Erro ao acessar o arquivo:", error)
+    return []
   }
 }
 

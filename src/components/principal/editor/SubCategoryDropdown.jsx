@@ -54,7 +54,7 @@ export const SubCategoryDropdown = () => {
 
     dispatch(setEditor(newCopy))
 
-    if (itemName === editorState.selectedSubCategory) {
+    if (subCategoryIndex === editorState.selectedSubCategory) {
       dispatch(selectSubCategoryIndex(-1))
       dispatch(selectArticleIndex(-1))
     }
