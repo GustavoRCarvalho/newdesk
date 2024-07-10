@@ -1,7 +1,8 @@
 import styled from "styled-components"
 import ReactQuill from "react-quill"
 import "react-quill/dist/quill.snow.css"
-import { useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { setEditor } from "../../../store/editorSlice"
 
 const modules = {
   toolbar: [
@@ -19,38 +20,32 @@ const modules = {
   ],
 }
 
-export const EditorComponent = ({ title = "conteudo", data = [] }) => {
-  const [value, setValue] = useState(data)
+export const EditorComponent = () => {
+  const dispatch = useDispatch()
+  const editorState = useSelector((state) => state.editor)
 
-  const handleSave = () => {
-    const blob = new Blob([value], { type: "application/json" })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement("a")
-    a.href = url
-    a.download = `${title.replace(" ", "/")}.json`
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
-  }
+  const data =
+    editorState.editor[editorState.selectedCategoryIndex]?.subCategories[
+      editorState.selectedSubCategoryIndex
+    ]?.articles[editorState.selectedArticleIndex]?.data
 
-  const handleLoad = (event) => {
-    const file = event.target.files[0]
-    const reader = new FileReader()
-    reader.onload = (e) => {
-      const content = e.target.result
-      setValue(content)
-    }
-    reader.readAsText(file)
+  const handleSave = (value) => {
+    let newCopy = JSON.parse(JSON.stringify(editorState.editor))
+
+    newCopy[editorState.selectedCategoryIndex].subCategories[
+      editorState.selectedSubCategoryIndex
+    ].articles[editorState.selectedArticleIndex].data = value
+
+    dispatch(setEditor(newCopy))
   }
 
   return (
     <EditorContainer>
-      <input type="file" onChange={handleLoad} />
       <button onClick={handleSave}>Save Content</button>
       <ReactQuill
         theme="snow"
-        value={value}
-        onChange={setValue}
+        value={data}
+        onChange={handleSave}
         modules={modules}
       />
     </EditorContainer>

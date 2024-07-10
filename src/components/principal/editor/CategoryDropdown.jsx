@@ -2,21 +2,22 @@ import { useDispatch, useSelector } from "react-redux"
 import { DropdownSelector } from "./DropdownSelector"
 import {
   setEditor,
-  selectCategory,
-  selectSubCategory,
-  selectArticle,
+  selectCategoryIndex,
+  selectSubCategoryIndex,
+  selectArticleIndex,
 } from "../../../store/editorSlice"
 
 export const CategoryDropdown = () => {
   const dispatch = useDispatch()
   const editorState = useSelector((state) => state.editor)
   const editorData = editorState.editor
-  const categories = editorData.map(({ title }) => title)
   let newCopy = JSON.parse(JSON.stringify(editorData))
 
+  const categories = editorData.map(({ title }) => title)
+
   const handleChangeCategory = (newName, oldName) => {
-    const categoryIndex = editorData.map(({ title }) => title).indexOf(oldName)
-    if (categoryIndex === -1) {
+    const categoryIndex = categories.indexOf(oldName)
+    if (categoryIndex === -1 || categories.includes(newName)) {
       return
     }
 
@@ -25,7 +26,7 @@ export const CategoryDropdown = () => {
   }
 
   const handleAddCategory = () => {
-    if (editorData.map(({ title }) => title).indexOf("Nova categoria") > -1) {
+    if (categories.includes("Nova categoria")) {
       return
     }
     const newCategory = {
@@ -37,29 +38,27 @@ export const CategoryDropdown = () => {
   }
 
   const handleRemoveCategory = (itemName) => {
-    const categoryIndex = editorData.map(({ title }) => title).indexOf(itemName)
+    const categoryIndex = categories.indexOf(itemName)
 
     newCopy.splice(categoryIndex, 1)
     dispatch(setEditor(newCopy))
-    if (itemName === editorState.selectedCategory) {
-      dispatch(selectCategory(""))
-      dispatch(selectSubCategory(""))
-      dispatch(selectArticle(""))
+    if (categoryIndex === editorState.selectedCategoryIndex) {
+      dispatch(selectCategoryIndex(-1))
+      dispatch(selectSubCategoryIndex(-1))
+      dispatch(selectArticleIndex(-1))
     }
   }
 
-  const handleSelectCategory = (itemName) => {
-    dispatch(selectCategory(itemName))
+  const handleSelectCategory = (itemIndex) => {
+    dispatch(selectCategoryIndex(itemIndex))
+    dispatch(selectSubCategoryIndex(-1))
+    dispatch(selectArticleIndex(-1))
   }
 
   return (
     <DropdownSelector
       options={categories}
-      placeholder={
-        editorState.selectedCategory !== ""
-          ? editorState.selectedCategory
-          : "Categoria"
-      }
+      placeholder={categories[editorState.selectedCategoryIndex] ?? "Categoria"}
       onSelect={handleSelectCategory}
       handleChange={handleChangeCategory}
       handleAdd={handleAddCategory}

@@ -1,6 +1,15 @@
 import { useState, useEffect } from "react"
 import { data } from "../assets/data"
 
+export const currentDate = () => {
+  var today = new Date()
+
+  const currentDay =
+    today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate()
+
+  return currentDay
+}
+
 function getWindowDimensions() {
   const { innerWidth: width, innerHeight: height } = window
   return {

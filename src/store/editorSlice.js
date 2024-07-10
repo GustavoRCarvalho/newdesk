@@ -2,9 +2,9 @@ import { createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
   editor: [],
-  selectedCategory: "",
-  selectedSubCategory: "",
-  selectedArticle: "",
+  selectedCategoryIndex: -1,
+  selectedSubCategoryIndex: -1,
+  selectedArticleIndex: -1,
 }
 
 export const editorSlice = createSlice({
@@ -12,19 +12,22 @@ export const editorSlice = createSlice({
   initialState,
   reducers: {
     initialData: (state) => {
-      state = { ...initialState }
+      state.editor = []
+      state.selectedCategoryIndex = -1
+      state.selectedSubCategoryIndex = -1
+      state.selectedArticleIndex = -1
     },
     setEditor: (state, action) => {
       state.editor = action.payload
     },
-    selectCategory: (state, action) => {
-      state.selectedCategory = action.payload
+    selectCategoryIndex: (state, action) => {
+      state.selectedCategoryIndex = action.payload
     },
-    selectSubCategory: (state, action) => {
-      state.selectedSubCategory = action.payload
+    selectSubCategoryIndex: (state, action) => {
+      state.selectedSubCategoryIndex = action.payload
     },
-    selectArticle: (state, action) => {
-      state.selectedArticle = action.payload
+    selectArticleIndex: (state, action) => {
+      state.selectedArticleIndex = action.payload
     },
   },
 })
@@ -32,9 +35,9 @@ export const editorSlice = createSlice({
 export const {
   initialData,
   setEditor,
-  selectCategory,
-  selectSubCategory,
-  selectArticle,
+  selectCategoryIndex,
+  selectSubCategoryIndex,
+  selectArticleIndex,
 } = editorSlice.actions
 
 export default editorSlice.reducer

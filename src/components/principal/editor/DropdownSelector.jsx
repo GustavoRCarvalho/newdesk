@@ -69,11 +69,11 @@ export const DropdownSelector = ({
         }}
       >
         <AnimatePresence>
-          {[...options].map((item) => {
+          {[...options].map((item, index) => {
             const isEditable = editable === item
             return (
               <Item key={item} isEditable={isEditable}>
-                <DropdownText onClick={() => onSelect(item)}>
+                <DropdownText onClick={() => onSelect(index)}>
                   <FaIcons />
                   <DropdownInput
                     type="text"
@@ -126,7 +126,7 @@ const Item = ({ children, isEditable }) => {
 }
 
 const ButtonDropdown = styled(motion.div)`
-  width: 15em;
+  width: calc(100% - 2em);
   padding: 0.5em 1em;
 
   color: ${(props) =>
@@ -178,7 +178,7 @@ const OptionIcons = styled.div`
 const DropdownContainer = styled(motion.div)`
   height: min-content;
 
-  min-width: 15em;
+  max-width: 15em;
   max-height: 20em;
 
   display: flex;

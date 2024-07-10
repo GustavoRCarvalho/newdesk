@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { useLocation } from "react-router-dom"
 import { EditorComponent } from "./EditorComponent"
 import styled from "styled-components"
@@ -11,10 +11,23 @@ import { ArticleDropdown } from "./ArticleDropdown"
 
 export const Editor = () => {
   const dispatch = useDispatch()
+  const editorState = useSelector((state) => state.editor)
+
+  const dataEditor = () => {
+    const data =
+      editorState.editor[editorState.selectedCategoryIndex]?.subCategories[
+        editorState.selectedSubCategoryIndex
+      ]?.articles[editorState.selectedArticleIndex]?.data
+    if (data === undefined || data === "") {
+      return false
+    }
+    return true
+  }
 
   useEffect(() => {
+    console.log("reset")
     dispatch(initialData())
-    dispatch(setEditor(data))
+    dispatch(setEditor([]))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -31,7 +44,7 @@ export const Editor = () => {
         <SubCategoryDropdown />
         <ArticleDropdown />
       </DropdownContainer>
-      <EditorComponent data={""} />
+      {dataEditor() && <EditorComponent />}
     </EditorContainer>
   )
 }

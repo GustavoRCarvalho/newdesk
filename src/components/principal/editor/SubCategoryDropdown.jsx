@@ -2,8 +2,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { DropdownSelector } from "./DropdownSelector"
 import {
   setEditor,
-  selectSubCategory,
-  selectArticle,
+  selectSubCategoryIndex,
+  selectArticleIndex,
 } from "../../../store/editorSlice"
 
 export const SubCategoryDropdown = () => {
@@ -12,61 +12,65 @@ export const SubCategoryDropdown = () => {
   const editorData = editorState.editor
   let newCopy = JSON.parse(JSON.stringify(editorData))
 
-  const indexCategory = editorData
-    .map(({ title }) => title)
-    .indexOf(editorState.selectedCategory)
-
   const subCategories =
-    editorData[indexCategory]?.subCategories.map(({ title }) => title) ?? []
+    editorData[editorState.selectedCategoryIndex]?.subCategories.map(
+      ({ title }) => title
+    ) ?? []
 
   const handleChangeSubCategory = (newName, oldName) => {
     const subCategoryIndex = subCategories.indexOf(oldName)
-    if (subCategoryIndex === -1) {
+    if (subCategoryIndex === -1 || subCategories.includes(newName)) {
       return
     }
-    newCopy[indexCategory].subCategories[subCategoryIndex].title = newName
+    newCopy[editorState.selectedCategoryIndex].subCategories[
+      subCategoryIndex
+    ].title = newName
     dispatch(setEditor(newCopy))
     if (oldName === editorState.selectedSubCategory) {
-      dispatch(selectSubCategory(newName))
+      dispatch(selectSubCategoryIndex(subCategoryIndex))
     }
   }
   const handleAddSubCategory = () => {
-    if (subCategories.indexOf("Nova sub categoria") > -1) {
+    if (subCategories.includes("Nova sub categoria")) {
       return
     }
     const newSubCategory = {
       title: "Nova sub categoria",
       articles: [],
     }
-    newCopy[indexCategory].subCategories.push(newSubCategory)
+    newCopy[editorState.selectedCategoryIndex].subCategories.push(
+      newSubCategory
+    )
     dispatch(setEditor(newCopy))
   }
 
   const handleRemoveSubCategory = (itemName) => {
     const subCategoryIndex = subCategories.indexOf(itemName)
 
-    newCopy[indexCategory].subCategories.splice(subCategoryIndex, 1)
+    newCopy[editorState.selectedCategoryIndex].subCategories.splice(
+      subCategoryIndex,
+      1
+    )
 
     dispatch(setEditor(newCopy))
 
     if (itemName === editorState.selectedSubCategory) {
-      dispatch(selectSubCategory(""))
-      dispatch(selectArticle(""))
+      dispatch(selectSubCategoryIndex(-1))
+      dispatch(selectArticleIndex(-1))
     }
   }
 
   const handleSelectCategory = (itemName) => {
-    dispatch(selectSubCategory(itemName))
+    dispatch(selectSubCategoryIndex(itemName))
+    dispatch(selectArticleIndex(-1))
   }
 
   return (
     <DropdownSelector
       options={subCategories}
-      disabled={editorState.selectedCategory === ""}
+      disabled={editorState.selectedCategoryIndex === -1}
       placeholder={
-        editorState.selectedSubCategory !== ""
-          ? editorState.selectedSubCategory
-          : "Sub Categoria"
+        subCategories[editorState.selectedSubCategoryIndex] ?? "Sub Categoria"
       }
       onSelect={handleSelectCategory}
       handleChange={handleChangeSubCategory}
