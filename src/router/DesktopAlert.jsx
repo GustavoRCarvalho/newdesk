@@ -27,6 +27,7 @@ export const DesktopAlert = () => {
 }
 
 const AlertContainer = styled.div`
+  position: fixed;
   background-color: var(--alert-background);
 
   width: 100dvw;
