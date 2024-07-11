@@ -37,8 +37,9 @@ function App() {
   return (
     <Provider store={store}>
       <BrowserRouter>
-        {isDesktop ? <Content /> : <DesktopAlert />}
+        <Content />
         <Modal />
+        {!isDesktop && <DesktopAlert />}
       </BrowserRouter>
     </Provider>
   )
