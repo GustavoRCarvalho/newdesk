@@ -50,7 +50,7 @@ export const listFiles = async () => {
   try {
     const response = await gapi.client.drive.files.list({
       pageSize: 10,
-      fields: "nextPageToken, files(id, name)",
+      fields: "nextPageToken, files(id, name, createdTime, size)",
     })
 
     const result = await Promise.all(
@@ -94,7 +94,7 @@ export const handleUploadJson = async (jsonObject, name) => {
     closeDelimiter
 
   try {
-    await gapi.client.request({
+    const response = await gapi.client.request({
       path: "/upload/drive/v3/files",
       method: "POST",
       params: { uploadType: "multipart" },
@@ -103,6 +103,7 @@ export const handleUploadJson = async (jsonObject, name) => {
       },
       body: multipartRequestBody,
     })
+    await shareFile(response.result.id)
   } catch (error) {
     console.error("Erro ao acessar o arquivo:", error)
   }
@@ -173,6 +174,25 @@ export const updateJsonFile = async (fileId) => {
     console.error("Error updating JSON file:", error)
   }
 }
+
+export const renameFile = async (fileId, newName) => {
+  await gapi.client.drive.files
+    .update({
+      fileId: fileId,
+      resource: {
+        name: `${newName}.json`,
+      },
+    })
+    .then(
+      (response) => {
+        console.log("File renamed to", response.result.name)
+      },
+      (error) => {
+        console.error("Error renaming file", error)
+      }
+    )
+}
+
 export const deleteFile = async (fileId) => {
   try {
     await gapi.client.drive.files.delete({

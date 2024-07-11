@@ -8,6 +8,7 @@ body {
 
   button {
     font-family: "Jost", sans-serif;
+    user-select: none;
   }
 
   input {
@@ -106,6 +107,12 @@ body::-webkit-scrollbar {
 
   --edit-dropdown: #000000;
   --edit-dropdown-editable: #747474;
+
+  --manipulate-table-head-background: #343434;
+  --manipulate-table-head-color: #ffffff;
+  --manipulate-color: #000000;
+  --manipulate-table-button-background: #dadada;
+  --manipulate-modal-button-background-disabled: #5a5a5a;
 }
 
 .darkMode {
@@ -131,4 +138,10 @@ body::-webkit-scrollbar {
 
   --edit-dropdown: #fff;
   --edit-dropdown-editable: #a0a0a0;
+
+  --manipulate-table-head-background: #ffffff;
+  --manipulate-table-head-color: #353535;
+  --manipulate-color: #ffffff;
+  --manipulate-table-button-background: #161616;
+  --manipulate-modal-button-background-disabled: #5a5a5a;
 }

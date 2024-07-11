@@ -10,6 +10,44 @@ export const currentDate = () => {
   return currentDay
 }
 
+export const convertDate = (date) => {
+  const splitDate = date.split("T")[0].split("-")
+  const day = splitDate[2]
+  const month = convertMonth(splitDate[1])
+  const year = splitDate[0]
+
+  return `${day} ${month} de ${year}`
+}
+
+export const convertMonth = (value) => {
+  switch (value) {
+    case "01":
+      return "Jan"
+    case "02":
+      return "Fev"
+    case "03":
+      return "Mar"
+    case "04":
+      return "Abr"
+    case "05":
+      return "Mai"
+    case "06":
+      return "Jun"
+    case "07":
+      return "Jul"
+    case "08":
+      return "Ago"
+    case "09":
+      return "Set"
+    case "10":
+      return "Out"
+    case "11":
+      return "Nov"
+    default:
+      return "Dez"
+  }
+}
+
 function getWindowDimensions() {
   const { innerWidth: width, innerHeight: height } = window
   return {

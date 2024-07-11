@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit"
 const initialState = {
   login: false,
   manipulate: false,
+  delete: "",
 }
 
 export const modalSlice = createSlice({
@@ -15,9 +16,17 @@ export const modalSlice = createSlice({
     toggleManipulate: (state) => {
       state.manipulate = !state.manipulate
     },
+    toggleDelete: (state, payload) => {
+      if (state.delete !== "") {
+        state.delete = ""
+      } else {
+        state.delete = payload.payload
+      }
+    },
   },
 })
 
-export const { toggleLogin, toggleManipulate } = modalSlice.actions
+export const { toggleLogin, toggleManipulate, toggleDelete } =
+  modalSlice.actions
 
 export default modalSlice.reducer
