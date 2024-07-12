@@ -105,8 +105,8 @@ const CopyAlert = styled.div`
 
   width: max-content;
 
-  top: 0;
-  left: 100%;
+  top: 110%;
+  left: 0;
 
   padding: 0.2em 0.4em;
 

@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom"
 import { handleIsSignIn } from "../../utils/googleDriveApi"
 import { useDispatch } from "react-redux"
 import { toggleLogin, toggleManipulate } from "../../store/modalSlice"
-import backgroundImage from "../../assets/images/backiee-195094-landscape.jpg"
+import backgroundImage from "../../assets/images/backiee-295134-landscape.jpg"
 import styled from "styled-components"
 
 export const Principal = () => {
@@ -42,13 +42,11 @@ export const Principal = () => {
           <PrincipalResume>
             OrgaPro é uma plataforma inovadora projetada para facilitar a
             organização e a colaboração no ambiente de trabalho.
-            <br />
-            <br />
+            <div></div>
             Com nossa ferramenta, você pode criar ambientes personalizados com
             categorias, subcategorias e artigos, permitindo uma estrutura clara
             e eficiente para suas tarefas e projetos.
-            <br />
-            <br />
+            <div></div>
             Compartilhe facilmente ambientes com seus colegas de trabalho, sendo
             mais colaborativo e produtivo.
           </PrincipalResume>
@@ -61,15 +59,22 @@ export const Principal = () => {
 const PrincipalContent = styled.div`
   position: relative;
 
+  display: flex;
+  flex-direction: column;
+
   width: 100%;
   max-width: 1600px;
 `
 
 const ResumeContainer = styled.div`
   width: 100%;
+  height: 100%;
 
   display: flex;
   justify-content: end;
+  align-items: end;
+
+  margin-bottom: 5em;
   @media (max-width: 1350px) {
     justify-content: center;
     text-align: center;
@@ -80,12 +85,17 @@ const ResumeContainer = styled.div`
 
 const PrincipalResume = styled.span`
   display: block;
+  font-size: 0.8em;
 
   width: 500px;
 
   padding: 0.5em;
   backdrop-filter: blur(2px);
   border-radius: 1em;
+
+  div {
+    height: 0.5em;
+  }
 `
 
 const PrincipalTitle = styled.h1`

@@ -149,7 +149,9 @@ const Modal = styled.div`
 `
 
 const Container = styled.div`
-  background-color: var(--home-card-background);
+  background-color: #141414;
+  backdrop-filter: blur(5px);
+
   color: var(--home-card-color);
 
   display: flex;

@@ -10,6 +10,7 @@ import { GoX } from "react-icons/go"
 export const ManipulateEnvironments = () => {
   const isDeleteOpen = useSelector((state) => state.modal.delete)
   const [newEnvironments, setNewEnvironments] = useState("")
+  const [initialLoading, setInitialLoading] = useState(true)
   const [inputAlert, setInputAlert] = useState(false)
   const [list, setList] = useState([])
   const [isExecuting, setIsExecuting] = useState(false)
@@ -47,6 +48,7 @@ export const ManipulateEnvironments = () => {
     } catch (error) {
       console.error("Error fetching files:", error)
     } finally {
+      setInitialLoading(false)
     }
   }
 
@@ -111,7 +113,9 @@ export const ManipulateEnvironments = () => {
           )}
         </table>
         {list.length === 0 && (
-          <TableEmpty>Nenhum ambiente adicionado</TableEmpty>
+          <TableEmpty>
+            {initialLoading ? <Spinner /> : "Nenhum ambiente adicionado"}{" "}
+          </TableEmpty>
         )}
       </Container>
     </Modal>
@@ -210,7 +214,9 @@ const Modal = styled.div`
 `
 
 const Container = styled.div`
-  background-color: var(--home-card-background);
+  background-color: #00000086;
+  backdrop-filter: blur(5px);
+
   color: var(--home-card-color);
 
   min-width: 20em;
@@ -226,6 +232,7 @@ const Container = styled.div`
 
   padding: 1em;
 
+  overflow-x: hidden;
   overflow-y: auto;
 
   &::-webkit-scrollbar {
@@ -322,6 +329,11 @@ const Container = styled.div`
         background-color: #ff2b2b;
       }
     }
+    tr {
+      &:hover {
+        background-color: #ffffff3e;
+      }
+    }
     td {
       text-align: start;
       padding-block: 0.5em;
@@ -330,6 +342,8 @@ const Container = styled.div`
       text-align: start;
       padding-left: 1.5em;
 
+      border-top-left-radius: 0.5em;
+      border-bottom-left-radius: 0.5em;
       div {
         display: flex;
       }
@@ -337,6 +351,9 @@ const Container = styled.div`
     td:last-child {
       text-align: end;
       padding-right: 1.5em;
+
+      border-top-right-radius: 0.5em;
+      border-bottom-right-radius: 0.5em;
     }
   }
 `
