@@ -4,7 +4,7 @@ import { HiOutlineDotsHorizontal, HiOutlineX } from "react-icons/hi"
 import { LuUser2 } from "react-icons/lu"
 import { IoIosLogOut } from "react-icons/io"
 import styled from "styled-components"
-import { NoStyleLinkRouter } from "../../../router/NoStyleLinkRouter"
+import { Link } from "react-router-dom"
 
 export const Settings = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -65,7 +65,9 @@ const OptionsContainer = styled.div`
   padding-block: 1em;
 `
 
-const LogoutContainer = styled(NoStyleLinkRouter)`
+const LogoutContainer = styled(Link)`
+  text-decoration: none;
+
   width: calc(100% - 2em);
   color: var(--home-card-color);
 
