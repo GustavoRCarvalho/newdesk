@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useCookies } from "react-cookie"
 import styled, { css, keyframes } from "styled-components"
 import { HiOutlineMoon, HiOutlineSun } from "react-icons/hi2"
@@ -6,18 +6,18 @@ import { changeDarkLightMode } from "../../../utils/functions"
 
 export const ButtonDarkLightTheme = () => {
   const [cookies, setCookies] = useCookies()
-  const [darkTheme, setDarkTheme] = useState(cookies.darkTheme)
+  const darkTheme = cookies.darkTheme
   const [isRotating, setIsRotating] = useState(false)
 
-  useEffect(() => {
-    setCookies("darkTheme", darkTheme)
-    changeDarkLightMode(darkTheme)
-
+  function handleChangeLightMode() {
     setIsRotating(true)
     setTimeout(() => {
       setIsRotating(false)
     }, 1000)
-  }, [darkTheme, setCookies])
+
+    setCookies("darkTheme", !darkTheme)
+    changeDarkLightMode(!darkTheme)
+  }
 
   return (
     <LightThemeContainer>
@@ -25,7 +25,7 @@ export const ButtonDarkLightTheme = () => {
       <ButtonChangelightTheme
         title="change light or dark mode"
         onClick={() => {
-          if (!isRotating) setDarkTheme((state) => !state)
+          if (!isRotating) handleChangeLightMode()
         }}
         $isvisible={!darkTheme}
         $isrotating={isRotating}
