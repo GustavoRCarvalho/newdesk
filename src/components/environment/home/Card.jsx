@@ -2,6 +2,7 @@ import styled from "styled-components"
 import { HiOutlineArrowUp } from "react-icons/hi"
 import backgroundImage from "../../../assets/images/cardBackgroundImage.png"
 import { NoStyleLinkRouter } from "../../../router/NoStyleLinkRouter"
+import { convertDate } from "../../../utils/functions"
 
 export const Card = ({ categoryTitle, subCategory, title, date, textURL }) => {
   return (
@@ -10,7 +11,7 @@ export const Card = ({ categoryTitle, subCategory, title, date, textURL }) => {
       <CardTextGroup>
         <CardTitle>{title}</CardTitle>
         <CardLine />
-        <CardDate>{date}</CardDate>
+        <CardDate>{convertDate(date)}</CardDate>
       </CardTextGroup>
       <NoStyleLinkRouter
         to={`/environment/${categoryTitle}/${subCategory}/${textURL}`}

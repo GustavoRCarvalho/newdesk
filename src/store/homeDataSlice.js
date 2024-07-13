@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { data } from "../assets/data"
 
-const initialState = { data: data }
+const initialState = { data: [] }
 
 export const homeDataSlice = createSlice({
   name: "homeData",

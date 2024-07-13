@@ -106,13 +106,16 @@ body::-webkit-scrollbar {
   --card-button-color: #fff;
 
   --edit-dropdown: #000000;
-  --edit-dropdown-editable: #747474;
+  --edit-dropdown-editable: #868686;
+  --edit-dropdown-editable-hover: #868686;
 
   --manipulate-table-head-background: #ffffff;
   --manipulate-table-head-color: #353535;
   --manipulate-color: #ffffff;
   --manipulate-table-button-background: #000000;
   --manipulate-modal-button-background-disabled: #5a5a5a;
+
+  --editor-color: #000;
 }
 
 .darkMode {
@@ -138,10 +141,13 @@ body::-webkit-scrollbar {
 
   --edit-dropdown: #fff;
   --edit-dropdown-editable: #a0a0a0;
+  --edit-dropdown-editable-hover: #868686;
 
   --manipulate-table-head-background: #ffffff;
   --manipulate-table-head-color: #353535;
   --manipulate-color: #ffffff;
   --manipulate-table-button-background: #000000;
   --manipulate-modal-button-background-disabled: #5a5a5a;
+
+  --editor-color: #fff;
 }

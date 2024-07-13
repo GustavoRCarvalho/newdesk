@@ -1,31 +1,26 @@
 import { useLocation } from "react-router-dom"
 import styled from "styled-components"
 import ReactQuill from "react-quill"
-import { data } from "../../../assets/data"
-import { useEffect, useState } from "react"
 import { NoStyleLinkRouter } from "../../../router/NoStyleLinkRouter"
+import { useSelector } from "react-redux"
 
 export const Article = () => {
   const { pathname } = useLocation()
+  const homeData = useSelector((state) => state.homeData.data)
   const pathLabel = decodeURI(pathname.replace("/", "")).split("/")
-  const [dataState, setDataState] = useState("")
-
-  useEffect(() => {
-    const indexCategory = data.map(({ title }) => title).indexOf(pathLabel[1])
-    const indexSubCategory = data[indexCategory]?.subCategories
-      .map(({ title }) => title)
-      .indexOf(pathLabel[2])
-    const indexArticle = data[indexCategory]?.subCategories[
-      indexSubCategory
-    ]?.articles
-      .map(({ textURL }) => textURL)
-      .indexOf(pathLabel[3])
-    setDataState(
-      data[indexCategory]?.subCategories[indexSubCategory]?.articles[
-        indexArticle
-      ]?.data
-    )
-  }, [pathLabel])
+  const indexCategory = homeData.map(({ title }) => title).indexOf(pathLabel[1])
+  const indexSubCategory = homeData[indexCategory]?.subCategories
+    .map(({ title }) => title)
+    .indexOf(pathLabel[2])
+  const indexArticle = homeData[indexCategory]?.subCategories[
+    indexSubCategory
+  ]?.articles
+    .map(({ textURL }) => textURL)
+    .indexOf(pathLabel[3])
+  const dataArticle =
+    homeData[indexCategory]?.subCategories[indexSubCategory]?.articles[
+      indexArticle
+    ]?.data
 
   return (
     <ArticleContainer>
@@ -44,7 +39,11 @@ export const Article = () => {
         >{` ${pathLabel[2]} >`}</NoStyleLinkRouter>
         <NoStyleLinkRouter>{` ${pathLabel[3]}`}</NoStyleLinkRouter>
       </NavigationArticle>
-      <ReactQuill readOnly={true} value={dataState} modules={{ toolbar: [] }} />
+      <ReactQuill
+        readOnly={true}
+        value={dataArticle}
+        modules={{ toolbar: [] }}
+      />
     </ArticleContainer>
   )
 }
@@ -84,6 +83,10 @@ const ArticleContainer = styled.div`
   padding: 3em;
 
   color: var(--home-card-color);
+
+  .quill {
+    width: 100%;
+  }
 
   .ql-toolbar {
     display: none;

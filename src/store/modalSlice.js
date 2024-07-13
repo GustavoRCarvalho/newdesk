@@ -4,6 +4,7 @@ const initialState = {
   login: false,
   manipulate: false,
   delete: "",
+  environmentId: false,
 }
 
 export const modalSlice = createSlice({
@@ -23,10 +24,17 @@ export const modalSlice = createSlice({
         state.delete = payload.payload
       }
     },
+    toggleEnvironmentId: (state) => {
+      state.environmentId = !state.environmentId
+    },
   },
 })
 
-export const { toggleLogin, toggleManipulate, toggleDelete } =
-  modalSlice.actions
+export const {
+  toggleLogin,
+  toggleManipulate,
+  toggleDelete,
+  toggleEnvironmentId,
+} = modalSlice.actions
 
 export default modalSlice.reducer

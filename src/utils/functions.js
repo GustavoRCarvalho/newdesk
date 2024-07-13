@@ -1,6 +1,22 @@
 import { useState, useEffect } from "react"
 import { data } from "../assets/data"
 
+export const modules = {
+  toolbar: [
+    [{ header: "1" }, { header: "2" }, { font: [] }, { size: [] }],
+    ["bold", "italic", "underline", "strike", "blockquote", { color: [] }], // dropdown with defaults from theme
+    [
+      { align: [] },
+      { list: "ordered" },
+      { list: "bullet" },
+      { indent: "-1" },
+      { indent: "+1" },
+      "clean",
+    ],
+    ["link", "image", "video"],
+  ],
+}
+
 export const currentDate = () => {
   var today = new Date()
 
@@ -21,22 +37,31 @@ export const convertDate = (date) => {
 
 export const convertMonth = (value) => {
   switch (value) {
+    case "1":
     case "01":
       return "Jan"
+    case "2":
     case "02":
       return "Fev"
+    case "3":
     case "03":
       return "Mar"
+    case "4":
     case "04":
       return "Abr"
+    case "5":
     case "05":
       return "Mai"
+    case "6":
     case "06":
       return "Jun"
+    case "7":
     case "07":
       return "Jul"
+    case "8":
     case "08":
       return "Ago"
+    case "9":
     case "09":
       return "Set"
     case "10":

@@ -137,7 +137,7 @@ const ButtonDropdown = styled(motion.div)`
   justify-content: space-between;
 
   border: ${(props) =>
-    props.$isOpen ? "2px solid black" : "2px solid transparent"};
+    props.$isOpen ? "2px solid var(--edit-dropdown)" : "2px solid transparent"};
   border-radius: 0.5em;
 
   span {
@@ -176,6 +176,7 @@ const OptionIcons = styled.div`
 `
 
 const DropdownContainer = styled(motion.div)`
+  background-color: var(--home-card-background);
   height: min-content;
 
   max-width: 15em;
@@ -240,10 +241,13 @@ const AddDropdown = styled(DropdownItem)`
   width: calc(100% - 2em);
 
   border-bottom: none;
+  border-bottom-left-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+
   margin: 0;
   padding: 1em 1em 0.8em 1em;
   &:hover {
-    background-color: var(--alert-background);
+    background-color: var(--edit-dropdown-editable-hover);
   }
 
   cursor: pointer;
@@ -264,6 +268,7 @@ const DropdownText = styled.div`
 `
 
 const DropdownInput = styled.input`
+  background-color: transparent;
   font-size: 1em;
 
   width: 100%;

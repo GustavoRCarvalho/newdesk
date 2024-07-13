@@ -1,14 +1,15 @@
-import { useNavigate } from "react-router-dom"
 import { handleIsSignIn } from "../../utils/googleDriveApi"
 import { useDispatch } from "react-redux"
-import { toggleLogin, toggleManipulate } from "../../store/modalSlice"
+import {
+  toggleEnvironmentId,
+  toggleLogin,
+  toggleManipulate,
+} from "../../store/modalSlice"
 import backgroundImage from "../../assets/images/backiee-295134-landscape.jpg"
 import styled from "styled-components"
 
 export const Principal = () => {
-  const navigate = useNavigate()
   const dispatch = useDispatch()
-  const driveLink = "zzhelp"
 
   return (
     <PrincipalContainer>
@@ -26,9 +27,7 @@ export const Principal = () => {
           >
             Meus Ambientes
           </button>
-          <button
-            onClick={() => navigate(`/environment?environment=${driveLink}`)}
-          >
+          <button onClick={() => dispatch(toggleEnvironmentId())}>
             Acessar
           </button>
           <button onClick={() => dispatch(toggleLogin())}>Entrar</button>

@@ -1,14 +1,42 @@
 import styled from "styled-components"
 import { CardMenu } from "./menu/CardMenu"
 import { SideMenu } from "./menu/SideMenu"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { resetCard } from "../../store/cardSlice"
 import { Settings } from "./home/Settings"
 import { ButtonDarkLightTheme } from "./home/ButtonDarkLightTheme"
 import { ButtonThemeChange } from "./home/ButtonThemeChange"
+import { useLocation } from "react-router-dom"
+import { readJsonFile } from "../../utils/googleDriveApi"
+import { changeData } from "../../store/homeDataSlice"
+import { useEffect } from "react"
 
 export const Environment = ({ children }) => {
   const dispatch = useDispatch()
+
+  const homeData = useSelector((state) => state.homeData.data)
+  const isLoad = JSON.stringify(homeData) === "[]"
+  const location = useLocation()
+
+  const params = new URLSearchParams(location.search)
+  const environment = params.get("environment")
+
+  async function handleFetch() {
+    // setLoading(true)
+    try {
+      const data = await readJsonFile(environment)
+      dispatch(changeData(data))
+    } finally {
+      // setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    if (isLoad) {
+      handleFetch()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoad])
 
   return (
     <EnvironmentContainer>

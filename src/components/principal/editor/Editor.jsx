@@ -7,7 +7,9 @@ import { CategoryDropdown } from "./CategoryDropdown"
 import { initialData, setEditor } from "../../../store/editorSlice"
 import { SubCategoryDropdown } from "./SubCategoryDropdown"
 import { ArticleDropdown } from "./ArticleDropdown"
-import { readJsonFile } from "../../../utils/googleDriveApi"
+import { readJsonFile, updateJsonFile } from "../../../utils/googleDriveApi"
+import ReactQuill from "react-quill"
+import { modules } from "../../../utils/functions"
 
 export const Editor = () => {
   const location = useLocation()
@@ -67,7 +69,20 @@ export const Editor = () => {
             <SubCategoryDropdown />
             <ArticleDropdown />
           </DropdownContainer>
-          {dataEditor() && <EditorComponent />}
+          {dataEditor() ? (
+            <>
+              <EditorComponent />
+              <button
+                onClick={() => {
+                  updateJsonFile(environment, editorState.editor)
+                }}
+              >
+                salvar
+              </button>
+            </>
+          ) : (
+            <ReactQuill theme="snow" modules={modules} />
+          )}
         </>
       ) : (
         <div>Not Found</div>
@@ -77,14 +92,54 @@ export const Editor = () => {
 }
 
 const EditorContainer = styled.div`
+  width: 100%;
+  height: 100%;
+
+  padding: 1em;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  .ql-toolbar {
+    background-color: var(--home-card-background);
+    border: none;
+
+    border-radius: 0.5em;
+    box-shadow: 0em 0em 1em 0em #0000004b;
+  }
+
+  .ql-container {
+    border: none;
+
+    margin-top: 2em;
+  }
+
+  .ql-editor {
+    background-color: var(--home-card-background);
+    height: calc(100% - (24px + 2em));
+
+    border-radius: 0.5em;
+
+    box-shadow: 0em 0em 1em 0em #0000004b;
+  }
+
+  .ql-fill {
+    fill: var(--editor-color);
+  }
+  .ql-stroke {
+    stroke: var(--editor-color);
+  }
+  .ql-picker {
+    color: var(--editor-color);
+  }
 `
 
 const DropdownContainer = styled.div`
   display: flex;
 
   gap: 1em;
+
+  padding: 1em;
 `

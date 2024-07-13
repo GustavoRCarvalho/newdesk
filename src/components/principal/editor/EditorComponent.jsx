@@ -4,22 +4,7 @@ import "react-quill/dist/quill.snow.css"
 import { useDispatch, useSelector } from "react-redux"
 import { setEditor } from "../../../store/editorSlice"
 import { useEffect, useState } from "react"
-
-const modules = {
-  toolbar: [
-    [{ header: "1" }, { header: "2" }, { font: [] }, { size: [] }],
-    ["bold", "italic", "underline", "strike", "blockquote", { color: [] }], // dropdown with defaults from theme
-    [
-      { align: [] },
-      { list: "ordered" },
-      { list: "bullet" },
-      { indent: "-1" },
-      { indent: "+1" },
-      "clean",
-    ],
-    ["link", "image", "video"],
-  ],
-}
+import { modules } from "../../../utils/functions"
 
 export const EditorComponent = () => {
   const dispatch = useDispatch()
@@ -37,6 +22,7 @@ export const EditorComponent = () => {
       ].articles[editorState.selectedArticleIndex].data = value
 
       dispatch(setEditor(newCopy))
+      // gerar alerta de save
     }
   }
 
@@ -55,7 +41,6 @@ export const EditorComponent = () => {
 
   return (
     <EditorContainer>
-      <button onClick={handleSave}>Save Content</button>
       <ReactQuill
         theme="snow"
         value={value}

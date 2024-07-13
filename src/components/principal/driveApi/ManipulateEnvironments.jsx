@@ -217,7 +217,7 @@ const Container = styled.div`
   background-color: #00000086;
   backdrop-filter: blur(5px);
 
-  color: var(--home-card-color);
+  color: var(--manipulate-color);
 
   min-width: 20em;
   min-height: min-content;
