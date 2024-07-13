@@ -24,10 +24,11 @@ export const Home = () => {
 
   return (
     <HomeContainer>
-      {homeData.map((data, index) => (
-        <Category key={data.title + index} {...data} />
-      ))}
-      {homeData.length === 0 && (
+      {homeData &&
+        homeData.map((data, index) => (
+          <Category key={data.title + index} {...data} />
+        ))}
+      {homeData?.length === 0 && (
         <div>Parece que não há nenhum artigo ainda</div>
       )}
     </HomeContainer>

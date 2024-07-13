@@ -7,18 +7,22 @@ import { useSelector } from "react-redux"
 export const Article = () => {
   const { pathname } = useLocation()
   const homeData = useSelector((state) => state.homeData.data)
+  const articleData = homeData ?? []
   const pathLabel = decodeURI(pathname.replace("/", "")).split("/")
-  const indexCategory = homeData.map(({ title }) => title).indexOf(pathLabel[1])
-  const indexSubCategory = homeData[indexCategory]?.subCategories
+
+  const indexCategory = articleData
+    .map(({ title }) => title)
+    .indexOf(pathLabel[1])
+  const indexSubCategory = articleData[indexCategory]?.subCategories
     .map(({ title }) => title)
     .indexOf(pathLabel[2])
-  const indexArticle = homeData[indexCategory]?.subCategories[
+  const indexArticle = articleData[indexCategory]?.subCategories[
     indexSubCategory
   ]?.articles
     .map(({ textURL }) => textURL)
     .indexOf(pathLabel[3])
   const dataArticle =
-    homeData[indexCategory]?.subCategories[indexSubCategory]?.articles[
+    articleData[indexCategory]?.subCategories[indexSubCategory]?.articles[
       indexArticle
     ]?.data
 

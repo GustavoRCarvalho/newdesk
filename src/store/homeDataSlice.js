@@ -1,11 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit"
 
-const initialState = { data: [] }
+const initialState = {}
 
 export const homeDataSlice = createSlice({
   name: "homeData",
   initialState,
   reducers: {
+    resetData: (state) => {
+      state = initialState
+    },
     changeData: (state, action) => {
       state.data = action.payload
     },

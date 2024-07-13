@@ -14,8 +14,8 @@ import { useEffect } from "react"
 export const Environment = ({ children }) => {
   const dispatch = useDispatch()
 
-  const homeData = useSelector((state) => state.homeData.data)
-  const isLoad = JSON.stringify(homeData) === "[]"
+  const homeData = useSelector((state) => state.homeData)
+  const isLoad = JSON.stringify(homeData) === "{}"
   const location = useLocation()
 
   const params = new URLSearchParams(location.search)

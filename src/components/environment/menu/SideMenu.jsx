@@ -34,17 +34,18 @@ export const SideMenu = () => {
             setOpenDropdownLabel={setOpenDropdownLabel}
             openDropdownLabel={openDropdownLabel}
           />
-          {[...homeData].map((data, index) => {
-            return (
-              <DropdownButton
-                key={data.title}
-                isOpen={isOpen}
-                setOpenDropdownLabel={setOpenDropdownLabel}
-                openDropdownLabel={openDropdownLabel}
-                {...data}
-              />
-            )
-          })}
+          {homeData &&
+            homeData.map((data, index) => {
+              return (
+                <DropdownButton
+                  key={data.title}
+                  isOpen={isOpen}
+                  setOpenDropdownLabel={setOpenDropdownLabel}
+                  openDropdownLabel={openDropdownLabel}
+                  {...data}
+                />
+              )
+            })}
         </OptionsContainer>
       </SideContainer>
     </LayoutGroup>
