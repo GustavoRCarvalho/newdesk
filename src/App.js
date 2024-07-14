@@ -13,6 +13,7 @@ import { Provider } from "react-redux"
 import "react-quill/dist/quill.snow.css"
 import { Modal } from "./router/Modal"
 import { initClient } from "./utils/googleDriveApi"
+import { Alerts } from "./router/Alerts"
 
 function App() {
   const { width } = useWindowDimensions()
@@ -39,6 +40,7 @@ function App() {
       <BrowserRouter>
         <Content />
         <Modal />
+        <Alerts />
         {!isDesktop && <DesktopAlert />}
       </BrowserRouter>
     </Provider>

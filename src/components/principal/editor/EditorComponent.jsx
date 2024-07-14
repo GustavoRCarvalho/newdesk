@@ -4,7 +4,7 @@ import "react-quill/dist/quill.snow.css"
 import { useDispatch, useSelector } from "react-redux"
 import { setEditor } from "../../../store/editorSlice"
 import { useEffect, useState } from "react"
-import { modules } from "../../../utils/functions"
+import { convertDate, currentDate, modules } from "../../../utils/functions"
 
 export const EditorComponent = () => {
   const dispatch = useDispatch()
@@ -17,9 +17,12 @@ export const EditorComponent = () => {
 
       let newCopy = JSON.parse(JSON.stringify(editorState.editor))
 
-      newCopy[editorState.selectedCategoryIndex].subCategories[
-        editorState.selectedSubCategoryIndex
-      ].articles[editorState.selectedArticleIndex].data = value
+      const article =
+        newCopy[editorState.selectedCategoryIndex].subCategories[
+          editorState.selectedSubCategoryIndex
+        ].articles[editorState.selectedArticleIndex]
+      article.data = value
+      article.date = convertDate(currentDate())
 
       dispatch(setEditor(newCopy))
       // gerar alerta de save

@@ -19,11 +19,12 @@ export const EnvironmentAcess = () => {
     try {
       const data = await readJsonFile(value)
       if (data) {
+        setError(false)
         dispatch(changeData(data))
         dispatch(toggleEnvironmentId())
         navigate(`/environment?environment=${value}`)
       } else {
-        setError(false)
+        setError(true)
       }
     } finally {
       setLoading(false)
@@ -33,15 +34,16 @@ export const EnvironmentAcess = () => {
   return (
     <EnvironmentAcessModal
       id="modalAcess"
-      onClick={(e) =>
+      onMouseDown={(e) =>
         e.target.id === "modalAcess" && dispatch(toggleEnvironmentId())
       }
     >
       <AcessContainer>
-        <input
+        <AcessInput
+          placeholder="1a2b3c4d5e6f"
           type="text"
           value={value}
-          $error={error}
+          $alert={error}
           onChange={(e) => {
             if (e.target.value === "") {
               setError(true)
@@ -51,11 +53,48 @@ export const EnvironmentAcess = () => {
             setValue(e.target.value)
           }}
         />
-        <button onClick={handleClick}>Acessar{loading && "loading"}</button>
+        <AcessButton onClick={handleClick}>
+          Acessar{loading && "loading"}
+        </AcessButton>
       </AcessContainer>
     </EnvironmentAcessModal>
   )
 }
+
+const AcessButton = styled.button`
+  font-size: 1em;
+  background-color: var(--manipulate-table-head-background);
+  color: var(--manipulate-table-head-color);
+
+  padding: 0.75em 2em;
+
+  display: flex;
+  align-items: center;
+  gap: 1em;
+
+  border: none;
+  border-radius: 0.5em;
+
+  cursor: pointer;
+`
+
+const AcessInput = styled.input`
+  font-size: 1em;
+  background-color: transparent;
+  color: var(--manipulate-color);
+  width: calc(100% - 2em);
+
+  padding: 0.5em 1em;
+
+  border: ${(props) =>
+    props.$alert ? "1px solid #ff3f3f" : "1px solid #d4d0d0"};
+  &::placeholder {
+    color: ${(props) => (props.$alert ? "#ff3f3f" : "#777")};
+  }
+  border-radius: 0.5em;
+
+  outline: none;
+`
 
 const EnvironmentAcessModal = styled.div`
   position: fixed;
@@ -70,15 +109,17 @@ const EnvironmentAcessModal = styled.div`
   align-items: center;
   justify-content: center;
 `
+
 const AcessContainer = styled.div`
   background-color: #00000086;
   backdrop-filter: blur(5px);
 
   color: var(--manipulate-color);
 
-  min-width: 20em;
-  min-height: 30em;
-
   display: flex;
-  flex-direction: column;
+
+  gap: 1em;
+  padding: 1em;
+
+  border-radius: 1em;
 `

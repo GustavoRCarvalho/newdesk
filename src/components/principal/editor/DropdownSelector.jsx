@@ -1,9 +1,11 @@
 import { AnimatePresence, motion, useIsPresent } from "framer-motion"
 import { useEffect, useState } from "react"
 import { FaCaretDown } from "react-icons/fa"
-import { FaIcons } from "react-icons/fa6"
 import { GoCheck, GoPencil, GoPlus, GoTrash } from "react-icons/go"
 import styled from "styled-components"
+import { DynaminicIcon } from "../../../router/DynamicIcon"
+import { useDispatch } from "react-redux"
+import { toggleChangeIcon } from "../../../store/modalSlice"
 
 export const DropdownSelector = ({
   options = [],
@@ -14,6 +16,7 @@ export const DropdownSelector = ({
   handleAdd,
   handleRemove,
 }) => {
+  const dispatch = useDispatch()
   const [isOpen, setIsOpen] = useState(false)
   const [editable, setEditable] = useState()
   const [newNameValue, setNewNameValue] = useState("")
@@ -25,7 +28,10 @@ export const DropdownSelector = ({
   }, [options, disabled])
 
   const handleCheck = () => {
-    if (options.indexOf(newNameValue) > -1 || newNameValue === "") {
+    if (
+      options.map(({ title }) => title).indexOf(newNameValue) > -1 ||
+      newNameValue === ""
+    ) {
       setEditable("")
       return
     }
@@ -48,8 +54,11 @@ export const DropdownSelector = ({
         $disabled={disabled}
         $isOpen={isOpen}
       >
-        <span>{placeholder}</span>
-        <FaCaretDown />
+        {placeholder.Icon !== undefined && (
+          <DynaminicIcon iconName={placeholder.Icon} />
+        )}
+        <span>{placeholder.title}</span>
+        <FaCaretDown className="downArrow" />
       </ButtonDropdown>
       <DropdownOptions
         layout
@@ -69,15 +78,23 @@ export const DropdownSelector = ({
         }}
       >
         <AnimatePresence>
-          {[...options].map((item, index) => {
-            const isEditable = editable === item
+          {[...options].map(({ title, Icon }, index) => {
+            const isEditable = editable === title
             return (
-              <Item key={item} isEditable={isEditable}>
+              <Item key={title} isEditable={isEditable}>
                 <DropdownText onClick={() => onSelect(index)}>
-                  <FaIcons />
+                  {Icon !== undefined && (
+                    <DynaminicIcon
+                      onClick={() => {
+                        console.log(title, Icon)
+                        dispatch(toggleChangeIcon({ title: title, Icon: Icon }))
+                      }}
+                      iconName={Icon}
+                    />
+                  )}
                   <DropdownInput
                     type="text"
-                    value={isEditable ? newNameValue || "" : item}
+                    value={isEditable ? newNameValue || "" : title}
                     onChange={(e) => setNewNameValue(e.target.value)}
                     disabled={!isEditable}
                   />
@@ -87,9 +104,9 @@ export const DropdownSelector = ({
                   {isEditable ? (
                     <GoCheck onClick={handleCheck} />
                   ) : (
-                    <GoPencil onClick={() => setEditable(item)} />
+                    <GoPencil onClick={() => setEditable(title)} />
                   )}
-                  <GoTrash onClick={() => handleRemove(item)} />
+                  <GoTrash onClick={() => handleRemove(title)} />
                 </OptionIcons>
               </Item>
             )
@@ -140,19 +157,31 @@ const ButtonDropdown = styled(motion.div)`
     props.$isOpen ? "2px solid var(--edit-dropdown)" : "2px solid transparent"};
   border-radius: 0.5em;
 
+  gap: 0.5em;
+
   span {
+    width: 100%;
+    text-align: start;
+
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
-  cursor: pointer;
-
   svg {
+    width: 1.5em;
+    height: 1.5em;
+  }
+
+  .downArrow {
+    width: 1em;
+    height: 1em;
     transform: ${(props) =>
       props.$isOpen ? "rotateZ(180deg)" : "rotateZ(0deg)"};
     transition: 0.4s;
   }
+
+  cursor: pointer;
 `
 
 const FakeIcon = styled.div`
@@ -179,7 +208,8 @@ const DropdownContainer = styled(motion.div)`
   background-color: var(--home-card-background);
   height: min-content;
 
-  max-width: 15em;
+  flex: 1;
+  max-width: calc(920px / 3);
   max-height: 20em;
 
   display: flex;
@@ -255,6 +285,7 @@ const AddDropdown = styled(DropdownItem)`
 
 const DropdownText = styled.div`
   position: relative;
+  width: 100%;
 
   display: flex;
   align-items: center;
@@ -283,6 +314,10 @@ const DropdownInput = styled.input`
   &:disabled {
     color: var(--edit-dropdown);
   }
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `
 
 const InputClick = styled.div`
@@ -294,5 +329,5 @@ const InputClick = styled.div`
   width: 100%;
   height: 100%;
   background: transparent;
-  cursor: unset;
+  cursor: pointer;
 `

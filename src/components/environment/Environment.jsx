@@ -10,35 +10,36 @@ import { useLocation } from "react-router-dom"
 import { readJsonFile } from "../../utils/googleDriveApi"
 import { changeData } from "../../store/homeDataSlice"
 import { useEffect } from "react"
+import { LoadingScreen } from "../../router/LoadingScreen"
 
 export const Environment = ({ children }) => {
   const dispatch = useDispatch()
 
   const homeData = useSelector((state) => state.homeData)
-  const isLoad = JSON.stringify(homeData) === "{}"
+  const needLoading = JSON.stringify(homeData) === "{}"
   const location = useLocation()
 
   const params = new URLSearchParams(location.search)
   const environment = params.get("environment")
 
   async function handleFetch() {
-    // setLoading(true)
     try {
       const data = await readJsonFile(environment)
       dispatch(changeData(data))
     } finally {
-      // setLoading(false)
     }
   }
 
   useEffect(() => {
-    if (isLoad) {
+    if (needLoading) {
       handleFetch()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoad])
+  }, [needLoading])
 
-  return (
+  return needLoading ? (
+    <LoadingScreen />
+  ) : (
     <EnvironmentContainer>
       <Settings>
         <ButtonDarkLightTheme />

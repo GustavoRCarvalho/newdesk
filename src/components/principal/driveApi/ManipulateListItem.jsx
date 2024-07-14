@@ -142,6 +142,6 @@ const InputTable = styled.input`
   border-bottom: 1px solid gray;
   &:disabled {
     border-bottom: 1px solid transparent;
-    color: var(--edit-dropdown);
+    color: var(--manipulate-color);
   }
 `

@@ -13,6 +13,7 @@ export const CategoryDropdown = () => {
   const editorData = editorState.editor
   let newCopy = JSON.parse(JSON.stringify(editorData))
 
+  const categoriesOptions = editorData
   const categories = editorData.map(({ title }) => title)
 
   const handleChangeCategory = (newName, oldName) => {
@@ -55,10 +56,22 @@ export const CategoryDropdown = () => {
     dispatch(selectArticleIndex(-1))
   }
 
+  const selected = () => {
+    const objDefault = {
+      title: "Categoria",
+      Icon: "",
+    }
+    const obj = categoriesOptions[editorState.selectedCategoryIndex]
+    if (obj) {
+      return obj
+    }
+    return objDefault
+  }
+
   return (
     <DropdownSelector
-      options={categories}
-      placeholder={categories[editorState.selectedCategoryIndex] ?? "Categoria"}
+      options={categoriesOptions}
+      placeholder={selected()}
       onSelect={handleSelectCategory}
       handleChange={handleChangeCategory}
       handleAdd={handleAddCategory}

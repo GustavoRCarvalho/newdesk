@@ -8,10 +8,9 @@ import { Principal } from "../components/principal/Principal"
 export default function Content() {
   return (
     <Routes>
-      <Route path="/" element={<Principal />}></Route>
+      <Route default path="/" element={<Principal />}></Route>
       <Route path="/edit" element={<Editor />}></Route>
       <Route
-        default
         path="/environment"
         element={
           <Environment>

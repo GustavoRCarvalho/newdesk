@@ -22,7 +22,9 @@ export const Login = () => {
   return (
     <LoginModal
       id="modalLogin"
-      onClick={(e) => e.target.id === "modalLogin" && dispatch(toggleLogin())}
+      onMouseDown={(e) =>
+        e.target.id === "modalLogin" && dispatch(toggleLogin())
+      }
     >
       <LoginContainer>
         Conta do Google {}

@@ -5,6 +5,7 @@ const initialState = {
   manipulate: false,
   delete: "",
   environmentId: false,
+  changeIcon: { title: "", Icon: "" },
 }
 
 export const modalSlice = createSlice({
@@ -24,6 +25,13 @@ export const modalSlice = createSlice({
         state.delete = payload.payload
       }
     },
+    toggleChangeIcon: (state, payload) => {
+      if (state.changeIcon.title !== "") {
+        state.changeIcon = initialState.changeIcon
+      } else {
+        state.changeIcon = payload.payload
+      }
+    },
     toggleEnvironmentId: (state) => {
       state.environmentId = !state.environmentId
     },
@@ -35,6 +43,7 @@ export const {
   toggleManipulate,
   toggleDelete,
   toggleEnvironmentId,
+  toggleChangeIcon,
 } = modalSlice.actions
 
 export default modalSlice.reducer

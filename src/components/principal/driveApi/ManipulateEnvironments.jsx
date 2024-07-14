@@ -61,7 +61,7 @@ export const ManipulateEnvironments = () => {
   return (
     <Modal
       id="modalManipulate"
-      onClick={(e) =>
+      onMouseDown={(e) =>
         e.target.id === "modalManipulate" && dispatch(toggleManipulate())
       }
     >

@@ -32,7 +32,9 @@ export const DeleteConfirme = () => {
   return (
     <Modal
       id="modalDelete"
-      onClick={(e) => e.target.id === "modalDelete" && dispatch(toggleDelete())}
+      onMouseDown={(e) =>
+        e.target.id === "modalDelete" && dispatch(toggleDelete())
+      }
     >
       <Container>
         <TrashImage src={Trash} />

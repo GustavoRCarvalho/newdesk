@@ -12,10 +12,9 @@ export const SubCategoryDropdown = () => {
   const editorData = editorState.editor
   let newCopy = JSON.parse(JSON.stringify(editorData))
 
-  const subCategories =
-    editorData[editorState.selectedCategoryIndex]?.subCategories.map(
-      ({ title }) => title
-    ) ?? []
+  const subCategoriesOptions =
+    editorData[editorState.selectedCategoryIndex]?.subCategories ?? []
+  const subCategories = subCategoriesOptions.map(({ title }) => title)
 
   const handleChangeSubCategory = (newName, oldName) => {
     const subCategoryIndex = subCategories.indexOf(oldName)
@@ -65,13 +64,22 @@ export const SubCategoryDropdown = () => {
     dispatch(selectArticleIndex(-1))
   }
 
+  const selected = () => {
+    const objDefault = {
+      title: "Sub Categoria",
+    }
+    const obj = subCategoriesOptions[editorState.selectedSubCategoryIndex]
+    if (obj) {
+      return obj
+    }
+    return objDefault
+  }
+
   return (
     <DropdownSelector
-      options={subCategories}
+      options={subCategoriesOptions}
       disabled={editorState.selectedCategoryIndex === -1}
-      placeholder={
-        subCategories[editorState.selectedSubCategoryIndex] ?? "Sub Categoria"
-      }
+      placeholder={selected()}
       onSelect={handleSelectCategory}
       handleChange={handleChangeSubCategory}
       handleAdd={handleAddSubCategory}

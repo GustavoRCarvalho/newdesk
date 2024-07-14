@@ -107,7 +107,7 @@ body::-webkit-scrollbar {
 
   --edit-dropdown: #000000;
   --edit-dropdown-editable: #868686;
-  --edit-dropdown-editable-hover: #868686;
+  --edit-dropdown-editable-hover: #c9c9c9;
 
   --manipulate-table-head-background: #ffffff;
   --manipulate-table-head-color: #353535;
