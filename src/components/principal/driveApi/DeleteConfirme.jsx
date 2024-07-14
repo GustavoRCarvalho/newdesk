@@ -5,6 +5,7 @@ import { toggleDelete } from "../../../store/modalSlice"
 import { useState } from "react"
 import { Spinner } from "./ManipulateListItem"
 import Trash from "../../../assets/images/lixeira.svg"
+import { createAlertError, createAlertSucess } from "../../../store/alertSlice"
 
 export const DeleteConfirme = () => {
   const dispatch = useDispatch()
@@ -22,6 +23,11 @@ export const DeleteConfirme = () => {
     setIsWaiting(true)
     try {
       await deleteFile(deleteId)
+      dispatch(createAlertSucess("Deletado com sucesso!"))
+    } catch (e) {
+      dispatch(
+        createAlertError("Falha ao deletar. Por favor, tente novamente.")
+      )
     } finally {
       setValue("")
       setIsWaiting(false)

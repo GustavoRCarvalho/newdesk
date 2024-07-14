@@ -6,6 +6,7 @@ import styled from "styled-components"
 import { DynaminicIcon } from "../../../router/DynamicIcon"
 import { useDispatch } from "react-redux"
 import { toggleChangeIcon } from "../../../store/modalSlice"
+import { createAlertSucess } from "../../../store/alertSlice"
 
 export const DropdownSelector = ({
   options = [],
@@ -28,10 +29,7 @@ export const DropdownSelector = ({
   }, [options, disabled])
 
   const handleCheck = () => {
-    if (
-      options.map(({ title }) => title).indexOf(newNameValue) > -1 ||
-      newNameValue === ""
-    ) {
+    if (newNameValue === "") {
       setEditable("")
       return
     }

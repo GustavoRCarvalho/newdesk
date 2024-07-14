@@ -13,6 +13,7 @@ import {
   GoPencil,
   GoTrash,
 } from "react-icons/go"
+import { createAlertError, createAlertSucess } from "../../../store/alertSlice"
 
 export const ManipulateListItem = ({
   item,
@@ -30,13 +31,18 @@ export const ManipulateListItem = ({
 
   async function handleSwitchEditable() {
     if (renameExecuting || isExecuting) return
-
     try {
       if (isEditable && item.name !== `${value}.json`) {
         setIsExecuting(true)
         setIsExecutingAnimation((state) => ({ ...state, rename: item.id }))
         await renameFile(item.id, value)
+
+        dispatch(createAlertSucess("Nome alterado com sucesso!"))
       }
+    } catch (e) {
+      dispatch(
+        createAlertError("Falha ao alterar o nome. Por favor, tente novamente.")
+      )
     } finally {
       setIsEditable((state) => !state)
       setIsExecuting(false)

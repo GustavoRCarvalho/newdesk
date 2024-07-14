@@ -7,6 +7,11 @@ import {
 } from "../../store/modalSlice"
 import backgroundImage from "../../assets/images/backiee-295134-landscape.jpg"
 import styled from "styled-components"
+import {
+  createAlertError,
+  createAlertSucess,
+  createAlertWarning,
+} from "../../store/alertSlice"
 
 export const Principal = () => {
   const dispatch = useDispatch()
@@ -16,6 +21,27 @@ export const Principal = () => {
       <PrincipalBackground src={backgroundImage} />
       <PrincipalContent>
         <PrincipalHeader>
+          <button
+            onClick={() => {
+              dispatch(createAlertError("Erro ao criar"))
+            }}
+          >
+            create error
+          </button>
+          <button
+            onClick={() => {
+              dispatch(createAlertWarning("cuidado ao criar"))
+            }}
+          >
+            create warning
+          </button>
+          <button
+            onClick={() => {
+              dispatch(createAlertSucess("Sucesso ao criar"))
+            }}
+          >
+            create sucess
+          </button>
           <button
             onClick={() => {
               if (handleIsSignIn()) {

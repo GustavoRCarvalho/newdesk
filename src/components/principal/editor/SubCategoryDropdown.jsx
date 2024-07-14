@@ -5,6 +5,10 @@ import {
   selectSubCategoryIndex,
   selectArticleIndex,
 } from "../../../store/editorSlice"
+import {
+  createAlertSucess,
+  createAlertWarning,
+} from "../../../store/alertSlice"
 
 export const SubCategoryDropdown = () => {
   const dispatch = useDispatch()
@@ -19,18 +23,21 @@ export const SubCategoryDropdown = () => {
   const handleChangeSubCategory = (newName, oldName) => {
     const subCategoryIndex = subCategories.indexOf(oldName)
     if (subCategoryIndex === -1 || subCategories.includes(newName)) {
+      dispatch(createAlertWarning("Atenção: Está sub categoria já existe."))
       return
     }
     newCopy[editorState.selectedCategoryIndex].subCategories[
       subCategoryIndex
     ].title = newName
     dispatch(setEditor(newCopy))
+    dispatch(createAlertSucess("Alterado com sucesso!"))
     if (oldName === editorState.selectedSubCategory) {
       dispatch(selectSubCategoryIndex(subCategoryIndex))
     }
   }
   const handleAddSubCategory = () => {
     if (subCategories.includes("Nova sub categoria")) {
+      dispatch(createAlertWarning("Atenção: Está sub categoria já existe."))
       return
     }
     const newSubCategory = {
@@ -41,6 +48,7 @@ export const SubCategoryDropdown = () => {
       newSubCategory
     )
     dispatch(setEditor(newCopy))
+    dispatch(createAlertSucess("Sub Categoria adicionada com sucesso!"))
   }
 
   const handleRemoveSubCategory = (itemName) => {
@@ -52,6 +60,7 @@ export const SubCategoryDropdown = () => {
     )
 
     dispatch(setEditor(newCopy))
+    dispatch(createAlertSucess("Sub Categoria removida com sucesso!"))
 
     if (subCategoryIndex === editorState.selectedSubCategory) {
       dispatch(selectSubCategoryIndex(-1))

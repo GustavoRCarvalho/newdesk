@@ -12,6 +12,7 @@ import ReactQuill from "react-quill"
 import { modules } from "../../../utils/functions"
 import { Spinner } from "../driveApi/ManipulateListItem"
 import { LoadingScreen } from "../../../router/LoadingScreen"
+import { createAlertError, createAlertSucess } from "../../../store/alertSlice"
 
 export const Editor = () => {
   const location = useLocation()
@@ -43,6 +44,11 @@ export const Editor = () => {
         setFileFound(true)
       } else {
         setFileFound(false)
+        dispatch(
+          createAlertError(
+            "Falha ao carregar os dados. Por favor, tente novamente."
+          )
+        )
       }
     } finally {
       setLoading(false)
@@ -53,6 +59,13 @@ export const Editor = () => {
     try {
       setIsSaving(true)
       await updateJsonFile(environment, editorState.editor)
+      dispatch(createAlertSucess("Dados salvos com sucesso!"))
+    } catch (e) {
+      dispatch(
+        createAlertError(
+          "Falha ao salvar os dados. Por favor, tente novamente."
+        )
+      )
     } finally {
       setIsSaving(false)
     }

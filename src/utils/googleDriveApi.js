@@ -1,5 +1,4 @@
 import { gapi } from "gapi-script"
-import { data } from "../assets/data"
 
 const CLIENT_ID =
   "957224851469-vvghdahkn1j1scf8afh8a1ef8igf5as4.apps.googleusercontent.com"
@@ -34,7 +33,7 @@ export const handleSignIn = async () => {
   try {
     await gapi.auth2.getAuthInstance().signIn()
   } catch (e) {
-    console.log(e)
+    throw e
   }
 }
 
@@ -42,8 +41,12 @@ export const handleIsSignIn = () => {
   return gapi.auth2.getAuthInstance().isSignedIn.get()
 }
 
-export const handleSignOut = () => {
-  gapi.auth2.getAuthInstance().signOut()
+export const handleSignOut = async () => {
+  try {
+    await gapi.auth2.getAuthInstance().signOut()
+  } catch (e) {
+    throw e
+  }
 }
 
 export const listFiles = async () => {
@@ -62,7 +65,6 @@ export const listFiles = async () => {
 
     return result
   } catch (error) {
-    console.log(error)
     throw error // Lançar o erro para que possa ser tratado pelo chamador
   }
 }
@@ -105,7 +107,7 @@ export const handleUploadJson = async (jsonObject, name) => {
     })
     await shareFile(response.result.id)
   } catch (error) {
-    console.error("Erro ao acessar o arquivo:", error)
+    throw error
   }
 }
 
@@ -171,26 +173,21 @@ export const updateJsonFile = async (fileId, data) => {
       body: multipartRequestBody,
     })
   } catch (error) {
-    console.error("Error updating JSON file:", error)
+    throw error
   }
 }
 
 export const renameFile = async (fileId, newName) => {
-  await gapi.client.drive.files
-    .update({
+  try {
+    await gapi.client.drive.files.update({
       fileId: fileId,
       resource: {
         name: `${newName}.json`,
       },
     })
-    .then(
-      (response) => {
-        console.log("File renamed to", response.result.name)
-      },
-      (error) => {
-        console.error("Error renaming file", error)
-      }
-    )
+  } catch (e) {
+    throw e
+  }
 }
 
 export const deleteFile = async (fileId) => {
@@ -198,9 +195,8 @@ export const deleteFile = async (fileId) => {
     await gapi.client.drive.files.delete({
       fileId: fileId,
     })
-    console.log("File deleted successfully")
-  } catch (error) {
-    console.error("Error deleting file", error)
+  } catch (e) {
+    throw e
   }
 }
 

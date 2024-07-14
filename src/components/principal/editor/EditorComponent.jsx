@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { setEditor } from "../../../store/editorSlice"
 import { useEffect, useState } from "react"
 import { convertDate, currentDate, modules } from "../../../utils/functions"
+import { createAlertSucess } from "../../../store/alertSlice"
 
 export const EditorComponent = () => {
   const dispatch = useDispatch()
@@ -25,7 +26,7 @@ export const EditorComponent = () => {
       article.date = convertDate(currentDate())
 
       dispatch(setEditor(newCopy))
-      // gerar alerta de save
+      dispatch(createAlertSucess("Salvo!"))
     }
   }
 

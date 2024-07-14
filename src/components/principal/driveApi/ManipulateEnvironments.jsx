@@ -3,9 +3,9 @@ import { handleUploadJson, listFiles } from "../../../utils/googleDriveApi"
 import { useDispatch, useSelector } from "react-redux"
 import { toggleManipulate } from "../../../store/modalSlice"
 import { useEffect, useState } from "react"
-// import { data } from "../../../assets/data"
 import { ManipulateListItem, Spinner } from "./ManipulateListItem"
 import { GoX } from "react-icons/go"
+import { createAlertError, createAlertSucess } from "../../../store/alertSlice"
 
 export const ManipulateEnvironments = () => {
   const isDeleteOpen = useSelector((state) => state.modal.delete)
@@ -31,6 +31,13 @@ export const ManipulateEnvironments = () => {
     setIsExecutingAnimation((state) => ({ ...state, create: true }))
     try {
       await handleUploadJson([], newEnvironments)
+      dispatch(createAlertSucess("Ambiente criado com sucesso."))
+    } catch (e) {
+      dispatch(
+        createAlertError(
+          "Falha ao criar o ambiente. Por favor, tente novamente."
+        )
+      )
     } finally {
       setNewEnvironments("")
       setIsExecuting(false)
@@ -46,7 +53,11 @@ export const ManipulateEnvironments = () => {
         rename: "",
       })
     } catch (error) {
-      console.error("Error fetching files:", error)
+      dispatch(
+        createAlertError(
+          "Falha ao listar os dados. Por favor, tente novamente."
+        )
+      )
     } finally {
       setInitialLoading(false)
     }
@@ -56,6 +67,7 @@ export const ManipulateEnvironments = () => {
     if (!isExecuting && isDeleteOpen === "") {
       fetchFiles()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isExecuting, isDeleteOpen])
 
   return (

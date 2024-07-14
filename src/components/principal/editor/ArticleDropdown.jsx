@@ -2,6 +2,10 @@ import { useDispatch, useSelector } from "react-redux"
 import { DropdownSelector } from "./DropdownSelector"
 import { setEditor, selectArticleIndex } from "../../../store/editorSlice"
 import { currentDate } from "../../../utils/functions"
+import {
+  createAlertSucess,
+  createAlertWarning,
+} from "../../../store/alertSlice"
 
 export const ArticleDropdown = () => {
   const dispatch = useDispatch()
@@ -18,16 +22,19 @@ export const ArticleDropdown = () => {
   const handleChangeCategory = (newName, oldName) => {
     const articleIndex = articles.indexOf(oldName)
     if (articleIndex === -1 || articles.includes(newName)) {
+      dispatch(createAlertWarning("Atenção: Este artigo já existe."))
       return
     }
     newCopy[editorState.selectedCategoryIndex].subCategories[
       editorState.selectedSubCategoryIndex
     ].articles[articleIndex].title = newName
     dispatch(setEditor(newCopy))
+    dispatch(createAlertSucess("Alterado com sucesso!"))
   }
 
   const handleAddCategory = () => {
     if (articles.includes("Novo artigo")) {
+      dispatch(createAlertWarning("Atenção: Este artigo já existe."))
       return
     }
 
@@ -41,6 +48,7 @@ export const ArticleDropdown = () => {
       editorState.selectedSubCategoryIndex
     ].articles.push(newArticle)
     dispatch(setEditor(newCopy))
+    dispatch(createAlertSucess("Artigo adicionado com sucesso!"))
   }
 
   const handleRemoveCategory = (itemName) => {
@@ -51,6 +59,7 @@ export const ArticleDropdown = () => {
     ].articles.splice(articleIndex, 1)
 
     dispatch(setEditor(newCopy))
+    dispatch(createAlertSucess("Artigo removido com sucesso!"))
     if (articleIndex === editorState.selectedArticle) {
       dispatch(selectArticleIndex(-1))
     }

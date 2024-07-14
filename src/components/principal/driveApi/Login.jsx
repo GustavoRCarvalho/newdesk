@@ -6,6 +6,7 @@ import {
 } from "../../../utils/googleDriveApi"
 import { useDispatch } from "react-redux"
 import { toggleLogin } from "../../../store/modalSlice"
+import { createAlertError, createAlertSucess } from "../../../store/alertSlice"
 
 export const Login = () => {
   const dispatch = useDispatch()
@@ -14,8 +15,27 @@ export const Login = () => {
     try {
       await handleSignIn()
       dispatch(toggleLogin())
+      dispatch(createAlertSucess("Login realizado com sucesso!"))
     } catch (e) {
-      console.log(e)
+      dispatch(
+        createAlertError(
+          "Falha ao realizadar o login. Por favor, tente novamente."
+        )
+      )
+    }
+  }
+
+  async function onLogout() {
+    try {
+      await handleSignOut()
+      dispatch(toggleLogin())
+      dispatch(createAlertSucess("Logout realizado com sucesso!"))
+    } catch (e) {
+      dispatch(
+        createAlertError(
+          "Falha ao realizadar o logout. Por favor, tente novamente."
+        )
+      )
     }
   }
 
@@ -29,7 +49,7 @@ export const Login = () => {
       <LoginContainer>
         Conta do Google {}
         {handleIsSignIn() ? (
-          <button onClick={handleSignOut}>Deslogar</button>
+          <button onClick={onLogout}>Deslogar</button>
         ) : (
           <button onClick={onLogin}>Login</button>
         )}

@@ -5,6 +5,7 @@ import { useState } from "react"
 import { readJsonFile } from "../../../utils/googleDriveApi"
 import { changeData } from "../../../store/homeDataSlice"
 import { useNavigate } from "react-router-dom"
+import { createAlertError, createAlertSucess } from "../../../store/alertSlice"
 
 export const EnvironmentAcess = () => {
   const navigate = useNavigate()
@@ -22,9 +23,13 @@ export const EnvironmentAcess = () => {
         setError(false)
         dispatch(changeData(data))
         dispatch(toggleEnvironmentId())
+        dispatch(createAlertSucess("Carregado com sucesso!"))
         navigate(`/environment?environment=${value}`)
       } else {
         setError(true)
+        dispatch(
+          createAlertError("Falha ao carregar. Por favor, verifique o código.")
+        )
       }
     } finally {
       setLoading(false)

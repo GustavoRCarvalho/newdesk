@@ -20,10 +20,7 @@ export const DynaminicIcon = ({ iconName, onClick = () => {} }) => {
       try {
         const icons = await import(`react-icons/bs`)
         return {
-          default:
-            icons[iconName] ??
-            (() => <FaIcons onClick={onClick} />) ??
-            (() => <FaIcons onClick={onClick} />),
+          default: icons[iconName] ?? (() => <FaIcons onClick={onClick} />),
         }
       } catch (err) {
         return { default: () => <FaIcons onClick={onClick} /> }

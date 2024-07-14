@@ -4,6 +4,7 @@ import { toggleChangeIcon } from "../../../store/modalSlice"
 import { useState } from "react"
 import { DynaminicIcon } from "../../../router/DynamicIcon"
 import { setEditor } from "../../../store/editorSlice"
+import { createAlertSucess } from "../../../store/alertSlice"
 
 export const ChangeIcon = () => {
   const dispatch = useDispatch()
@@ -23,20 +24,13 @@ export const ChangeIcon = () => {
       return
     }
     newCopy[index].Icon = value
-    if (
-      JSON.stringify(<DynaminicIcon iconName={value} />) ===
-      JSON.stringify(<DynaminicIcon />)
-    ) {
-      // mensagem de erro dizendo que o icone adicionado será o padrão
-    }
+    dispatch(createAlertSucess("Icone padrão adicionado."))
+
     dispatch(setEditor(newCopy))
     dispatch(toggleChangeIcon())
   }
 
   async function handleChange(e) {
-    if (e.target.value === "") {
-      return
-    }
     setError(false)
     setValue(e.target.value.replace(" ", ""))
   }

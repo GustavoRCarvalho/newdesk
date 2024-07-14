@@ -6,6 +6,10 @@ import {
   selectSubCategoryIndex,
   selectArticleIndex,
 } from "../../../store/editorSlice"
+import {
+  createAlertSucess,
+  createAlertWarning,
+} from "../../../store/alertSlice"
 
 export const CategoryDropdown = () => {
   const dispatch = useDispatch()
@@ -19,15 +23,18 @@ export const CategoryDropdown = () => {
   const handleChangeCategory = (newName, oldName) => {
     const categoryIndex = categories.indexOf(oldName)
     if (categoryIndex === -1 || categories.includes(newName)) {
+      dispatch(createAlertWarning("Atenção: Está categoria já existe."))
       return
     }
 
     newCopy[categoryIndex].title = newName
     dispatch(setEditor(newCopy))
+    dispatch(createAlertSucess("Alterado com sucesso!"))
   }
 
   const handleAddCategory = () => {
     if (categories.includes("Nova categoria")) {
+      dispatch(createAlertWarning("Atenção: Está categoria já existe."))
       return
     }
     const newCategory = {
@@ -35,6 +42,7 @@ export const CategoryDropdown = () => {
       Icon: "",
       subCategories: [],
     }
+    dispatch(createAlertSucess("Categoria adicionada com sucesso!"))
     dispatch(setEditor([...editorData, newCategory]))
   }
 
@@ -43,6 +51,7 @@ export const CategoryDropdown = () => {
 
     newCopy.splice(categoryIndex, 1)
     dispatch(setEditor(newCopy))
+    dispatch(createAlertSucess("Categoria removida com sucesso!"))
     if (categoryIndex === editorState.selectedCategoryIndex) {
       dispatch(selectCategoryIndex(-1))
       dispatch(selectSubCategoryIndex(-1))
