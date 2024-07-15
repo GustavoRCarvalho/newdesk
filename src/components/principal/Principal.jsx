@@ -7,11 +7,6 @@ import {
 } from "../../store/modalSlice"
 import backgroundImage from "../../assets/images/backiee-295134-landscape.jpg"
 import styled from "styled-components"
-import {
-  createAlertError,
-  createAlertSucess,
-  createAlertWarning,
-} from "../../store/alertSlice"
 
 export const Principal = () => {
   const dispatch = useDispatch()
@@ -21,27 +16,6 @@ export const Principal = () => {
       <PrincipalBackground src={backgroundImage} />
       <PrincipalContent>
         <PrincipalHeader>
-          <button
-            onClick={() => {
-              dispatch(createAlertError("Erro ao criar"))
-            }}
-          >
-            create error
-          </button>
-          <button
-            onClick={() => {
-              dispatch(createAlertWarning("cuidado ao criar"))
-            }}
-          >
-            create warning
-          </button>
-          <button
-            onClick={() => {
-              dispatch(createAlertSucess("Sucesso ao criar"))
-            }}
-          >
-            create sucess
-          </button>
           <button
             onClick={() => {
               if (handleIsSignIn()) {
@@ -59,13 +33,13 @@ export const Principal = () => {
           <button onClick={() => dispatch(toggleLogin())}>Conta</button>
         </PrincipalHeader>
         <PrincipalTitle>
-          Bem-vindo ao Next Blob
+          Bem-vindo ao New Desk
           <br />
           Sua Ferramenta de Organização e Colaboração
         </PrincipalTitle>
         <ResumeContainer>
           <PrincipalResume>
-            OrgaPro é uma plataforma inovadora projetada para facilitar a
+            New Desk é uma plataforma inovadora projetada para facilitar a
             organização e a colaboração no ambiente de trabalho.
             <div></div>
             Com nossa ferramenta, você pode criar ambientes personalizados com
