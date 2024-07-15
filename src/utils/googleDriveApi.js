@@ -1,5 +1,4 @@
 import { gapi } from "gapi-script"
-
 const CLIENT_ID =
   "957224851469-vvghdahkn1j1scf8afh8a1ef8igf5as4.apps.googleusercontent.com"
 export const API_KEY = process.env.REACT_APP_GOOGLE_API_KEY
