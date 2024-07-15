@@ -11,10 +11,14 @@ export const homeDataSlice = createSlice({
     },
     changeData: (state, action) => {
       state.data = action.payload
+      state.oriData = action.payload
+    },
+    searchData: (state, action) => {
+      state.data = action.payload
     },
   },
 })
 
-export const { changeData } = homeDataSlice.actions
+export const { changeData, searchData } = homeDataSlice.actions
 
 export default homeDataSlice.reducer

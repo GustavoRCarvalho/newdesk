@@ -3,10 +3,11 @@ import styled from "styled-components"
 import { IoMdSearch } from "react-icons/io"
 import { search } from "../../../utils/functions"
 import { useRef } from "react"
-import { useDispatch } from "react-redux"
-import { changeData } from "../../../store/homeDataSlice"
+import { useDispatch, useSelector } from "react-redux"
+import { searchData } from "../../../store/homeDataSlice"
 
 export const Search = ({ isOpen, setIsOpen }) => {
+  const homeData = useSelector((state) => state.homeData)
   const dispatch = useDispatch()
   const searchInputRef = useRef(null)
 
@@ -16,7 +17,11 @@ export const Search = ({ isOpen, setIsOpen }) => {
         <SearchInput
           ref={searchInputRef}
           onChange={(e) => {
-            dispatch(changeData(search(e.target.value)))
+            dispatch(
+              searchData(
+                search(e.target.value, homeData.data, homeData.oriData)
+              )
+            )
           }}
           placeholder="Pesquisar"
         />

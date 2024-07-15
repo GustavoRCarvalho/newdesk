@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react"
-import { data } from "../assets/data"
 
 export const modules = {
   toolbar: [
@@ -133,9 +132,11 @@ export function changeDarkLightMode(isDark) {
   }
 }
 
-export function search(text) {
-  if (text === "") return data
+export function search(text, data, oriData) {
+  if (text === "") return oriData
+
   const searchTermLower = text.toLowerCase()
+
   return data
     .map((category) => {
       if (category.title.toLowerCase().includes(searchTermLower)) {
