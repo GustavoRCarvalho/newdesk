@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux"
 import { DropdownSelector } from "./DropdownSelector"
 import { setEditor, selectArticleIndex } from "../../../store/editorSlice"
-import { currentDate } from "../../../utils/functions"
+import { convertDate, currentDate } from "../../../utils/functions"
 import {
   createAlertSucess,
   createAlertWarning,
@@ -40,7 +40,7 @@ export const ArticleDropdown = () => {
 
     const newArticle = {
       title: "Novo artigo",
-      date: currentDate(),
+      date: convertDate(currentDate()),
       textURL: "text_name",
       data: "<p><br></p>",
     }
