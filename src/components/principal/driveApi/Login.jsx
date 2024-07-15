@@ -7,6 +7,7 @@ import {
 import { useDispatch } from "react-redux"
 import { toggleLogin } from "../../../store/modalSlice"
 import { createAlertError, createAlertSucess } from "../../../store/alertSlice"
+import { FcGoogle } from "react-icons/fc"
 
 export const Login = () => {
   const dispatch = useDispatch()
@@ -47,11 +48,12 @@ export const Login = () => {
       }
     >
       <LoginContainer>
-        Conta do Google {}
+        <FcGoogle />
+        Faça login na sua conta do Google para acessar a plataforma
         {handleIsSignIn() ? (
-          <button onClick={onLogout}>Deslogar</button>
+          <button onClick={onLogout}>Sair</button>
         ) : (
-          <button onClick={onLogin}>Login</button>
+          <button onClick={onLogin}>Entrar</button>
         )}
       </LoginContainer>
     </LoginModal>
@@ -72,12 +74,40 @@ const LoginModal = styled.div`
   justify-content: center;
 `
 const LoginContainer = styled.div`
-  background-color: var(--home-card-background);
-  color: var(--home-card-color);
+  background-color: #00000086;
+  backdrop-filter: blur(5px);
 
-  min-width: 20em;
-  min-height: 30em;
+  color: var(--manipulate-color);
 
   display: flex;
+  align-items: center;
+
   flex-direction: column;
+
+  gap: 1em;
+  padding: 1em;
+
+  border-radius: 1em;
+
+  button {
+    font-size: 1em;
+    background-color: var(--manipulate-table-head-background);
+    color: var(--manipulate-table-head-color);
+
+    padding: 0.75em 2em;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 0.5em;
+
+    cursor: pointer;
+  }
+
+  svg {
+    width: 4em;
+    height: 4em;
+  }
 `

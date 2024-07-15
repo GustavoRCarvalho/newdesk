@@ -121,8 +121,21 @@ export const readJsonFile = async (fileId) => {
         },
       }
     )
+    if (response.status === 400) {
+      throw new Error(
+        "Houve algum problema inesperado. Por favor, tente novamente."
+      )
+    }
+    if (response.status === 403) {
+      throw new Error("Falha no uso das credencias. Aguarde e tente novamente.")
+    }
+    if (response.status === 404) {
+      throw new Error("Falha ao carregar. Por favor, verifique o código.")
+    }
     if (!response.ok) {
-      return null
+      throw new Error(
+        "Houve algum problema inesperado. Por favor, tente novamente."
+      )
     }
 
     const buffer = await response.arrayBuffer()
@@ -132,8 +145,7 @@ export const readJsonFile = async (fileId) => {
 
     return JSON.parse(decodedString)
   } catch (error) {
-    console.error("Erro ao acessar o arquivo:", error)
-    return []
+    throw error
   }
 }
 

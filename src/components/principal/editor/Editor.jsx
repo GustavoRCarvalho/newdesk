@@ -17,7 +17,7 @@ import { createAlertError, createAlertSucess } from "../../../store/alertSlice"
 export const Editor = () => {
   const location = useLocation()
   const dispatch = useDispatch()
-  const [loading, setLoading] = useState(true)
+  const [errorMessage, setErrorMessage] = useState("")
   const [isSaving, setIsSaving] = useState(false)
   const [fileFound, setFileFound] = useState(false)
   const editorState = useSelector((state) => state.editor)
@@ -39,19 +39,12 @@ export const Editor = () => {
   async function fetchData() {
     try {
       const data = await readJsonFile(environment)
-      if (data) {
-        dispatch(setEditor(data))
-        setFileFound(true)
-      } else {
-        setFileFound(false)
-        dispatch(
-          createAlertError(
-            "Falha ao carregar os dados. Por favor, tente novamente."
-          )
-        )
-      }
-    } finally {
-      setLoading(false)
+      dispatch(setEditor(data))
+      setFileFound(true)
+    } catch (e) {
+      dispatch(createAlertError(e.message))
+      setErrorMessage(e.message)
+      setFileFound(false)
     }
   }
 
@@ -72,7 +65,6 @@ export const Editor = () => {
   }
 
   useEffect(() => {
-    setLoading(true)
     dispatch(initialData())
     if (environment) {
       fetchData()
@@ -82,36 +74,37 @@ export const Editor = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  return loading ? (
-    <LoadingScreen />
-  ) : (
-    <EditorContainer>
-      {fileFound ? (
-        <>
-          <DropdownContainer>
-            <CategoryDropdown />
-            <SubCategoryDropdown />
-            <ArticleDropdown />
-          </DropdownContainer>
-          {dataEditor() ? (
-            <EditorComponent />
-          ) : (
-            <ReactQuill theme="snow" modules={modules} />
-          )}
-          <SaveContainer>
-            <button onClick={saveData}>Salvar {isSaving && <Spinner />}</button>
-          </SaveContainer>
-        </>
-      ) : (
-        <div>Not Found</div>
-      )}
-    </EditorContainer>
+  return (
+    <>
+      <LoadingScreen errorMessage={errorMessage} />
+      <EditorContainer>
+        {fileFound && (
+          <>
+            <DropdownContainer>
+              <CategoryDropdown />
+              <SubCategoryDropdown />
+              <ArticleDropdown />
+            </DropdownContainer>
+            {dataEditor() ? (
+              <EditorComponent />
+            ) : (
+              <ReactQuill readOnly theme="snow" modules={modules} />
+            )}
+            <SaveContainer>
+              <button onClick={saveData}>
+                Salvar {isSaving && <Spinner />}
+              </button>
+            </SaveContainer>
+          </>
+        )}
+      </EditorContainer>
+    </>
   )
 }
 
 const EditorContainer = styled.div`
   width: 100%;
-  height: 100%;
+  min-height: calc(100dvh - 2em);
 
   padding: 1em;
 
@@ -120,8 +113,36 @@ const EditorContainer = styled.div`
   justify-content: center;
   align-items: center;
 
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  /* Track */
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 5px;
+  }
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: #888;
+
+    border-radius: 1em;
+  }
+
+  /* Handle on hover */
+  &::-webkit-scrollbar-thumb:hover {
+    background: #aaa;
+  }
+
   .quill {
     width: 100%;
+    height: 100%;
+
+    margin-bottom: 2em;
   }
 
   .ql-toolbar {

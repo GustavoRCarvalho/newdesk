@@ -56,7 +56,7 @@ export const Principal = () => {
           <button onClick={() => dispatch(toggleEnvironmentId())}>
             Acessar
           </button>
-          <button onClick={() => dispatch(toggleLogin())}>Entrar</button>
+          <button onClick={() => dispatch(toggleLogin())}>Conta</button>
         </PrincipalHeader>
         <PrincipalTitle>
           Bem-vindo ao Next Blob
@@ -110,6 +110,7 @@ const ResumeContainer = styled.div`
 
 const PrincipalResume = styled.span`
   display: block;
+  background-color: #212b374b;
   font-size: 0.8em;
 
   width: 500px;

@@ -4,6 +4,7 @@ import { toggleEnvironmentId } from "../../../store/modalSlice"
 import { useState } from "react"
 import { readJsonFile } from "../../../utils/googleDriveApi"
 import { changeData } from "../../../store/homeDataSlice"
+import { Spinner } from "./ManipulateListItem"
 import { useNavigate } from "react-router-dom"
 import { createAlertError, createAlertSucess } from "../../../store/alertSlice"
 
@@ -15,22 +16,22 @@ export const EnvironmentAcess = () => {
   const [loading, setLoading] = useState(false)
 
   async function handleClick() {
+    if (value === "") {
+      setError(true)
+      return
+    }
     if (error) return
     setLoading(true)
     try {
       const data = await readJsonFile(value)
-      if (data) {
-        setError(false)
-        dispatch(changeData(data))
-        dispatch(toggleEnvironmentId())
-        dispatch(createAlertSucess("Carregado com sucesso!"))
-        navigate(`/environment?environment=${value}`)
-      } else {
-        setError(true)
-        dispatch(
-          createAlertError("Falha ao carregar. Por favor, verifique o código.")
-        )
-      }
+      setError(false)
+      dispatch(changeData(data))
+      dispatch(toggleEnvironmentId())
+      dispatch(createAlertSucess("Carregado com sucesso!"))
+      navigate(`/environment?environment=${value}`)
+    } catch (e) {
+      setError(true)
+      dispatch(createAlertError(e.message))
     } finally {
       setLoading(false)
     }
@@ -50,16 +51,12 @@ export const EnvironmentAcess = () => {
           value={value}
           $alert={error}
           onChange={(e) => {
-            if (e.target.value === "") {
-              setError(true)
-              return
-            }
             setError(false)
             setValue(e.target.value)
           }}
         />
         <AcessButton onClick={handleClick}>
-          Acessar{loading && "loading"}
+          Acessar{loading && <Spinner />}
         </AcessButton>
       </AcessContainer>
     </EnvironmentAcessModal>
