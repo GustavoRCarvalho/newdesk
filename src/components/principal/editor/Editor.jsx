@@ -74,31 +74,26 @@ export const Editor = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  return (
-    <>
-      <LoadingScreen errorMessage={errorMessage} />
-      <EditorContainer>
-        {fileFound && (
-          <>
-            <DropdownContainer>
-              <CategoryDropdown />
-              <SubCategoryDropdown />
-              <ArticleDropdown />
-            </DropdownContainer>
-            {dataEditor() ? (
-              <EditorComponent />
-            ) : (
-              <ReactQuill readOnly theme="snow" modules={modules} />
-            )}
-            <SaveContainer>
-              <button onClick={saveData}>
-                Salvar {isSaving && <Spinner />}
-              </button>
-            </SaveContainer>
-          </>
+  return !fileFound ? (
+    <LoadingScreen errorMessage={errorMessage} />
+  ) : (
+    <EditorContainer>
+      <>
+        <DropdownContainer>
+          <CategoryDropdown />
+          <SubCategoryDropdown />
+          <ArticleDropdown />
+        </DropdownContainer>
+        {dataEditor() ? (
+          <EditorComponent />
+        ) : (
+          <ReactQuill readOnly theme="snow" modules={modules} />
         )}
-      </EditorContainer>
-    </>
+        <SaveContainer>
+          <button onClick={saveData}>Salvar {isSaving && <Spinner />}</button>
+        </SaveContainer>
+      </>
+    </EditorContainer>
   )
 }
 
