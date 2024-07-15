@@ -6,7 +6,6 @@ import styled from "styled-components"
 import { DynaminicIcon } from "../../../router/DynamicIcon"
 import { useDispatch } from "react-redux"
 import { toggleChangeIcon } from "../../../store/modalSlice"
-import { createAlertSucess } from "../../../store/alertSlice"
 
 export const DropdownSelector = ({
   options = [],

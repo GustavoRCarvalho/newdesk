@@ -1,4 +1,3 @@
-import styled from "styled-components"
 import ReactQuill from "react-quill"
 import "react-quill/dist/quill.snow.css"
 import { useDispatch, useSelector } from "react-redux"
@@ -44,19 +43,12 @@ export const EditorComponent = () => {
   ])
 
   return (
-    <EditorContainer>
-      <ReactQuill
-        theme="snow"
-        value={value}
-        onChange={setValue}
-        onKeyDown={handleSave}
-        modules={modules}
-      />
-    </EditorContainer>
+    <ReactQuill
+      theme="snow"
+      value={value}
+      onChange={setValue}
+      onKeyDown={handleSave}
+      modules={modules}
+    />
   )
 }
-const EditorContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`

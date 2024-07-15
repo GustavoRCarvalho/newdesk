@@ -148,6 +148,10 @@ const EditorContainer = styled.div`
     box-shadow: 0em 0em 1em 0em #0000004b;
   }
 
+  .ql-picker-options {
+    background-color: var(--home-card-background);
+  }
+
   .ql-container {
     border: none;
 
