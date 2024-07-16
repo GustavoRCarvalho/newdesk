@@ -3,7 +3,7 @@ import "react-quill/dist/quill.snow.css"
 import { useDispatch, useSelector } from "react-redux"
 import { setEditor } from "../../../store/editorSlice"
 import { useEffect, useState } from "react"
-import { convertDate, currentDate, modules } from "../../../utils/functions"
+import { currentDate, modules } from "../../../utils/functions"
 import { createAlertSucess } from "../../../store/alertSlice"
 
 export const EditorComponent = () => {
@@ -21,8 +21,8 @@ export const EditorComponent = () => {
         newCopy[editorState.selectedCategoryIndex].subCategories[
           editorState.selectedSubCategoryIndex
         ].articles[editorState.selectedArticleIndex]
-      article.data = value
-      article.date = convertDate(currentDate())
+      article.content = value
+      article.date = currentDate()
 
       dispatch(setEditor(newCopy))
       dispatch(createAlertSucess("Salvo!"))
@@ -33,7 +33,7 @@ export const EditorComponent = () => {
     setValue(
       editorState.editor[editorState.selectedCategoryIndex]?.subCategories[
         editorState.selectedSubCategoryIndex
-      ]?.articles[editorState.selectedArticleIndex]?.data
+      ]?.articles[editorState.selectedArticleIndex]?.content
     )
   }, [
     editorState.editor,

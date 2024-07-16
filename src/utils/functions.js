@@ -16,17 +16,45 @@ export const modules = {
   ],
 }
 
+export const generateUniqueId = () => {
+  return `${Date.now()}-${Math.floor(Math.random() * 10000)}`
+}
+
 export const currentDate = () => {
   var today = new Date()
 
-  const currentDay =
-    today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate()
+  const currentDaySplited = today.toString().split(" ")
+  const currentTimeSplited = currentDaySplited[4].split(":")
+  const dateString = `${convertWeek(currentDaySplited[0])}, ${
+    currentDaySplited[2]
+  } ${currentDaySplited[1]} de ${currentDaySplited[3]} - ${
+    currentTimeSplited[0]
+  }:${currentTimeSplited[1]}`
 
-  return currentDay
+  return dateString
+}
+
+export const convertWeek = (value) => {
+  switch (value) {
+    case "Sun":
+      return "Dom"
+    case "Mon":
+      return "Seg"
+    case "Tue":
+      return "Ter"
+    case "Wed":
+      return "Qua"
+    case "Thu":
+      return "Qui"
+    case "Fri":
+      return "Sex"
+    default:
+      return "Sab"
+  }
 }
 
 export const convertDate = (date) => {
-  const splitDate = date.split("T")[0].split("-")
+  const splitDate = date?.split("T")[0]?.split("-")
   const day = splitDate[2]
   const month = convertMonth(splitDate[1])
   const year = splitDate[0]
@@ -70,6 +98,12 @@ export const convertMonth = (value) => {
     default:
       return "Dez"
   }
+}
+
+export const prepareCardDate = (date) => {
+  const splitDate = date?.split(", ")[1]?.split(" - ")[0]
+
+  return splitDate
 }
 
 function getWindowDimensions() {

@@ -23,11 +23,11 @@ export const Editor = () => {
   const editorState = useSelector((state) => state.editor)
 
   const dataEditor = () => {
-    const data =
+    const content =
       editorState.editor[editorState.selectedCategoryIndex]?.subCategories[
         editorState.selectedSubCategoryIndex
-      ]?.articles[editorState.selectedArticleIndex]?.data
-    if (data === undefined || data === "") {
+      ]?.articles[editorState.selectedArticleIndex]?.content
+    if (content === undefined || content === "") {
       return false
     }
     return true
@@ -38,8 +38,8 @@ export const Editor = () => {
 
   async function fetchData() {
     try {
-      const data = await readJsonFile(environment)
-      dispatch(setEditor(data))
+      const result = await readJsonFile(environment)
+      dispatch(setEditor(result))
       setFileFound(true)
     } catch (e) {
       dispatch(createAlertError(e.message))
@@ -78,27 +78,26 @@ export const Editor = () => {
     <LoadingScreen errorMessage={errorMessage} />
   ) : (
     <EditorContainer>
-      <>
-        <DropdownContainer>
-          <CategoryDropdown />
-          <SubCategoryDropdown />
-          <ArticleDropdown />
-        </DropdownContainer>
-        {dataEditor() ? (
-          <EditorComponent />
-        ) : (
-          <ReactQuill readOnly theme="snow" modules={modules} />
-        )}
-        <SaveContainer>
-          <button onClick={saveData}>Salvar {isSaving && <Spinner />}</button>
-        </SaveContainer>
-      </>
+      <DropdownContainer>
+        <CategoryDropdown />
+        <SubCategoryDropdown />
+        <ArticleDropdown />
+      </DropdownContainer>
+      {dataEditor() ? (
+        <EditorComponent />
+      ) : (
+        <ReactQuill readOnly theme="snow" modules={modules} />
+      )}
+      <SaveContainer>
+        <button onClick={saveData}>Salvar {isSaving && <Spinner />}</button>
+      </SaveContainer>
     </EditorContainer>
   )
 }
 
 const EditorContainer = styled.div`
   width: 100%;
+  max-width: 920px;
   min-height: calc(100dvh - 2em);
 
   padding: 1em;
@@ -181,7 +180,6 @@ const EditorContainer = styled.div`
 const DropdownContainer = styled.div`
   display: flex;
   width: 100%;
-  max-width: 920px;
 
   gap: 1em;
 

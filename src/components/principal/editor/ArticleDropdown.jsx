@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux"
 import { DropdownSelector } from "./DropdownSelector"
 import { setEditor, selectArticleIndex } from "../../../store/editorSlice"
-import { convertDate, currentDate } from "../../../utils/functions"
+import { currentDate, generateUniqueId } from "../../../utils/functions"
 import {
   createAlertSucess,
   createAlertWarning,
@@ -20,6 +20,7 @@ export const ArticleDropdown = () => {
   const articles = articlesOptions.map(({ title }) => title)
 
   const handleChangeCategory = (newName, oldName) => {
+    if (newName === oldName) return
     const articleIndex = articles.indexOf(oldName)
     if (articleIndex === -1 || articles.includes(newName)) {
       dispatch(createAlertWarning("Atenção: Este artigo já existe."))
@@ -39,10 +40,10 @@ export const ArticleDropdown = () => {
     }
 
     const newArticle = {
+      id: generateUniqueId(),
+      date: currentDate(),
       title: "Novo artigo",
-      date: convertDate(currentDate()),
-      textURL: "text_name",
-      data: "<p><br></p>",
+      content: "<p><br></p>",
     }
     newCopy[editorState.selectedCategoryIndex].subCategories[
       editorState.selectedSubCategoryIndex

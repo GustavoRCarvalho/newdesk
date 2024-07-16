@@ -21,6 +21,7 @@ export const SubCategoryDropdown = () => {
   const subCategories = subCategoriesOptions.map(({ title }) => title)
 
   const handleChangeSubCategory = (newName, oldName) => {
+    if (newName === oldName) return
     const subCategoryIndex = subCategories.indexOf(oldName)
     if (subCategoryIndex === -1 || subCategories.includes(newName)) {
       dispatch(createAlertWarning("Atenção: Está sub categoria já existe."))

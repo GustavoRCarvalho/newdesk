@@ -45,10 +45,10 @@ export const CardMenu = () => {
       onMouseLeave={() => dispatch(resetCard())}
     >
       {card.isArticle
-        ? card?.options?.map(({ title, textURL }, index) => (
+        ? card?.options?.map(({ title }, index) => (
             <NoStyleLinkRouter
               key={title + index}
-              to={`/environment/${card.categoryTitle}/${card.title}/${textURL}`}
+              to={`/environment/${card.categoryTitle}/${card.title}/${title}`}
             >
               <Title>
                 <WiStars />

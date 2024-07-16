@@ -2,18 +2,19 @@ import styled from "styled-components"
 import { HiOutlineArrowUp } from "react-icons/hi"
 import backgroundImage from "../../../assets/images/cardBackgroundImage.png"
 import { NoStyleLinkRouter } from "../../../router/NoStyleLinkRouter"
+import { prepareCardDate } from "../../../utils/functions"
 
-export const Card = ({ categoryTitle, subCategory, title, date, textURL }) => {
+export const Card = ({ categoryTitle, subCategory, title, date }) => {
   return (
     <CardContainer>
       <img src={backgroundImage} alt="background card" />
       <CardTextGroup>
         <CardTitle>{title}</CardTitle>
         <CardLine />
-        <CardDate>{date}</CardDate>
+        <CardDate>{prepareCardDate(date)}</CardDate>
       </CardTextGroup>
       <NoStyleLinkRouter
-        to={`/environment/${categoryTitle}/${subCategory}/${textURL}`}
+        to={`/environment/${categoryTitle}/${subCategory}/${title}`}
       >
         <CardButton>
           Ver mais <HiOutlineArrowUp />

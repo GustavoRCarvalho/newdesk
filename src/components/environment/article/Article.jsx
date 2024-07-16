@@ -19,12 +19,12 @@ export const Article = () => {
   const indexArticle = articleData[indexCategory]?.subCategories[
     indexSubCategory
   ]?.articles
-    .map(({ textURL }) => textURL)
+    .map(({ title }) => title)
     .indexOf(pathLabel[3])
-  const dataArticle =
+  const article =
     articleData[indexCategory]?.subCategories[indexSubCategory]?.articles[
       indexArticle
-    ]?.data
+    ] ?? {}
 
   return (
     <ArticleContainer>
@@ -40,24 +40,33 @@ export const Article = () => {
         <NoStyleLinkRouter
           to="/environment"
           state={{ scrollTo: pathLabel[1] + pathLabel[2] }}
-        >{` ${pathLabel[2]} >`}</NoStyleLinkRouter>
-        <NoStyleLinkRouter>{` ${pathLabel[3]}`}</NoStyleLinkRouter>
+        >{` ${pathLabel[2]}`}</NoStyleLinkRouter>
       </NavigationArticle>
+      <TitleArticle>{article.title}</TitleArticle>
+      <DateArticle>Modificado em: {article.date}</DateArticle>
       <ReactQuill
         readOnly={true}
-        value={dataArticle}
+        value={article.content}
         modules={{ toolbar: [] }}
       />
     </ArticleContainer>
   )
 }
 
+const DateArticle = styled.span`
+  width: 100%;
+`
+
+const TitleArticle = styled.h2`
+  width: 100%;
+
+  margin-block: 0.75em;
+`
+
 const NavigationArticle = styled.div`
   font-size: 1.3em;
 
   width: 100%;
-
-  margin-bottom: 1em;
 
   a {
     cursor: pointer;
@@ -67,18 +76,12 @@ const NavigationArticle = styled.div`
       color: var(--side-menu-item-select);
     }
   }
-  a:nth-child(4) {
-    cursor: default;
-
-    &:hover {
-      color: var(--home-card-color);
-    }
-  }
 `
 
 const ArticleContainer = styled.div`
   width: calc(100% - 6em);
-  height: max-content;
+  max-width: 920px;
+  height: 100%;
 
   display: flex;
   flex-direction: column;
@@ -89,7 +92,9 @@ const ArticleContainer = styled.div`
   color: var(--home-card-color);
 
   .quill {
+    margin-top: 1em;
     width: 100%;
+    height: 100%;
   }
 
   .ql-toolbar {

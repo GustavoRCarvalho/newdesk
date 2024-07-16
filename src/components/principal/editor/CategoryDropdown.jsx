@@ -21,6 +21,7 @@ export const CategoryDropdown = () => {
   const categories = editorData.map(({ title }) => title)
 
   const handleChangeCategory = (newName, oldName) => {
+    if (newName === oldName) return
     const categoryIndex = categories.indexOf(oldName)
     if (categoryIndex === -1 || categories.includes(newName)) {
       dispatch(createAlertWarning("Atenção: Está categoria já existe."))
