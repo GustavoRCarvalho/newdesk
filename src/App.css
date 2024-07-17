@@ -118,6 +118,7 @@ body::-webkit-scrollbar {
   --manipulate-modal-button-background-disabled: #5a5a5a;
 
   --editor-color: #000;
+  --editor-color-hover: #0097fc;
 }
 
 .darkMode {
@@ -152,4 +153,5 @@ body::-webkit-scrollbar {
   --manipulate-modal-button-background-disabled: #5a5a5a;
 
   --editor-color: #fff;
+  --editor-color-hover: #51e5ff;
 }
