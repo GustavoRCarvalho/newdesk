@@ -51,14 +51,24 @@ export const handleSignOut = async () => {
 export const listFiles = async () => {
   try {
     const response = await gapi.client.drive.files.list({
-      pageSize: 10,
-      fields: "nextPageToken, files(id, name, createdTime, size)",
+      fields: "files(id, name, createdTime, size)",
+      q: "mimeType = 'application/vnd.google-apps.folder'",
     })
-
     const result = await Promise.all(
       response.result.files.map(async (item) => {
-        item.shared = await getSharingStatus(item.id)
-        return item
+        try {
+          const contentResult = await gapi.client.drive.files.list({
+            fields: "files(id, name)",
+            q: `'${item.id}' in parents`,
+          })
+          const file = contentResult.result.files.find(
+            (file) => file.name === "content.json"
+          )
+          item.contentId = file.id
+          return item
+        } catch (e) {
+          throw e
+        }
       })
     )
 
@@ -68,43 +78,61 @@ export const listFiles = async () => {
   }
 }
 
-export const handleUploadJson = async (jsonObject, name) => {
-  const newName = name === "" ? "data" : name
-  const boundary = "-------314159265358979323846"
-  const delimiter = `\r\n--${boundary}\r\n`
-  const closeDelimiter = `\r\n--${boundary}--`
+export const handleCreateContentFile = async (jsonObject, folderId) => {
+  try {
+    const response = await gapi.client.drive.files.create({
+      mimeType: "application/json",
+      name: "content.json",
+      parents: [folderId],
+      fields: "id",
+    })
+    await updateJsonFile(response.result.id, jsonObject)
+    await shareFile(response.result.id)
+  } catch (error) {
+    throw error
+  }
+}
 
-  const contentType = "application/json"
+export const handleCreateCommentsFile = async (jsonObject, folderId) => {
+  try {
+    const response = await gapi.client.drive.files.create({
+      mimeType: "application/json",
+      name: "comments.json",
+      parents: [folderId],
+      fields: "id",
+    })
+    await updateJsonFile(response.result.id, jsonObject)
+    await shareFileEditable(response.result.id)
+    return response
+  } catch (error) {
+    throw error
+  }
+}
+
+export const handleCreateFolder = async (name, image = "") => {
+  const newName = name === "" ? "New Desk" : name
+
   const metadata = {
-    name: `${newName}.json`, // Nome do arquivo que será salvo no Google Drive
-    mimeType: contentType,
+    name: `${newName}`, // Nome do arquivo que será salvo no Google Drive
+    mimeType: "application/vnd.google-apps.folder",
   }
 
-  const utf = JSON.stringify(jsonObject)
-  const multipartRequestBody =
-    delimiter +
-    "Content-Type: application/json\r\n\r\n" +
-    JSON.stringify(metadata) +
-    delimiter +
-    "Content-Type: " +
-    contentType +
-    "\r\n" +
-    "Content-Transfer-Encoding: utf-8\r\n" +
-    "\r\n" +
-    utf +
-    closeDelimiter
-
   try {
-    const response = await gapi.client.request({
-      path: "/upload/drive/v3/files",
-      method: "POST",
-      params: { uploadType: "multipart" },
-      headers: {
-        "Content-Type": 'multipart/related; boundary="' + boundary + '"',
-      },
-      body: multipartRequestBody,
+    const response = await gapi.client.drive.files.create({
+      resource: metadata,
+      fields: "id",
     })
-    await shareFile(response.result.id)
+    const commentResponse = await handleCreateCommentsFile(
+      [],
+      response.result.id
+    )
+    const content = {
+      environmentName: newName,
+      environmentImage: image,
+      categories: [],
+      commentId: commentResponse.result.id,
+    }
+    await handleCreateContentFile(content, response.result.id)
   } catch (error) {
     throw error
   }
@@ -188,14 +216,20 @@ export const updateJsonFile = async (fileId, data) => {
   }
 }
 
-export const renameFile = async (fileId, newName) => {
+export const renameFile = async (fileId, contentId, newName, newImage) => {
   try {
     await gapi.client.drive.files.update({
       fileId: fileId,
       resource: {
-        name: `${newName}.json`,
+        name: newName,
       },
     })
+    const fileContentResponse = await readJsonFile(contentId)
+    fileContentResponse.environmentName = newName
+    if (newImage) {
+      fileContentResponse.environmentImage = newImage
+    }
+    await updateJsonFile(contentId, fileContentResponse)
   } catch (e) {
     throw e
   }
@@ -217,6 +251,19 @@ export const shareFile = async (fileId) => {
       fileId: fileId,
       resource: {
         role: "reader",
+        type: "anyone",
+      },
+    })
+  } catch (error) {
+    console.error("Error adding anyone permissions", error)
+  }
+}
+export const shareFileEditable = async (fileId) => {
+  try {
+    await gapi.client.drive.permissions.create({
+      fileId: fileId,
+      resource: {
+        role: "writer",
         type: "anyone",
       },
     })

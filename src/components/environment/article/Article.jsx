@@ -2,12 +2,18 @@ import { useLocation } from "react-router-dom"
 import styled from "styled-components"
 import ReactQuill from "react-quill"
 import { NoStyleLinkRouter } from "../../../router/NoStyleLinkRouter"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import { useEffect } from "react"
+import { readJsonFile } from "../../../utils/googleDriveApi"
+import { setComments } from "../../../store/homeDataSlice"
+import { createAlertError } from "../../../store/alertSlice"
 
 export const Article = () => {
+  const dispatch = useDispatch()
   const { pathname } = useLocation()
-  const homeData = useSelector((state) => state.homeData.data)
-  const articleData = homeData ?? []
+  const homeData = useSelector((state) => state.homeData.environment)
+  const articleData = homeData.categories ?? []
+  const articleComments = homeData.comments ?? []
   const pathLabel = decodeURI(pathname.replace("/", "")).split("/")
 
   const indexCategory = articleData
@@ -26,6 +32,24 @@ export const Article = () => {
       indexArticle
     ] ?? {}
 
+  async function handleFetch() {
+    try {
+      const data = await readJsonFile(homeData.commentId)
+      dispatch(setComments(data))
+    } catch (e) {
+      dispatch(setComments([]))
+      dispatch(createAlertError(e.message))
+    } finally {
+    }
+  }
+
+  useEffect(() => {
+    if (!homeData.comments) {
+      handleFetch()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return (
     <ArticleContainer>
       <NavigationArticle>
@@ -42,6 +66,9 @@ export const Article = () => {
           state={{ scrollTo: pathLabel[1] + pathLabel[2] }}
         >{` ${pathLabel[2]}`}</NoStyleLinkRouter>
       </NavigationArticle>
+      {articleComments.map((content) => {
+        return <span>{content}</span>
+      })}
       <TitleArticle>{article.title}</TitleArticle>
       <DateArticle>Modificado em: {article.date}</DateArticle>
       <ReactQuill

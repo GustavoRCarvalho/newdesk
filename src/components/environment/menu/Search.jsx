@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { searchData } from "../../../store/homeDataSlice"
 
 export const Search = ({ isOpen, setIsOpen }) => {
-  const homeData = useSelector((state) => state.homeData)
+  const homeData = useSelector((state) => state.homeData.environment)
   const dispatch = useDispatch()
   const searchInputRef = useRef(null)
 
@@ -17,11 +17,7 @@ export const Search = ({ isOpen, setIsOpen }) => {
         <SearchInput
           ref={searchInputRef}
           onChange={(e) => {
-            dispatch(
-              searchData(
-                search(e.target.value, homeData.data, homeData.oriData)
-              )
-            )
+            dispatch(searchData(search(e.target.value, homeData?.categories)))
           }}
           placeholder="Pesquisar"
         />

@@ -13,11 +13,12 @@ import {
 export const SubCategoryDropdown = () => {
   const dispatch = useDispatch()
   const editorState = useSelector((state) => state.editor)
-  const editorData = editorState.editor
-  let newCopy = JSON.parse(JSON.stringify(editorData))
+  const editorData = editorState.environment
+  let newCopy = JSON.parse(JSON.stringify(editorData.categories))
 
   const subCategoriesOptions =
-    editorData[editorState.selectedCategoryIndex]?.subCategories ?? []
+    editorData.categories[editorState.selectedCategoryIndex]?.subCategories ??
+    []
   const subCategories = subCategoriesOptions.map(({ title }) => title)
 
   const handleChangeSubCategory = (newName, oldName) => {

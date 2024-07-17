@@ -9,13 +9,14 @@ import { createAlertSucess } from "../../../store/alertSlice"
 export const ChangeIcon = () => {
   const dispatch = useDispatch()
   const editorState = useSelector((state) => state.editor)
+  const editorData = editorState.environment
   const isOpen = useSelector((state) => state.modal)
   const [value, setValue] = useState(isOpen.changeIcon.Icon)
   const [error, setError] = useState(false)
 
   async function handleClick() {
-    let newCopy = JSON.parse(JSON.stringify(editorState.editor))
-    let index = editorState.editor
+    let newCopy = JSON.parse(JSON.stringify(editorData.categories))
+    let index = editorData.categories
       .map(({ title }) => title)
       .indexOf(isOpen.changeIcon.title)
     if (index === -1) {

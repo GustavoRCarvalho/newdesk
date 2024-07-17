@@ -8,7 +8,8 @@ import { DropdownButton } from "./DropdownButton"
 import { useSelector } from "react-redux"
 
 export const SideMenu = () => {
-  const homeData = useSelector((state) => state.homeData.data)
+  const homeData = useSelector((state) => state.homeData.environment)
+  const categoriesSearched = homeData?.categoriesSearched
   const [isOpen, setIsOpen] = useState(false)
   const [openDropdownLabel, setOpenDropdownLabel] = useState("")
 
@@ -34,8 +35,8 @@ export const SideMenu = () => {
             setOpenDropdownLabel={setOpenDropdownLabel}
             openDropdownLabel={openDropdownLabel}
           />
-          {homeData &&
-            homeData.map((data, index) => {
+          {categoriesSearched &&
+            categoriesSearched.map((data, index) => {
               return (
                 <DropdownButton
                   key={data.title}

@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux"
 import { toggleEnvironmentId } from "../../../store/modalSlice"
 import { useState } from "react"
 import { readJsonFile } from "../../../utils/googleDriveApi"
-import { changeData } from "../../../store/homeDataSlice"
+import { setInitial } from "../../../store/homeDataSlice"
 import { Spinner } from "./ManipulateListItem"
 import { useNavigate } from "react-router-dom"
 import { createAlertError, createAlertSucess } from "../../../store/alertSlice"
@@ -25,7 +25,7 @@ export const EnvironmentAcess = () => {
     try {
       const data = await readJsonFile(value)
       setError(false)
-      dispatch(changeData(data))
+      dispatch(setInitial(data))
       dispatch(toggleEnvironmentId())
       dispatch(createAlertSucess("Carregado com sucesso!"))
       navigate(`/environment?environment=${value}`)

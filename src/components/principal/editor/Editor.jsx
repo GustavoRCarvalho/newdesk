@@ -4,7 +4,7 @@ import { EditorComponent } from "./EditorComponent"
 import styled from "styled-components"
 import { useEffect, useState } from "react"
 import { CategoryDropdown } from "./CategoryDropdown"
-import { initialData, setEditor } from "../../../store/editorSlice"
+import { initialData, setEditorInitial } from "../../../store/editorSlice"
 import { SubCategoryDropdown } from "./SubCategoryDropdown"
 import { ArticleDropdown } from "./ArticleDropdown"
 import { readJsonFile, updateJsonFile } from "../../../utils/googleDriveApi"
@@ -21,10 +21,11 @@ export const Editor = () => {
   const [isSaving, setIsSaving] = useState(false)
   const [fileFound, setFileFound] = useState(false)
   const editorState = useSelector((state) => state.editor)
+  const editorData = editorState.environment
 
   const dataEditor = () => {
     const content =
-      editorState.editor[editorState.selectedCategoryIndex]?.subCategories[
+      editorData.categories[editorState.selectedCategoryIndex]?.subCategories[
         editorState.selectedSubCategoryIndex
       ]?.articles[editorState.selectedArticleIndex]?.content
     if (content === undefined || content === "") {
@@ -39,7 +40,7 @@ export const Editor = () => {
   async function fetchData() {
     try {
       const result = await readJsonFile(environment)
-      dispatch(setEditor(result))
+      dispatch(setEditorInitial(result))
       setFileFound(true)
     } catch (e) {
       dispatch(createAlertError(e.message))
@@ -51,7 +52,7 @@ export const Editor = () => {
   async function saveData() {
     try {
       setIsSaving(true)
-      await updateJsonFile(environment, editorState.editor)
+      await updateJsonFile(environment, editorData)
       dispatch(createAlertSucess("Dados salvos com sucesso!"))
     } catch (e) {
       dispatch(
@@ -69,7 +70,7 @@ export const Editor = () => {
     if (environment) {
       fetchData()
     } else {
-      dispatch(setEditor([]))
+      dispatch(setEditorInitial({}))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

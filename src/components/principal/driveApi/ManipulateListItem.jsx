@@ -25,17 +25,18 @@ export const ManipulateListItem = ({
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [hasCopy, setHasCopy] = useState(false)
-  const [value, setValue] = useState(item.name.split(".json")[0])
+  const [value, setValue] = useState(item.name)
   const [isEditable, setIsEditable] = useState(false)
   const renameExecuting = isExecutingAnimation.rename !== ""
 
   async function handleSwitchEditable() {
     if (renameExecuting || isExecuting) return
     try {
-      if (isEditable && item.name !== `${value}.json`) {
+      if (isEditable && item.name !== value) {
         setIsExecuting(true)
         setIsExecutingAnimation((state) => ({ ...state, rename: item.id }))
-        await renameFile(item.id, value)
+
+        await renameFile(item.id, item.contentId, value)
 
         dispatch(createAlertSucess("Nome alterado com sucesso!"))
       }
@@ -71,20 +72,21 @@ export const ManipulateListItem = ({
         </div>
       </td>
       <td>{convertDate(item.createdTime)}</td>
-      <td>{Math.round(item.size / 1000000)} Mb</td>
       <td>
         <button
           onClick={() => {
             setIsEditable(false)
             dispatch(toggleManipulate())
-            navigate(`/edit?environment=${item.id}`)
+            navigate(`/edit?environment=${item.contentId}`)
           }}
         >
           <GoLinkExternal />
         </button>
+      </td>
+      <td>
         <button
           onClick={() => {
-            navigator.clipboard.writeText(item.id)
+            navigator.clipboard.writeText(item.contentId)
             setHasCopy(true)
             setTimeout(() => {
               setHasCopy(false)

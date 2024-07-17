@@ -166,12 +166,12 @@ export function changeDarkLightMode(isDark) {
   }
 }
 
-export function search(text, data, oriData) {
+export function search(text, oriData) {
   if (text === "") return oriData
 
   const searchTermLower = text.toLowerCase()
 
-  return data
+  return oriData
     .map((category) => {
       if (category.title.toLowerCase().includes(searchTermLower)) {
         return category

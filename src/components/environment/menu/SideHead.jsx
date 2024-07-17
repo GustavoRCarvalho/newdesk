@@ -1,10 +1,14 @@
 import styled from "styled-components"
-import LogoImg from "../../../assets/images/Logo.png"
+import logo from "../../../assets/images/Logo.svg"
 import { motion } from "framer-motion"
 import { NoStyleLinkRouter } from "../../../router/NoStyleLinkRouter"
 import { animateScroll } from "react-scroll"
+import { useSelector } from "react-redux"
 
 export const SideHeader = ({ isOpen }) => {
+  const homeData = useSelector((state) => state.homeData.environment)
+  const imageSrc = `data:image/png;base64,${homeData.environmentImage}`
+
   return (
     <Header
       $isopen={isOpen}
@@ -13,11 +17,15 @@ export const SideHeader = ({ isOpen }) => {
       }
     >
       <NoStyleLinkRouter to="/environment">
-        <Logo $isopen={isOpen} src={LogoImg} layout />
+        {homeData.environmentImage ? (
+          <Logo $isopen={isOpen} src={imageSrc} layout />
+        ) : (
+          <Logo $isopen={isOpen} src={logo} layout />
+        )}
       </NoStyleLinkRouter>
       {isOpen && (
         <NoStyleLinkRouter to="/environment">
-          <Title>ZZ HELP</Title>
+          <Title>{homeData.environmentName}</Title>
         </NoStyleLinkRouter>
       )}
     </Header>
@@ -25,9 +33,6 @@ export const SideHeader = ({ isOpen }) => {
 }
 
 const Header = styled(motion.header)`
-  /* padding: ${(props) => (props.$isopen ? "1em" : "0")}; */
-  /* margin-bottom: ${(props) => (props.$isopen ? "0em" : "4em")}; */
-
   min-height: 8em;
 
   display: flex;

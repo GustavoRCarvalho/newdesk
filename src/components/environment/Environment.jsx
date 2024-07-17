@@ -8,7 +8,7 @@ import { ButtonDarkLightTheme } from "./home/ButtonDarkLightTheme"
 import { ButtonThemeChange } from "./home/ButtonThemeChange"
 import { useLocation } from "react-router-dom"
 import { readJsonFile } from "../../utils/googleDriveApi"
-import { changeData } from "../../store/homeDataSlice"
+import { setInitial } from "../../store/homeDataSlice"
 import { useEffect, useState } from "react"
 import { LoadingScreen } from "../../router/LoadingScreen"
 import { createAlertError } from "../../store/alertSlice"
@@ -16,7 +16,7 @@ import { createAlertError } from "../../store/alertSlice"
 export const Environment = ({ children }) => {
   const dispatch = useDispatch()
 
-  const homeData = useSelector((state) => state.homeData)
+  const homeData = useSelector((state) => state.homeData.environment)
   const [errorMessage, setErrorMessage] = useState("")
   const needLoading = JSON.stringify(homeData) === "{}"
   const location = useLocation()
@@ -27,7 +27,7 @@ export const Environment = ({ children }) => {
   async function handleFetch() {
     try {
       const data = await readJsonFile(environment)
-      dispatch(changeData(data))
+      dispatch(setInitial(data))
     } catch (e) {
       setErrorMessage(e.message)
       dispatch(createAlertError(e.message))

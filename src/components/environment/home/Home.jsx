@@ -6,7 +6,8 @@ import { useEffect } from "react"
 import { scroller } from "react-scroll"
 
 export const Home = () => {
-  const homeData = useSelector((state) => state.homeData.data)
+  const homeData = useSelector((state) => state.homeData.environment)
+  const categoriesSearched = homeData?.categoriesSearched
   const location = useLocation()
   const scrollTo = location.state?.scrollTo
 
@@ -24,11 +25,11 @@ export const Home = () => {
 
   return (
     <HomeContainer>
-      {homeData &&
-        homeData.map((data, index) => (
+      {categoriesSearched &&
+        categoriesSearched.map((data, index) => (
           <Category key={data.title + index} {...data} />
         ))}
-      {homeData?.length === 0 && (
+      {categoriesSearched?.length === 0 && (
         <div>Parece que não há nenhum artigo ainda</div>
       )}
     </HomeContainer>

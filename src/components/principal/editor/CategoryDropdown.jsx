@@ -14,11 +14,11 @@ import {
 export const CategoryDropdown = () => {
   const dispatch = useDispatch()
   const editorState = useSelector((state) => state.editor)
-  const editorData = editorState.editor
+  const editorData = editorState.environment
   let newCopy = JSON.parse(JSON.stringify(editorData))
 
-  const categoriesOptions = editorData
-  const categories = editorData.map(({ title }) => title)
+  const categoriesOptions = editorData.categories
+  const categories = editorData.categories.map(({ title }) => title)
 
   const handleChangeCategory = (newName, oldName) => {
     if (newName === oldName) return
@@ -44,7 +44,7 @@ export const CategoryDropdown = () => {
       subCategories: [],
     }
     dispatch(createAlertSucess("Categoria adicionada com sucesso!"))
-    dispatch(setEditor([...editorData, newCategory]))
+    dispatch(setEditor([...editorData.categories, newCategory]))
   }
 
   const handleRemoveCategory = (itemName) => {

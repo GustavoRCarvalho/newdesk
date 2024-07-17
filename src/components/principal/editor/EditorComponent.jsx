@@ -9,13 +9,14 @@ import { createAlertSucess } from "../../../store/alertSlice"
 export const EditorComponent = () => {
   const dispatch = useDispatch()
   const editorState = useSelector((state) => state.editor)
+  const editorData = editorState.environment
   const [value, setValue] = useState("")
 
   const handleSave = (e) => {
     if (e.ctrlKey && e.key === "s") {
       e.preventDefault()
 
-      let newCopy = JSON.parse(JSON.stringify(editorState.editor))
+      let newCopy = JSON.parse(JSON.stringify(editorData.categories))
 
       const article =
         newCopy[editorState.selectedCategoryIndex].subCategories[
@@ -31,12 +32,12 @@ export const EditorComponent = () => {
 
   useEffect(() => {
     setValue(
-      editorState.editor[editorState.selectedCategoryIndex]?.subCategories[
+      editorData.categories[editorState.selectedCategoryIndex]?.subCategories[
         editorState.selectedSubCategoryIndex
       ]?.articles[editorState.selectedArticleIndex]?.content
     )
   }, [
-    editorState.editor,
+    editorData.categories,
     editorState.selectedArticleIndex,
     editorState.selectedCategoryIndex,
     editorState.selectedSubCategoryIndex,

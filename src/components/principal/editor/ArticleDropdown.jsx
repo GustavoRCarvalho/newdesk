@@ -10,11 +10,11 @@ import {
 export const ArticleDropdown = () => {
   const dispatch = useDispatch()
   const editorState = useSelector((state) => state.editor)
-  const editorData = editorState.editor
-  let newCopy = JSON.parse(JSON.stringify(editorData))
+  const editorData = editorState.environment
+  let newCopy = JSON.parse(JSON.stringify(editorData.categories))
 
   const articlesOptions =
-    editorData[editorState.selectedCategoryIndex]?.subCategories[
+    editorData.categories[editorState.selectedCategoryIndex]?.subCategories[
       editorState.selectedSubCategoryIndex
     ]?.articles ?? []
   const articles = articlesOptions.map(({ title }) => title)

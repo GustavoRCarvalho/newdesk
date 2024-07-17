@@ -1,15 +1,17 @@
 import styled from "styled-components"
-import { handleUploadJson, listFiles } from "../../../utils/googleDriveApi"
+import { handleCreateFolder, listFiles } from "../../../utils/googleDriveApi"
 import { useDispatch, useSelector } from "react-redux"
 import { toggleManipulate } from "../../../store/modalSlice"
 import { useEffect, useState } from "react"
 import { ManipulateListItem, Spinner } from "./ManipulateListItem"
-import { GoX } from "react-icons/go"
+import { GoX, GoImage } from "react-icons/go"
 import { createAlertError, createAlertSucess } from "../../../store/alertSlice"
 
 export const ManipulateEnvironments = () => {
   const isDeleteOpen = useSelector((state) => state.modal.delete)
   const [newEnvironments, setNewEnvironments] = useState("")
+  const [newImage, setNewImage] = useState("")
+  const imageSrc = newImage ? `data:image/png;base64,${newImage}` : ""
   const [initialLoading, setInitialLoading] = useState(true)
   const [inputAlert, setInputAlert] = useState(false)
   const [list, setList] = useState([])
@@ -24,13 +26,12 @@ export const ManipulateEnvironments = () => {
   async function handleCreate() {
     if (newEnvironments === "") {
       setInputAlert(true)
-      return
     }
-    if (createExecuting || isExecuting) return
+    if (createExecuting || isExecuting || newEnvironments === "") return
     setIsExecuting(true)
     setIsExecutingAnimation((state) => ({ ...state, create: true }))
     try {
-      await handleUploadJson([], newEnvironments)
+      await handleCreateFolder(newEnvironments, newImage)
       dispatch(createAlertSucess("Ambiente criado com sucesso."))
     } catch (e) {
       dispatch(
@@ -63,6 +64,20 @@ export const ManipulateEnvironments = () => {
     }
   }
 
+  function handleFile(e) {
+    if (!e.target.files.length) return
+    const file = e.target.files[0]
+    const reader = new FileReader()
+    let base64String
+
+    reader.onload = function (event) {
+      base64String = event.target.result.split(",")[1]
+      setInputAlert(false)
+      setNewImage(base64String)
+    }
+    reader.readAsDataURL(file)
+  }
+
   useEffect(() => {
     if (!isExecuting && isDeleteOpen === "") {
       fetchFiles()
@@ -84,6 +99,18 @@ export const ManipulateEnvironments = () => {
           </CloseButton>
         </CloseContainer>
         <CreateContainer>
+          <InputImage $select={newImage !== ""}>
+            <label htmlFor="file-upload">
+              <GoImage />
+              <img alt="logo" src={imageSrc} />
+            </label>
+            <input
+              id="file-upload"
+              accept="image/*"
+              type="file"
+              onChange={handleFile}
+            />
+          </InputImage>
           <CreateInput
             $alert={inputAlert}
             placeholder="Nome do novo ambiente"
@@ -103,7 +130,7 @@ export const ManipulateEnvironments = () => {
             <tr>
               <th>Nome</th>
               <th>Data</th>
-              <th>Tamanho</th>
+              <th>Editar</th>
               <th>Ferramentas</th>
             </tr>
           </thead>
@@ -133,6 +160,53 @@ export const ManipulateEnvironments = () => {
     </Modal>
   )
 }
+
+const InputImage = styled.div`
+  border: ${(props) =>
+    props.$alert
+      ? "1px solid #ff3f3f"
+      : props.$select
+      ? "1px solid #92ff71"
+      : "1px solid #d4d0d0"};
+  border-radius: 0.5em;
+  cursor: pointer;
+
+  input {
+    &[type="file"] {
+      display: none;
+    }
+  }
+
+  label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 100%;
+
+    aspect-ratio: 1;
+    cursor: pointer;
+  }
+
+  svg {
+    display: ${(props) => (props.$select ? "none" : "block")};
+    color: ${(props) =>
+      props.$alert ? "#ff3f3f" : props.$select ? "#92ff71" : "#d4d0d0"};
+    width: 2em;
+    height: 2em;
+
+    cursor: pointer;
+  }
+
+  img {
+    display: ${(props) => (props.$select ? "block" : "none")};
+    width: 2em;
+    height: 2em;
+
+    cursor: pointer;
+  }
+`
 
 const CloseContainer = styled.div`
   width: 100%;
@@ -360,8 +434,11 @@ const Container = styled.div`
         display: flex;
       }
     }
+    td:nth-child(3) {
+      text-align: center;
+    }
     td:last-child {
-      text-align: end;
+      text-align: center;
       padding-right: 1.5em;
 
       border-top-right-radius: 0.5em;
