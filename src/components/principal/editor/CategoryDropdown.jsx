@@ -15,10 +15,12 @@ export const CategoryDropdown = () => {
   const dispatch = useDispatch()
   const editorState = useSelector((state) => state.editor)
   const editorData = editorState.environment
-  let newCopy = JSON.parse(JSON.stringify(editorData))
+  let newCopy = JSON.parse(JSON.stringify(editorData.categories))
 
-  const categoriesOptions = editorData.categories
-  const categories = editorData.categories.map(({ title }) => title)
+  // console.log(editorData.categories)
+
+  const categoriesOptions = editorData.categories ?? []
+  const categories = categoriesOptions.map(({ title }) => title)
 
   const handleChangeCategory = (newName, oldName) => {
     if (newName === oldName) return
@@ -50,7 +52,7 @@ export const CategoryDropdown = () => {
   const handleRemoveCategory = (itemName) => {
     const categoryIndex = categories.indexOf(itemName)
 
-    newCopy.splice(categoryIndex, 1)
+    newCopy.categories.splice(categoryIndex, 1)
     dispatch(setEditor(newCopy))
     dispatch(createAlertSucess("Categoria removida com sucesso!"))
     if (categoryIndex === editorState.selectedCategoryIndex) {
