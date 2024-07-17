@@ -4,6 +4,7 @@ import cardReducer from "./cardSlice"
 import editorReducer from "./editorSlice"
 import modalReducer from "./modalSlice"
 import alertReducer from "./alertSlice"
+import userReducer from "./userSlice"
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     editor: editorReducer,
     modal: modalReducer,
     alert: alertReducer,
+    user: userReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

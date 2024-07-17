@@ -1,13 +1,36 @@
 import { motion } from "framer-motion"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { HiOutlineDotsHorizontal, HiOutlineX } from "react-icons/hi"
 import { LuUser2 } from "react-icons/lu"
 import { IoIosLogOut } from "react-icons/io"
 import styled from "styled-components"
 import { Link } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
+import { toggleLogin } from "../../../store/modalSlice"
+import { handleWhoIsSignIn } from "../../../utils/googleDriveApi"
+import { setUser } from "../../../store/userSlice"
+import { createAlertError } from "../../../store/alertSlice"
 
 export const Settings = ({ children }) => {
+  const dispatch = useDispatch()
+  const user = useSelector((state) => state.user.user)
   const [isOpen, setIsOpen] = useState(false)
+
+  async function getUser() {
+    try {
+      const user = await handleWhoIsSignIn()
+      dispatch(setUser(user))
+    } catch (e) {
+      dispatch(createAlertError(e.message))
+    }
+  }
+
+  useEffect(() => {
+    if (JSON.stringify(user) === "{}") {
+      getUser()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user])
 
   return (
     <>
@@ -37,9 +60,13 @@ export const Settings = ({ children }) => {
       >
         {isOpen && (
           <>
-            <LoginContainer>
-              <LuUser2 />
-              Login
+            <LoginContainer onClick={() => dispatch(toggleLogin())}>
+              {user?.imageUrl !== undefined ? (
+                <img alt="foto do perfil" src={user.imageUrl} />
+              ) : (
+                <LuUser2 />
+              )}
+              {user?.name ?? "Conectar"}
             </LoginContainer>
             <ButtonClose onClick={() => setIsOpen(false)} />
           </>
@@ -47,7 +74,7 @@ export const Settings = ({ children }) => {
         {isOpen && <OptionsContainer>{children}</OptionsContainer>}
         {isOpen && (
           <LogoutContainer to="/">
-            Sair <IoIosLogOut />
+            Voltar ao início <IoIosLogOut />
           </LogoutContainer>
         )}
       </SettingsContainer>
@@ -105,18 +132,25 @@ const LoginContainer = styled.div`
 
   border-bottom: 1px solid var(--home-settings-line);
 
-  svg {
+  &:hover {
+    background-color: var(--home-settings-button-background-hover);
+  }
+
+  svg,
+  img {
     background-color: var(--home-background);
 
-    width: 1.7em;
-    height: 1.7em;
-    padding: 0.2em;
+    width: 2em;
+    height: 2em;
 
     border-radius: 50%;
   }
+
+  cursor: pointer;
 `
 
 const ButtonClose = styled(HiOutlineX)`
+  background-color: var(--home-background);
   position: absolute;
 
   top: 0.5em;
@@ -124,6 +158,13 @@ const ButtonClose = styled(HiOutlineX)`
 
   width: 1.5em;
   height: 1.5em;
+  padding: 0.25em;
+
+  border-radius: 50%;
+
+  &:hover {
+    background-color: var(--home-settings-button-background-hover);
+  }
 
   cursor: pointer;
 `

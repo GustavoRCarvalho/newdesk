@@ -55,16 +55,14 @@ const ThemeColorContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: 2em;
-
-  overflow: hidden;
 `
 
 const ButtonChangeThemeColor = styled.button`
   background-color: ${(props) => props.$color ?? "#fff"};
 
-  /* border: ${(props) =>
-    props.$ischeck ? "2px solid #fff" : "2px solid transparent"}; */
-  border: none;
+  border: ${(props) =>
+    props.$ischeck ? "2px solid #fff" : "2px solid transparent"};
+  /* border: none; */
   border-radius: 3em;
 
   width: 1.6em;
@@ -84,6 +82,6 @@ const ButtonChangeThemeColor = styled.button`
     width: 1em;
     height: 1em;
 
-    color: #fff;
+    color: #ffffff;
   }
 `

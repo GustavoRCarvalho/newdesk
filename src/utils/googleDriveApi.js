@@ -30,7 +30,23 @@ export const initClient = () => {
 
 export const handleSignIn = async () => {
   try {
-    await gapi.auth2.getAuthInstance().signIn()
+    const user = await gapi.auth2.getAuthInstance().signIn()
+    const profile = await user.getBasicProfile()
+    const userProfile = {
+      id: profile.getId(),
+      name: profile.getName(),
+      email: profile.getEmail(),
+      imageUrl: profile.getImageUrl(),
+    }
+    return userProfile
+  } catch (e) {
+    throw e
+  }
+}
+
+export const handleSignOut = async () => {
+  try {
+    await gapi.auth2.getAuthInstance().signOut()
   } catch (e) {
     throw e
   }
@@ -40,9 +56,21 @@ export const handleIsSignIn = () => {
   return gapi.auth2.getAuthInstance().isSignedIn.get()
 }
 
-export const handleSignOut = async () => {
+export const handleWhoIsSignIn = async () => {
   try {
-    await gapi.auth2.getAuthInstance().signOut()
+    const auth = await gapi.auth2.getAuthInstance()
+    // Verificar se o usuário está logado
+    if (auth.isSignedIn.get()) {
+      const user = await auth.currentUser.get()
+      const profile = await user.getBasicProfile()
+      const userProfile = {
+        id: profile.getId(),
+        name: profile.getName(),
+        email: profile.getEmail(),
+        imageUrl: profile.getImageUrl(),
+      }
+      return userProfile
+    }
   } catch (e) {
     throw e
   }

@@ -3,18 +3,25 @@ import {
   handleIsSignIn,
   handleSignIn,
   handleSignOut,
+  handleWhoIsSignIn,
 } from "../../../utils/googleDriveApi"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { toggleLogin } from "../../../store/modalSlice"
 import { createAlertError, createAlertSucess } from "../../../store/alertSlice"
 import { FcGoogle } from "react-icons/fc"
+import { initialUser, setUser } from "../../../store/userSlice"
+import { useEffect } from "react"
+import logo from "../../../assets/images/Logo.svg"
 
 export const Login = () => {
   const dispatch = useDispatch()
+  const user = useSelector((state) => state.user.user)
 
   async function onLogin() {
     try {
-      await handleSignIn()
+      const user = await handleSignIn()
+      dispatch(setUser(user))
+
       dispatch(toggleLogin())
       dispatch(createAlertSucess("Login realizado com sucesso!"))
     } catch (e) {
@@ -29,6 +36,7 @@ export const Login = () => {
   async function onLogout() {
     try {
       await handleSignOut()
+      dispatch(initialUser())
       dispatch(toggleLogin())
       dispatch(createAlertSucess("Logout realizado com sucesso!"))
     } catch (e) {
@@ -40,6 +48,22 @@ export const Login = () => {
     }
   }
 
+  async function getUser() {
+    try {
+      const user = await handleWhoIsSignIn()
+      dispatch(setUser(user))
+    } catch (e) {
+      dispatch(createAlertError(e.message))
+    }
+  }
+
+  useEffect(() => {
+    if (JSON.stringify(user) === "{}") {
+      getUser()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user])
+
   return (
     <LoginModal
       id="modalLogin"
@@ -48,12 +72,25 @@ export const Login = () => {
       }
     >
       <LoginContainer>
-        <FcGoogle />
-        Faça login na sua conta do Google para acessar a plataforma
         {handleIsSignIn() ? (
-          <button onClick={onLogout}>Sair</button>
+          <>
+            <UserInfosWrapper>
+              <img alt="foto do perfil" src={user.imageUrl ?? logo} />
+              <UserInfos>
+                <label>Nome:</label>
+                <span>{user.name}</span>
+                <label>Email:</label>
+                <span>{user.email}</span>
+              </UserInfos>
+            </UserInfosWrapper>
+            <button onClick={onLogout}>Desconectar</button>
+          </>
         ) : (
-          <button onClick={onLogin}>Entrar</button>
+          <>
+            <FcGoogle />
+            Faça login na sua conta do Google para acessar a plataforma
+            <button onClick={onLogin}>Conectar</button>
+          </>
         )}
       </LoginContainer>
     </LoginModal>
@@ -80,9 +117,13 @@ const LoginContainer = styled.div`
   color: var(--manipulate-color);
 
   display: flex;
-  align-items: center;
-
   flex-direction: column;
+
+  align-items: center;
+  justify-content: space-around;
+
+  min-width: 15em;
+  min-height: 15em;
 
   gap: 1em;
   padding: 1em;
@@ -109,5 +150,34 @@ const LoginContainer = styled.div`
   svg {
     width: 4em;
     height: 4em;
+  }
+`
+
+const UserInfosWrapper = styled.div`
+  display: flex;
+  align-items: center;
+
+  img {
+    user-select: none;
+    pointer-events: none;
+
+    border-radius: 10%;
+  }
+
+  gap: 1em;
+`
+
+const UserInfos = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  justify-content: space-between;
+
+  span {
+    margin-bottom: 0.5em;
+  }
+  label {
+    font-size: 0.9em;
+    opacity: 0.8;
   }
 `
