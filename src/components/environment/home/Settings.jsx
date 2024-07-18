@@ -66,7 +66,7 @@ export const Settings = ({ children }) => {
               ) : (
                 <LuUser2 />
               )}
-              {user?.name ?? "Conectar"}
+              <span>{user?.name ?? "Conectar"}</span>
             </LoginContainer>
             <ButtonClose onClick={() => setIsOpen(false)} />
           </>
@@ -144,6 +144,12 @@ const LoginContainer = styled.div`
     height: 2em;
 
     border-radius: 50%;
+  }
+  span {
+    width: calc(100% - 5.5em);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   cursor: pointer;
