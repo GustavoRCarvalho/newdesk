@@ -1,5 +1,8 @@
 import styled from "styled-components"
-import { handleCreateFolder, listFiles } from "../../../utils/googleDriveApi"
+import {
+  handleCreateContentFile,
+  listFiles,
+} from "../../../utils/googleDriveApi"
 import { useDispatch, useSelector } from "react-redux"
 import { toggleManipulate } from "../../../store/modalSlice"
 import { useEffect, useState } from "react"
@@ -31,7 +34,7 @@ export const ManipulateEnvironments = () => {
     setIsExecuting(true)
     setIsExecutingAnimation((state) => ({ ...state, create: true }))
     try {
-      await handleCreateFolder(newEnvironments, newImage)
+      await handleCreateContentFile(newEnvironments, newImage)
       dispatch(createAlertSucess("Ambiente criado com sucesso."))
     } catch (e) {
       dispatch(
@@ -128,6 +131,7 @@ export const ManipulateEnvironments = () => {
         <table>
           <thead>
             <tr>
+              <th>Logo</th>
               <th>Nome</th>
               <th>Data</th>
               <th>Editar</th>
@@ -430,11 +434,13 @@ const Container = styled.div`
 
       border-top-left-radius: 0.5em;
       border-bottom-left-radius: 0.5em;
+    }
+    td:nth-child(2) {
       div {
         display: flex;
       }
     }
-    td:nth-child(3) {
+    td:nth-child(4) {
       text-align: center;
     }
     td:last-child {

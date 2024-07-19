@@ -29,7 +29,7 @@ const RatingStars = styled.div`
   display: flex;
 
   svg {
-    color: yellow;
+    color: #ffe600;
     width: 1.5em;
     height: 1.5em;
   }

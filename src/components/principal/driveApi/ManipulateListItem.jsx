@@ -8,6 +8,7 @@ import styled, { keyframes } from "styled-components"
 import { convertDate } from "../../../utils/functions"
 import {
   GoCheck,
+  GoImage,
   GoLink,
   GoLinkExternal,
   GoPencil,
@@ -28,6 +29,8 @@ export const ManipulateListItem = ({
   const [value, setValue] = useState(item.name)
   const [isEditable, setIsEditable] = useState(false)
   const renameExecuting = isExecutingAnimation.rename !== ""
+  const [newItemImage, setNewItemImage] = useState(item.imageUrl)
+  const imageSrc = newItemImage ? `data:image/png;base64,${newItemImage}` : ""
 
   async function handleSwitchEditable() {
     if (renameExecuting || isExecuting) return
@@ -36,7 +39,7 @@ export const ManipulateListItem = ({
         setIsExecuting(true)
         setIsExecutingAnimation((state) => ({ ...state, rename: item.id }))
 
-        await renameFile(item.id, item.contentId, value)
+        await renameFile(item.id, value, newItemImage)
 
         dispatch(createAlertSucess("Nome alterado com sucesso!"))
       }
@@ -50,8 +53,35 @@ export const ManipulateListItem = ({
     }
   }
 
+  function handleItemFile(e) {
+    if (!e.target.files.length) return
+    const file = e.target.files[0]
+    const reader = new FileReader()
+    let base64String
+
+    reader.onload = function (event) {
+      base64String = event.target.result.split(",")[1]
+      setNewItemImage(base64String)
+    }
+    reader.readAsDataURL(file)
+  }
+
   return (
     <tr>
+      <td>
+        <ImageWrapper $select={newItemImage !== ""} $disabled={!isEditable}>
+          <label htmlFor={`file-${item.id}`}>
+            <GoImage />
+            <img alt="logo" src={imageSrc} />
+          </label>
+          <input
+            id={`file-${item.id}`}
+            accept="image/*"
+            type="file"
+            onChange={handleItemFile}
+          />
+        </ImageWrapper>
+      </td>
       <td>
         <div>
           <InputTable
@@ -77,7 +107,7 @@ export const ManipulateListItem = ({
           onClick={() => {
             setIsEditable(false)
             dispatch(toggleManipulate())
-            navigate(`/edit?environment=${item.contentId}`)
+            navigate(`/edit?environment=${item.id}`)
           }}
         >
           <GoLinkExternal />
@@ -86,7 +116,7 @@ export const ManipulateListItem = ({
       <td>
         <button
           onClick={() => {
-            navigator.clipboard.writeText(item.contentId)
+            navigator.clipboard.writeText(item.id)
             setHasCopy(true)
             setTimeout(() => {
               setHasCopy(false)
@@ -106,6 +136,46 @@ export const ManipulateListItem = ({
     </tr>
   )
 }
+
+const ImageWrapper = styled.div`
+  input {
+    &[type="file"] {
+      display: none;
+    }
+  }
+  user-select: none;
+  pointer-events: ${(props) => (props.$disabled ? "none" : "normal")};
+
+  label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 100%;
+
+    aspect-ratio: 1;
+    cursor: ${(props) => (props.$disabled ? "default" : "pointer")};
+  }
+
+  svg {
+    display: ${(props) => (props.$select ? "none" : "block")};
+    color: ${(props) =>
+      props.$alert ? "#ff3f3f" : props.$select ? "#92ff71" : "#d4d0d0"};
+    width: 2em;
+    height: 2em;
+
+    cursor: ${(props) => (props.$disabled ? "default" : "pointer")};
+  }
+
+  img {
+    display: ${(props) => (props.$select ? "block" : "none")};
+    width: 2em;
+    height: 2em;
+
+    cursor: ${(props) => (props.$disabled ? "default" : "pointer")};
+  }
+`
 
 const CopyAlert = styled.div`
   display: ${(props) => (props.$show ? "unset" : "none")};

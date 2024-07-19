@@ -258,7 +258,7 @@ const RatingStars = styled.div`
   width: 100%;
 
   svg {
-    color: ${(props) => (props.$error ? "#ff3f3f" : "yellow")};
+    color: ${(props) => (props.$error ? "#ff3f3f" : "#ffe600")};
     width: 2em;
     height: 2em;
 

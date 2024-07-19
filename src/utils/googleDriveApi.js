@@ -28,16 +28,6 @@ export const initClient = () => {
   })
 }
 
-const authenticateUser = async () => {
-  const GoogleAuth = await gapi.auth2.getAuthInstance()
-  if (!GoogleAuth.isSignedIn.get()) {
-    await GoogleAuth.signIn({ scope: SCOPES })
-  }
-  const googleUser = GoogleAuth.currentUser.get()
-  const token = googleUser.getAuthResponse().access_token
-  return token
-}
-
 export const handleSignIn = async () => {
   try {
     const user = await gapi.auth2.getAuthInstance().signIn()
@@ -72,14 +62,12 @@ export const handleWhoIsSignIn = async () => {
     // Verificar se o usuário está logado
     if (auth.isSignedIn.get()) {
       const user = await auth.currentUser.get()
-      const token = await user.getAuthResponse().access_token
       const profile = await user.getBasicProfile()
       const userProfile = {
         id: profile.getId(),
         name: profile.getName(),
         email: profile.getEmail(),
         imageUrl: profile.getImageUrl(),
-        token: token,
       }
       return userProfile
     }
@@ -88,7 +76,7 @@ export const handleWhoIsSignIn = async () => {
   }
 }
 
-export const listFiles = async () => {
+export const listFolders = async () => {
   try {
     const response = await gapi.client.drive.files.list({
       fields: "files(id, name, createdTime, size)",
@@ -118,7 +106,52 @@ export const listFiles = async () => {
   }
 }
 
-export const handleCreateContentFile = async (jsonObject, folderId) => {
+export const listFiles = async () => {
+  try {
+    const response = await gapi.client.drive.files.list({
+      fields: "files(id, name, createdTime, size)",
+    })
+
+    const result = await Promise.all(
+      response.result.files.map(async (item) => {
+        try {
+          const contentResult = await readJsonFile(item.id)
+          item.imageUrl = contentResult.environmentImage
+          return item
+        } catch (e) {
+          throw e
+        }
+      })
+    )
+
+    return result
+  } catch (error) {
+    throw error // Lançar o erro para que possa ser tratado pelo chamador
+  }
+}
+
+export const handleCreateContentFile = async (name, image) => {
+  const newName = name === "" ? "New Desk" : name
+
+  const content = {
+    environmentName: newName,
+    environmentImage: image,
+    categories: [],
+  }
+  try {
+    const response = await gapi.client.drive.files.create({
+      mimeType: "application/json",
+      name: newName,
+      fields: "id",
+    })
+    await updateJsonFile(response.result.id, content)
+    await shareFile(response.result.id)
+  } catch (error) {
+    throw error
+  }
+}
+
+export const handleCreateContentFile2 = async (jsonObject, folderId) => {
   try {
     const response = await gapi.client.drive.files.create({
       mimeType: "application/json",
@@ -153,7 +186,7 @@ export const handleCreateFolder = async (name, image = "") => {
   const newName = name === "" ? "New Desk" : name
 
   const metadata = {
-    name: `${newName}`, // Nome do arquivo que será salvo no Google Drive
+    name: `${newName}`,
     mimeType: "application/vnd.google-apps.folder",
   }
 
@@ -162,15 +195,10 @@ export const handleCreateFolder = async (name, image = "") => {
       resource: metadata,
       fields: "id",
     })
-    const commentResponse = await handleCreateCommentsFile(
-      [],
-      response.result.id
-    )
     const content = {
       environmentName: newName,
       environmentImage: image,
       categories: [],
-      commentId: commentResponse.result.id,
     }
     await handleCreateContentFile(content, response.result.id)
   } catch (error) {
@@ -257,7 +285,6 @@ export const updateJsonFile = async (fileId, data) => {
 }
 
 export const updateJsonFileShared = async (fileId, data) => {
-  const token = await authenticateUser()
   const utf = JSON.stringify(data)
 
   try {
@@ -267,7 +294,6 @@ export const updateJsonFileShared = async (fileId, data) => {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json; charset=utf-8",
-          Authorization: `Bearer ${token}`,
         },
         body: utf,
       }
@@ -277,7 +303,7 @@ export const updateJsonFileShared = async (fileId, data) => {
   }
 }
 
-export const renameFile = async (fileId, contentId, newName, newImage) => {
+export const renameFile = async (fileId, newName, newImage) => {
   try {
     await gapi.client.drive.files.update({
       fileId: fileId,
@@ -285,12 +311,12 @@ export const renameFile = async (fileId, contentId, newName, newImage) => {
         name: newName,
       },
     })
-    const fileContentResponse = await readJsonFile(contentId)
+    const fileContentResponse = await readJsonFile(fileId)
     fileContentResponse.environmentName = newName
     if (newImage) {
       fileContentResponse.environmentImage = newImage
     }
-    await updateJsonFile(contentId, fileContentResponse)
+    await updateJsonFile(fileId, fileContentResponse)
   } catch (e) {
     throw e
   }
