@@ -28,6 +28,16 @@ export const initClient = () => {
   })
 }
 
+const authenticateUser = async () => {
+  const GoogleAuth = await gapi.auth2.getAuthInstance()
+  if (!GoogleAuth.isSignedIn.get()) {
+    await GoogleAuth.signIn({ scope: SCOPES })
+  }
+  const googleUser = GoogleAuth.currentUser.get()
+  const token = googleUser.getAuthResponse().access_token
+  return token
+}
+
 export const handleSignIn = async () => {
   try {
     const user = await gapi.auth2.getAuthInstance().signIn()
@@ -62,12 +72,14 @@ export const handleWhoIsSignIn = async () => {
     // Verificar se o usuário está logado
     if (auth.isSignedIn.get()) {
       const user = await auth.currentUser.get()
+      const token = await user.getAuthResponse().access_token
       const profile = await user.getBasicProfile()
       const userProfile = {
         id: profile.getId(),
         name: profile.getName(),
         email: profile.getEmail(),
         imageUrl: profile.getImageUrl(),
+        token: token,
       }
       return userProfile
     }
@@ -239,6 +251,27 @@ export const updateJsonFile = async (fileId, data) => {
       },
       body: multipartRequestBody,
     })
+  } catch (error) {
+    throw error
+  }
+}
+
+export const updateJsonFileShared = async (fileId, data) => {
+  const token = await authenticateUser()
+  const utf = JSON.stringify(data)
+
+  try {
+    await fetch(
+      `https://www.googleapis.com/upload/drive/v3/files/${fileId}?uploadType=media&key=${API_KEY}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: `Bearer ${token}`,
+        },
+        body: utf,
+      }
+    )
   } catch (error) {
     throw error
   }

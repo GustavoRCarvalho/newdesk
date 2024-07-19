@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
   environment: {},
+  comments: undefined,
 }
 
 export const homeDataSlice = createSlice({
@@ -10,13 +11,14 @@ export const homeDataSlice = createSlice({
   reducers: {
     resetData: (state) => {
       state.environment = initialState.environment
+      state.environment = initialState.comments
     },
     setInitial: (state, action) => {
       state.environment = action.payload
       state.environment.categoriesSearched = action.payload.categories
     },
     setComments: (state, action) => {
-      state.environment.comments = action.payload
+      state.comments = action.payload
     },
     changeData: (state, action) => {
       state.environment.categoriesSearched = action.payload
