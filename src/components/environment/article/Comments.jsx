@@ -5,9 +5,9 @@ import { AddComment } from "./AddComment"
 
 export const Comments = ({ articleId }) => {
   const commentsData = useSelector((state) => state.homeData.comments)
-  // const commentsFiltered = commentsData?.filter(
-  //   (comment) => articleId === comment.articleId
-  // )
+  const commentsFiltered = commentsData?.filter(
+    (comment) => articleId === comment.articleId
+  )
   // const commentsData = [
   //   {
   //     id: "9878675",
@@ -27,7 +27,7 @@ export const Comments = ({ articleId }) => {
     <CommentsContainer>
       <AddComment articleId={articleId} />
       <h2>COMENTÁRIOS</h2>
-      {commentsData?.map((comment) => {
+      {commentsFiltered?.map((comment) => {
         return <Commentary key={comment.id} {...comment} />
       })}
     </CommentsContainer>
