@@ -4,10 +4,10 @@ import { GoStarFill, GoStar } from "react-icons/go"
 import { useEffect, useState } from "react"
 import { FcGoogle } from "react-icons/fc"
 import { toggleLogin } from "../../../store/modalSlice"
-import {
-  readJsonFile,
-  updateJsonFileShared,
-} from "../../../utils/googleDriveApi"
+// import {
+//   readJsonFile,
+//   updateJsonFileShared,
+// } from "../../../utils/googleDriveApi"
 import { setComments } from "../../../store/homeDataSlice"
 import { createAlertError, createAlertSucess } from "../../../store/alertSlice"
 import { currentDate, generateUniqueId } from "../../../utils/functions"
@@ -19,22 +19,22 @@ export const AddComment = ({ articleId }) => {
   const [content, setContent] = useState("")
   const [loading, setLoading] = useState(null)
   const [rating, setRating] = useState(null)
-  const homeData = useSelector((state) => state.homeData.environment)
+  // const homeData = useSelector((state) => state.homeData.environment)
   const commentsData = useSelector((state) => state.homeData.comments)
   const user = useSelector((state) => state.user.user)
 
-  async function handleFetchComments() {
-    console.log(homeData.commentId)
-    try {
-      const data = await readJsonFile(homeData.commentId)
-      dispatch(setComments(data))
-      return data
-    } catch (e) {
-      dispatch(setComments([]))
-      dispatch(createAlertError(e.message))
-    } finally {
-    }
-  }
+  // async function handleFetchComments() {
+  //   console.log(homeData.commentId)
+  //   try {
+  //     const data = await readJsonFile(homeData.commentId)
+  //     dispatch(setComments(data))
+  //     return data
+  //   } catch (e) {
+  //     dispatch(setComments([]))
+  //     dispatch(createAlertError(e.message))
+  //   } finally {
+  //   }
+  // }
 
   async function addCommentary() {
     if (content === "") {

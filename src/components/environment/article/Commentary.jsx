@@ -1,29 +1,97 @@
-import { GoStar, GoStarFill } from "react-icons/go"
+import { GoStar, GoStarFill, GoTrash } from "react-icons/go"
 import styled from "styled-components"
+import { createAlertError } from "../../../store/alertSlice"
+import { useDispatch, useSelector } from "react-redux"
+import { setComments } from "../../../store/homeDataSlice"
+import { useState } from "react"
+import { Spinner } from "../../principal/driveApi/ManipulateListItem"
 
-export const Commentary = ({ imageUrl, name, rating, date, content }) => {
+export const Commentary = ({
+  id,
+  userId,
+  imageUrl,
+  name,
+  rating,
+  date,
+  content,
+}) => {
+  const dispatch = useDispatch()
+  const commentsData = useSelector((state) => state.homeData.comments)
+  const user = useSelector((state) => state.user.user)
+  const sameUser = userId === user.id
+  const [loading, setLoading] = useState(null)
+
+  async function handleDelete() {
+    if (loading) return
+    if (!sameUser) return
+    setLoading(true)
+    try {
+      const commentsCopy = JSON.parse(JSON.stringify(commentsData))
+      const commentIndex = commentsCopy.map(({ id }) => id).indexOf(id)
+
+      await new Promise((resolve) => setTimeout(resolve, 500))
+      commentsCopy.splice(commentIndex, 1)
+      dispatch(setComments(commentsCopy))
+    } catch (e) {
+      dispatch(createAlertError(e.message))
+    } finally {
+      setLoading(false)
+    }
+  }
   return (
     <CommentaryContainer>
-      <UserWrapper>
-        <img src={imageUrl ?? ""} alt="" />
-        <InfosWrapper>
-          <NameRatingWrapper>
-            <span>{name}</span>
-            <RatingStars>
-              {rating < 1 ? <GoStar /> : <GoStarFill />}
-              {rating < 2 ? <GoStar /> : <GoStarFill />}
-              {rating < 3 ? <GoStar /> : <GoStarFill />}
-              {rating < 4 ? <GoStar /> : <GoStarFill />}
-              {rating < 5 ? <GoStar /> : <GoStarFill />}
-            </RatingStars>
-          </NameRatingWrapper>
-          <DateSpan>Avaliado em {date}</DateSpan>
-        </InfosWrapper>
-      </UserWrapper>
-      <ContentSpan>{content}</ContentSpan>
+      <CommentaryWrapper>
+        <UserWrapper>
+          <img src={imageUrl ?? ""} alt="" />
+          <InfosWrapper>
+            <NameRatingWrapper>
+              <span>{name}</span>
+              <RatingStars>
+                {rating < 1 ? <GoStar /> : <GoStarFill />}
+                {rating < 2 ? <GoStar /> : <GoStarFill />}
+                {rating < 3 ? <GoStar /> : <GoStarFill />}
+                {rating < 4 ? <GoStar /> : <GoStarFill />}
+                {rating < 5 ? <GoStar /> : <GoStarFill />}
+              </RatingStars>
+            </NameRatingWrapper>
+            <DateSpan>Avaliado em {date}</DateSpan>
+          </InfosWrapper>
+        </UserWrapper>
+        <ContentSpan>{content}</ContentSpan>
+      </CommentaryWrapper>
+      {sameUser && (
+        <DeleteButton onClick={handleDelete}>
+          {loading ? <Spinner /> : <GoTrash />}
+        </DeleteButton>
+      )}
     </CommentaryContainer>
   )
 }
+
+const DeleteButton = styled.button`
+  font-size: 1em;
+  background-color: transparent;
+  color: var(--home-card-color);
+
+  width: 2.5em;
+  height: 2.5em;
+  padding: 0.5em;
+
+  border: none;
+  border-radius: 50%;
+
+  &:hover {
+    background-color: var(--home-settings-button-background-hover);
+    color: #ff3f3f;
+  }
+
+  svg {
+    width: 1.5em;
+    height: 1.5em;
+  }
+
+  cursor: pointer;
+`
 
 const RatingStars = styled.div`
   display: flex;
@@ -35,13 +103,23 @@ const RatingStars = styled.div`
   }
 `
 
-const CommentaryContainer = styled.div`
+const CommentaryWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.25em;
 
   margin-block: 0.75em;
   margin-left: 1.5em;
+`
+
+const CommentaryContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  width: 100%;
+
+  gap: 0.25em;
 `
 
 const NameRatingWrapper = styled.div`
