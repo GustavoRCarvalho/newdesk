@@ -175,12 +175,7 @@ const NavigationArticle = styled.div`
 const ArticleContainer = styled.div`
   width: calc(100% - 6em);
   max-width: 920px;
-  height: 100%;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
+  min-height: 100%;
   padding: 3em;
 
   color: var(--home-card-color);
@@ -188,7 +183,7 @@ const ArticleContainer = styled.div`
   .quill {
     margin-top: 1em;
     width: 100%;
-    height: 100%;
+    height: max-content;
     min-height: 70dvh;
   }
 
@@ -198,7 +193,16 @@ const ArticleContainer = styled.div`
 
   .ql-container {
     border: none;
-    border-radius: 1em;
+
+    height: max-content;
+    min-height: 100%;
+  }
+
+  .ql-editor {
+    height: 100%;
+
+    border-radius: 0.5em;
+
     box-shadow: 0em 0em 1em 0em #0000004b;
   }
 `

@@ -51,6 +51,8 @@ const AlertContainer = styled.div`
   }
 
   user-select: none;
+
+  z-index: 2;
 `
 
 const AlertTitle = styled.span`

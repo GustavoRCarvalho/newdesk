@@ -102,11 +102,17 @@ export const Editor = () => {
   }
 
   useEffect(() => {
-    dispatch(initialData())
+    if (editorData.environmentName) {
+      return
+    }
     if (environment) {
       fetchData()
     } else {
       dispatch(setEditorInitial({}))
+    }
+
+    return () => {
+      initialData()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -145,7 +151,7 @@ const EditorContainer = styled.div`
 
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
 
   overflow-x: hidden;
@@ -230,7 +236,7 @@ const EditorContainer = styled.div`
     border: none;
 
     margin-top: 2em;
-    height: calc(100% - (24px + 5em));
+    min-height: calc(100% - (24px + 5em));
   }
 
   .ql-editor {
@@ -275,6 +281,7 @@ const SaveContainer = styled.div`
   max-width: 920px;
 
   padding-block: 1em;
+  margin-top: 5em;
 
   button {
     background-color: var(--home-card-background);

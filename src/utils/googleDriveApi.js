@@ -112,19 +112,7 @@ export const listFiles = async () => {
       fields: "files(id, name, createdTime, size)",
     })
 
-    const result = await Promise.all(
-      response.result.files.map(async (item) => {
-        try {
-          const contentResult = await readJsonFile(item.id)
-          item.imageUrl = contentResult.environmentImage
-          return item
-        } catch (e) {
-          throw e
-        }
-      })
-    )
-
-    return result
+    return response.result.files
   } catch (error) {
     throw error // Lançar o erro para que possa ser tratado pelo chamador
   }

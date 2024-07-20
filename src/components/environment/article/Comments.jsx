@@ -39,7 +39,6 @@ const CommentsContainer = styled.div`
 
   width: calc(100%);
   max-width: 920px;
-  height: 100%;
 
   display: flex;
   flex-direction: column;

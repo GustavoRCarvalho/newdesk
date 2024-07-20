@@ -7,6 +7,7 @@ import { setInitial } from "../../../store/homeDataSlice"
 import { Spinner } from "./ManipulateListItem"
 import { useNavigate } from "react-router-dom"
 import { createAlertError, createAlertSucess } from "../../../store/alertSlice"
+import { ModalBackground } from "../../../router/Modal"
 
 export const EnvironmentAcess = () => {
   const navigate = useNavigate()
@@ -38,7 +39,7 @@ export const EnvironmentAcess = () => {
   }
 
   return (
-    <EnvironmentAcessModal
+    <ModalBackground
       id="modalAcess"
       onMouseDown={(e) =>
         e.target.id === "modalAcess" && dispatch(toggleEnvironmentId())
@@ -59,7 +60,7 @@ export const EnvironmentAcess = () => {
           Acessar{loading && <Spinner />}
         </AcessButton>
       </AcessContainer>
-    </EnvironmentAcessModal>
+    </ModalBackground>
   )
 }
 
@@ -96,20 +97,6 @@ const AcessInput = styled.input`
   border-radius: 0.5em;
 
   outline: none;
-`
-
-const EnvironmentAcessModal = styled.div`
-  position: fixed;
-
-  background-color: #00000026;
-  backdrop-filter: blur(2px);
-
-  width: 100%;
-  height: 100%;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `
 
 const AcessContainer = styled.div`

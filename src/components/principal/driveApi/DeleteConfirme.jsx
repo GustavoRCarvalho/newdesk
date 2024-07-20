@@ -6,6 +6,7 @@ import { useState } from "react"
 import { Spinner } from "./ManipulateListItem"
 import Trash from "../../../assets/images/lixeira.svg"
 import { createAlertError, createAlertSucess } from "../../../store/alertSlice"
+import { ModalBackground } from "../../../router/Modal"
 
 export const DeleteConfirme = () => {
   const dispatch = useDispatch()
@@ -36,7 +37,7 @@ export const DeleteConfirme = () => {
   }
 
   return (
-    <Modal
+    <ModalBackground
       id="modalDelete"
       onMouseDown={(e) =>
         e.target.id === "modalDelete" && dispatch(toggleDelete())
@@ -67,7 +68,7 @@ export const DeleteConfirme = () => {
           </DeleteButton>
         </ContainerButtons>
       </Container>
-    </Modal>
+    </ModalBackground>
   )
 }
 
@@ -140,20 +141,6 @@ const DeleteInput = styled.input`
   &::placeholder {
     color: ${(props) => (props.$alert ? "#ff3f3f" : "#777")};
   }
-`
-
-const Modal = styled.div`
-  position: fixed;
-
-  background-color: #00000026;
-  backdrop-filter: blur(2px);
-
-  width: 100%;
-  height: 100%;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `
 
 const Container = styled.div`

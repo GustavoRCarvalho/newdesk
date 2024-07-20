@@ -5,6 +5,7 @@ import { useState } from "react"
 import { DynaminicIcon } from "../../../router/DynamicIcon"
 import { setEditor } from "../../../store/editorSlice"
 import { createAlertSucess } from "../../../store/alertSlice"
+import { ModalBackground } from "../../../router/Modal"
 
 export const ChangeIcon = () => {
   const dispatch = useDispatch()
@@ -37,7 +38,7 @@ export const ChangeIcon = () => {
   }
 
   return (
-    <ChangeIconModal
+    <ModalBackground
       id="modalChangeIcon"
       onMouseDown={(e) =>
         e.target.id === "modalChangeIcon" && dispatch(toggleChangeIcon())
@@ -56,7 +57,7 @@ export const ChangeIcon = () => {
           <ChangeIconButton onClick={handleClick}>Salvar</ChangeIconButton>
         </InputWrapper>
       </ChangeIconContainer>
-    </ChangeIconModal>
+    </ModalBackground>
   )
 }
 
@@ -99,20 +100,6 @@ const ChangeIconInput = styled.input`
   border-radius: 0.5em;
 
   outline: none;
-`
-
-const ChangeIconModal = styled.div`
-  position: fixed;
-
-  background-color: #00000026;
-  backdrop-filter: blur(2px);
-
-  width: 100%;
-  height: 100%;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `
 
 const ChangeIconContainer = styled.div`

@@ -12,6 +12,7 @@ import { FcGoogle } from "react-icons/fc"
 import { initialUser, setUser } from "../../../store/userSlice"
 import { useEffect } from "react"
 import logo from "../../../assets/images/Logo.svg"
+import { ModalBackground } from "../../../router/Modal"
 
 export const Login = () => {
   const dispatch = useDispatch()
@@ -65,7 +66,7 @@ export const Login = () => {
   }, [user])
 
   return (
-    <LoginModal
+    <ModalBackground
       id="modalLogin"
       onMouseDown={(e) =>
         e.target.id === "modalLogin" && dispatch(toggleLogin())
@@ -93,23 +94,10 @@ export const Login = () => {
           </>
         )}
       </LoginContainer>
-    </LoginModal>
+    </ModalBackground>
   )
 }
 
-const LoginModal = styled.div`
-  position: fixed;
-
-  background-color: #00000026;
-  backdrop-filter: blur(2px);
-
-  width: 100%;
-  height: 100%;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`
 const LoginContainer = styled.div`
   background-color: #00000086;
   backdrop-filter: blur(5px);

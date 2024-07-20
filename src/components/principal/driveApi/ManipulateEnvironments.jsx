@@ -9,6 +9,7 @@ import { useEffect, useState } from "react"
 import { ManipulateListItem, Spinner } from "./ManipulateListItem"
 import { GoX, GoImage } from "react-icons/go"
 import { createAlertError, createAlertSucess } from "../../../store/alertSlice"
+import { ModalBackground } from "../../../router/Modal"
 
 export const ManipulateEnvironments = () => {
   const isDeleteOpen = useSelector((state) => state.modal.delete)
@@ -89,7 +90,7 @@ export const ManipulateEnvironments = () => {
   }, [isExecuting, isDeleteOpen])
 
   return (
-    <Modal
+    <ModalBackground
       id="modalManipulate"
       onMouseDown={(e) =>
         e.target.id === "modalManipulate" && dispatch(toggleManipulate())
@@ -131,7 +132,6 @@ export const ManipulateEnvironments = () => {
         <table>
           <thead>
             <tr>
-              <th>Logo</th>
               <th>Nome</th>
               <th>Data</th>
               <th>Editar</th>
@@ -141,16 +141,7 @@ export const ManipulateEnvironments = () => {
           {list.length !== 0 && (
             <tbody>
               {list.map((item) => {
-                return (
-                  <ManipulateListItem
-                    key={item.id}
-                    item={item}
-                    isExecuting={isExecuting}
-                    setIsExecuting={setIsExecuting}
-                    isExecutingAnimation={isExecutingAnimation}
-                    setIsExecutingAnimation={setIsExecutingAnimation}
-                  />
-                )
+                return <ManipulateListItem key={item.id} item={item} />
               })}
             </tbody>
           )}
@@ -161,7 +152,7 @@ export const ManipulateEnvironments = () => {
           </TableEmpty>
         )}
       </Container>
-    </Modal>
+    </ModalBackground>
   )
 }
 
@@ -287,20 +278,6 @@ const CreateInput = styled.input`
   border-radius: 0.5em;
 
   outline: none;
-`
-
-const Modal = styled.div`
-  position: fixed;
-
-  background-color: #00000026;
-  backdrop-filter: blur(2px);
-
-  width: 100%;
-  height: 100%;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `
 
 const Container = styled.div`
@@ -434,11 +411,6 @@ const Container = styled.div`
 
       border-top-left-radius: 0.5em;
       border-bottom-left-radius: 0.5em;
-    }
-    td:nth-child(2) {
-      div {
-        display: flex;
-      }
     }
     td:nth-child(4) {
       text-align: center;

@@ -68,6 +68,7 @@ const AlertContainer = styled(motion.div)`
   gap: 1em;
 
   padding: 1em;
+  z-index: 2;
 `
 
 const AlertMessage = styled(motion.div)`
