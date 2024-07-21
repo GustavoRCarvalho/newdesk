@@ -17,7 +17,11 @@ export const Search = ({ isOpen, setIsOpen }) => {
         <SearchInput
           ref={searchInputRef}
           onChange={(e) => {
-            dispatch(searchData(search(e.target.value, homeData?.categories)))
+            dispatch(
+              searchData(
+                search(e, homeData?.categories, homeData?.categoriesSearched)
+              )
+            )
           }}
           placeholder="Pesquisar"
         />

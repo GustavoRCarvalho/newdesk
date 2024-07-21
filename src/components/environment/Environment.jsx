@@ -1,64 +1,70 @@
 import styled from "styled-components"
 import { CardMenu } from "./menu/CardMenu"
 import { SideMenu } from "./menu/SideMenu"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 import { resetCard } from "../../store/cardSlice"
 import { Settings } from "./home/Settings"
 import { ButtonDarkLightTheme } from "./home/ButtonDarkLightTheme"
 import { ButtonThemeChange } from "./home/ButtonThemeChange"
 import { useLocation } from "react-router-dom"
-import { readJsonFile } from "../../utils/googleDriveApi"
 import { setInitial } from "../../store/homeDataSlice"
-import { useEffect, useState } from "react"
+import { Suspense, useEffect } from "react"
 import { LoadingScreen } from "../../router/LoadingScreen"
-import { createAlertError } from "../../store/alertSlice"
+import { useFetchData } from "../principal/driveApi/useFetchData"
+import { useCookies } from "react-cookie"
 
 export const Environment = ({ children }) => {
   const dispatch = useDispatch()
-
-  const homeData = useSelector((state) => state.homeData.environment)
-  const [errorMessage, setErrorMessage] = useState("")
-  const needLoading = JSON.stringify(homeData) === "{}"
   const location = useLocation()
+  const [cookies, setCookies] = useCookies()
 
   const params = new URLSearchParams(location.search)
   const environment = params.get("environment")
 
-  async function handleFetch() {
-    try {
-      const data = await readJsonFile(environment)
-      dispatch(setInitial(data))
-    } catch (e) {
-      setErrorMessage(e.message)
-      dispatch(createAlertError(e.message))
-    } finally {
-    }
-  }
+  const { data, loading, error } = useFetchData(
+    cookies[environment] ? "" : environment
+  )
 
   useEffect(() => {
-    if (needLoading) {
-      handleFetch()
+    if (cookies[environment]) {
+      const obj = {
+        ...cookies[environment],
+        categoriesSearched: cookies[environment].categories,
+      }
+      dispatch(setInitial(obj))
+      return
+    }
+    if (data) {
+      const obj = { ...data, categoriesSearched: data.categories }
+      dispatch(setInitial(obj))
+
+      const expires = new Date()
+      expires.setMinutes(expires.getMinutes() + 10)
+      setCookies([environment], obj, { path: "/", expires })
+      return
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [needLoading])
+  }, [data, dispatch, environment])
 
-  return needLoading ? (
-    <LoadingScreen errorMessage={errorMessage} />
+  return !cookies[environment] && loading ? (
+    <LoadingScreen errorMessage={error} />
   ) : (
-    <EnvironmentContainer>
-      <Settings>
-        <ButtonDarkLightTheme />
-        <ButtonThemeChange />
-      </Settings>
-      <SideMenu />
-      <MainContainer
-        id="containerElement"
-        onMouseEnter={() => dispatch(resetCard())}
-      >
-        {children}
-      </MainContainer>
-      <CardMenu />
-    </EnvironmentContainer>
+    <Suspense fallback={<LoadingScreen errorMessage={error} />}>
+      <EnvironmentContainer>
+        <Settings>
+          <ButtonDarkLightTheme />
+          <ButtonThemeChange />
+        </Settings>
+        <SideMenu />
+        <MainContainer
+          id="containerElement"
+          onMouseEnter={() => dispatch(resetCard())}
+        >
+          {children}
+        </MainContainer>
+        <CardMenu />
+      </EnvironmentContainer>
+    </Suspense>
   )
 }
 

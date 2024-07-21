@@ -2,11 +2,8 @@ import styled from "styled-components"
 import { useDispatch } from "react-redux"
 import { toggleEnvironmentId } from "../../../store/modalSlice"
 import { useState } from "react"
-import { readJsonFile } from "../../../utils/googleDriveApi"
-import { setInitial } from "../../../store/homeDataSlice"
-import { Spinner } from "./ManipulateListItem"
 import { useNavigate } from "react-router-dom"
-import { createAlertError, createAlertSucess } from "../../../store/alertSlice"
+import { createAlertError } from "../../../store/alertSlice"
 import { ModalBackground } from "../../../router/Modal"
 
 export const EnvironmentAcess = () => {
@@ -14,7 +11,6 @@ export const EnvironmentAcess = () => {
   const dispatch = useDispatch()
   const [value, setValue] = useState("")
   const [error, setError] = useState(false)
-  const [loading, setLoading] = useState(false)
 
   async function handleClick() {
     if (value === "") {
@@ -22,19 +18,13 @@ export const EnvironmentAcess = () => {
       return
     }
     if (error) return
-    setLoading(true)
     try {
-      const data = await readJsonFile(value)
       setError(false)
-      dispatch(setInitial(data))
       dispatch(toggleEnvironmentId())
-      dispatch(createAlertSucess("Carregado com sucesso!"))
       navigate(`/environment?environment=${value}`)
     } catch (e) {
       setError(true)
       dispatch(createAlertError(e.message))
-    } finally {
-      setLoading(false)
     }
   }
 
@@ -56,9 +46,7 @@ export const EnvironmentAcess = () => {
             setValue(e.target.value)
           }}
         />
-        <AcessButton onClick={handleClick}>
-          Acessar{loading && <Spinner />}
-        </AcessButton>
+        <AcessButton onClick={handleClick}>Acessar</AcessButton>
       </AcessContainer>
     </ModalBackground>
   )

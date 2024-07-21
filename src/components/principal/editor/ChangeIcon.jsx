@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { toggleChangeIcon } from "../../../store/modalSlice"
 import { useState } from "react"
 import { DynaminicIcon } from "../../../router/DynamicIcon"
-import { setEditor } from "../../../store/editorSlice"
-import { createAlertSucess } from "../../../store/alertSlice"
+import { changeIconCategory } from "../../../store/editorSlice"
+import { createAlertError, createAlertSucess } from "../../../store/alertSlice"
 import { ModalBackground } from "../../../router/Modal"
 
 export const ChangeIcon = () => {
@@ -16,19 +16,21 @@ export const ChangeIcon = () => {
   const [error, setError] = useState(false)
 
   async function handleClick() {
-    let newCopy = JSON.parse(JSON.stringify(editorData.categories))
-    let index = editorData.categories
-      .map(({ title }) => title)
-      .indexOf(isOpen.changeIcon.title)
+    const categories = editorData.categories.map(({ title }) => title)
+
+    let index = categories.indexOf(isOpen.changeIcon.title)
+
     if (index === -1) {
       dispatch(toggleChangeIcon())
-      // mensagem de erro dizendo que a categoria nao foi encontrada corretamente
+      dispatch(
+        createAlertError(
+          "Não foi possível encontrar a categoria, tente novamente."
+        )
+      )
       return
     }
-    newCopy[index].Icon = value
+    dispatch(changeIconCategory({ newIcon: value, index: index }))
     dispatch(createAlertSucess("Icone padrão adicionado."))
-
-    dispatch(setEditor(newCopy))
     dispatch(toggleChangeIcon())
   }
 

@@ -1,71 +1,62 @@
 import { useDispatch, useSelector } from "react-redux"
 import { DropdownSelector } from "./DropdownSelector"
 import {
-  setEditor,
-  selectCategoryIndex,
-  selectSubCategoryIndex,
-  selectArticleIndex,
+  addCategory,
+  changeNameCategory,
+  removeCategory,
+  selectCategory,
 } from "../../../store/editorSlice"
 import {
   createAlertSucess,
   createAlertWarning,
 } from "../../../store/alertSlice"
+import { useMemo } from "react"
 
 export const CategoryDropdown = () => {
   const dispatch = useDispatch()
   const editorState = useSelector((state) => state.editor)
   const editorData = editorState.environment
-  let newCopy = JSON.parse(JSON.stringify(editorData.categories))
 
-  // console.log(editorData.categories)
+  const categoriesOptions = useMemo(
+    () => editorData.categories ?? [],
+    [editorData.categories]
+  )
+  const categories = useMemo(
+    () => categoriesOptions.map(({ title }) => title),
+    [categoriesOptions]
+  )
 
-  const categoriesOptions = editorData.categories ?? []
-  const categories = categoriesOptions.map(({ title }) => title)
+  const handleChangeCategory = useMemo(
+    () => (newName, oldName) => {
+      if (newName === oldName) return
+      const categoryIndex = categories.indexOf(oldName)
+      if (categoryIndex === -1 || categories.includes(newName)) {
+        dispatch(createAlertWarning("Atenção: Está categoria já existe."))
+        return
+      }
 
-  const handleChangeCategory = (newName, oldName) => {
-    if (newName === oldName) return
-    const categoryIndex = categories.indexOf(oldName)
-    if (categoryIndex === -1 || categories.includes(newName)) {
-      dispatch(createAlertWarning("Atenção: Está categoria já existe."))
-      return
-    }
-
-    newCopy[categoryIndex].title = newName
-    dispatch(setEditor(newCopy))
-    dispatch(createAlertSucess("Alterado com sucesso!"))
-  }
+      dispatch(changeNameCategory({ newName: newName, index: categoryIndex }))
+      dispatch(createAlertSucess("Alterado com sucesso!"))
+    },
+    [categories, dispatch]
+  )
 
   const handleAddCategory = () => {
     if (categories.includes("Nova categoria")) {
       dispatch(createAlertWarning("Atenção: Está categoria já existe."))
       return
     }
-    const newCategory = {
-      title: "Nova categoria",
-      Icon: "",
-      subCategories: [],
-    }
+    dispatch(addCategory())
     dispatch(createAlertSucess("Categoria adicionada com sucesso!"))
-    dispatch(setEditor([...editorData.categories, newCategory]))
   }
 
-  const handleRemoveCategory = (itemName) => {
-    const categoryIndex = categories.indexOf(itemName)
-
-    newCopy.categories.splice(categoryIndex, 1)
-    dispatch(setEditor(newCopy))
+  const handleRemoveCategory = (index) => {
+    dispatch(removeCategory({ index: index }))
     dispatch(createAlertSucess("Categoria removida com sucesso!"))
-    if (categoryIndex === editorState.selectedCategoryIndex) {
-      dispatch(selectCategoryIndex(-1))
-      dispatch(selectSubCategoryIndex(-1))
-      dispatch(selectArticleIndex(-1))
-    }
   }
 
-  const handleSelectCategory = (itemIndex) => {
-    dispatch(selectCategoryIndex(itemIndex))
-    dispatch(selectSubCategoryIndex(-1))
-    dispatch(selectArticleIndex(-1))
+  const handleSelectCategory = (index) => {
+    dispatch(selectCategory(index))
   }
 
   const selected = () => {

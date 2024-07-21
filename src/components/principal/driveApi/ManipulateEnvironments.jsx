@@ -412,7 +412,7 @@ const Container = styled.div`
       border-top-left-radius: 0.5em;
       border-bottom-left-radius: 0.5em;
     }
-    td:nth-child(4) {
+    td:nth-child(3) {
       text-align: center;
     }
     td:last-child {

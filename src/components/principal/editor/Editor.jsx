@@ -5,18 +5,18 @@ import styled from "styled-components"
 import { useEffect, useState } from "react"
 import { CategoryDropdown } from "./CategoryDropdown"
 import {
-  initialData,
-  setEditor,
+  changeBackgroundArticle,
   setEditorInitial,
 } from "../../../store/editorSlice"
 import { SubCategoryDropdown } from "./SubCategoryDropdown"
 import { ArticleDropdown } from "./ArticleDropdown"
-import { readJsonFile, updateJsonFile } from "../../../utils/googleDriveApi"
+import { updateJsonFile } from "../../../utils/googleDriveApi"
 import ReactQuill from "react-quill"
 import { modules } from "../../../utils/functions"
 import { Spinner } from "../driveApi/ManipulateListItem"
 import { LoadingScreen } from "../../../router/LoadingScreen"
 import { createAlertError, createAlertSucess } from "../../../store/alertSlice"
+import { useFetchData } from "../driveApi/useFetchData"
 
 export const Editor = () => {
   const location = useLocation()
@@ -30,45 +30,27 @@ export const Editor = () => {
     "#ef9441",
     "#df5e5a",
   ]
-  const [errorMessage, setErrorMessage] = useState("")
   const [isSaving, setIsSaving] = useState(false)
-  const [fileFound, setFileFound] = useState(false)
   const editorState = useSelector((state) => state.editor)
   const editorData = editorState.environment
-  let copyContent = JSON.parse(JSON.stringify(editorData.categories))
-
-  const dataEditor = () => {
-    const content =
-      editorData.categories[editorState.selectedCategoryIndex]?.subCategories[
-        editorState.selectedSubCategoryIndex
-      ]?.articles[editorState.selectedArticleIndex]?.content
-    if (content === undefined || content === "") {
-      return false
-    }
-    return true
-  }
+  const articleBackgroundColor =
+    editorData?.categories[editorState.selectedCategoryIndex]?.subCategories[
+      editorState.selectedSubCategoryIndex
+    ]?.articles[editorState.selectedArticleIndex]?.backgroundColor
 
   const params = new URLSearchParams(location.search)
   const environment = params.get("environment")
 
-  async function fetchData() {
-    try {
-      const result = await readJsonFile(environment)
-      dispatch(setEditorInitial(result))
-      setFileFound(true)
-    } catch (e) {
-      dispatch(createAlertError(e.message))
-      setErrorMessage(e.message)
-      setFileFound(false)
+  const { data, loading, error } = useFetchData(environment)
+
+  useEffect(() => {
+    if (data) {
+      dispatch(setEditorInitial(data))
     }
-  }
+  }, [data, dispatch])
 
   const handleChangeColor = () => {
-    if (
-      editorState.selectedCategoryIndex === -1 ||
-      editorState.selectedSubCategoryIndex === -1 ||
-      editorState.selectedArticleIndex === -1
-    ) {
+    if (editorState.selectedArticleIndex === -1) {
       return
     }
 
@@ -78,11 +60,7 @@ export const Editor = () => {
     }
     setBackgroundColor((state) => (state += 1))
 
-    copyContent[editorState.selectedCategoryIndex].subCategories[
-      editorState.selectedSubCategoryIndex
-    ].articles[editorState.selectedArticleIndex].backgroundColor =
-      colors[backgroundColor]
-    dispatch(setEditor(copyContent))
+    dispatch(changeBackgroundArticle({ newColor: colors[backgroundColor] }))
   }
 
   async function saveData() {
@@ -101,35 +79,19 @@ export const Editor = () => {
     }
   }
 
-  useEffect(() => {
-    if (editorData.environmentName) {
-      return
-    }
-    if (environment) {
-      fetchData()
-    } else {
-      dispatch(setEditorInitial({}))
-    }
-
-    return () => {
-      initialData()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  return !fileFound ? (
-    <LoadingScreen errorMessage={errorMessage} />
+  return loading ? (
+    <LoadingScreen errorMessage={error} />
   ) : (
     <EditorContainer
-      $readOnly={!dataEditor()}
-      $backgroundColor={colors[backgroundColor]}
+      $readOnly={editorState.selectedArticleIndex === -1}
+      $backgroundColor={articleBackgroundColor}
     >
       <DropdownContainer>
         <CategoryDropdown />
         <SubCategoryDropdown />
         <ArticleDropdown />
       </DropdownContainer>
-      {dataEditor() ? (
+      {editorState.selectedArticleIndex !== -1 ? (
         <EditorComponent />
       ) : (
         <ReactQuill readOnly theme="snow" modules={modules} />

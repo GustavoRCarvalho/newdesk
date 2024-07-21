@@ -1,9 +1,9 @@
 import ReactQuill from "react-quill"
 import "react-quill/dist/quill.snow.css"
 import { useDispatch, useSelector } from "react-redux"
-import { setEditor } from "../../../store/editorSlice"
+import { changeContentArticle } from "../../../store/editorSlice"
 import { useEffect, useState } from "react"
-import { currentDate, modules } from "../../../utils/functions"
+import { modules } from "../../../utils/functions"
 import { createAlertSucess } from "../../../store/alertSlice"
 
 export const EditorComponent = () => {
@@ -16,16 +16,7 @@ export const EditorComponent = () => {
     if (e.ctrlKey && e.key === "s") {
       e.preventDefault()
 
-      let newCopy = JSON.parse(JSON.stringify(editorData.categories))
-
-      const article =
-        newCopy[editorState.selectedCategoryIndex].subCategories[
-          editorState.selectedSubCategoryIndex
-        ].articles[editorState.selectedArticleIndex]
-      article.content = value
-      article.date = currentDate()
-
-      dispatch(setEditor(newCopy))
+      dispatch(changeContentArticle(value))
       dispatch(createAlertSucess("Salvo!"))
     }
   }

@@ -166,10 +166,18 @@ export function changeDarkLightMode(isDark) {
   }
 }
 
-export function search(text, oriData) {
-  if (text === "") return oriData
-
-  const searchTermLower = text.toLowerCase()
+export function search(e, oriData, searchData) {
+  // if (
+  //   (e.key === "Backspace" || e.key === "Delete") &&
+  //   e.target.value.length === 1
+  // ) {
+  //   return oriData
+  // }
+  // if (e.key !== "Enter") {
+  //   return searchData
+  // }
+  // if (e.target.value === "") return oriData
+  const searchTermLower = e.target.value.toLowerCase()
 
   return oriData
     .map((category) => {
@@ -184,7 +192,8 @@ export function search(text, oriData) {
           const filteredArticles = subCategory.articles.filter(
             (article) =>
               article.title.toLowerCase().includes(searchTermLower) ||
-              article.date.toLowerCase().includes(searchTermLower)
+              article.date.toLowerCase().includes(searchTermLower) ||
+              article.content.toLowerCase().includes(searchTermLower)
           )
           if (
             subCategory.title.toLowerCase().includes(searchTermLower) ||

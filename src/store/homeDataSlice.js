@@ -15,7 +15,6 @@ export const homeDataSlice = createSlice({
     },
     setInitial: (state, action) => {
       state.environment = action.payload
-      state.environment.categoriesSearched = action.payload.categories
     },
     setComments: (state, action) => {
       state.comments = action.payload

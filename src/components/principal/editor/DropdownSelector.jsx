@@ -83,7 +83,6 @@ export const DropdownSelector = ({
                   {Icon !== undefined && (
                     <DynaminicIcon
                       onClick={() => {
-                        console.log(title, Icon)
                         dispatch(toggleChangeIcon({ title: title, Icon: Icon }))
                       }}
                       iconName={Icon}
@@ -103,7 +102,7 @@ export const DropdownSelector = ({
                   ) : (
                     <GoPencil onClick={() => setEditable(title)} />
                   )}
-                  <GoTrash onClick={() => handleRemove(title)} />
+                  <GoTrash onClick={() => handleRemove(index)} />
                 </OptionIcons>
               </Item>
             )
@@ -292,6 +291,7 @@ const DropdownText = styled.div`
   svg {
     width: 1.5em;
     height: 1.5em;
+    cursor: pointer;
   }
 `
 

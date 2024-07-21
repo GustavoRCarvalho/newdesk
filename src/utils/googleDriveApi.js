@@ -194,11 +194,12 @@ export const handleCreateFolder = async (name, image = "") => {
   }
 }
 
-export const readJsonFile = async (fileId) => {
+export const readJsonFile = async (fileId, signal) => {
   try {
     const response = await fetch(
       `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media&key=${API_KEY}`,
       {
+        signal,
         headers: {
           "Content-Type": "application/json; charset=utf-8",
         },
