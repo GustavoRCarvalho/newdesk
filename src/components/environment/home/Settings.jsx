@@ -10,8 +10,10 @@ import { toggleLogin } from "../../../store/modalSlice"
 import { handleWhoIsSignIn } from "../../../utils/googleDriveApi"
 import { setUser } from "../../../store/userSlice"
 import { createAlertError } from "../../../store/alertSlice"
+import { ButtonDarkLightTheme } from "./ButtonDarkLightTheme"
+import { ButtonThemeChange } from "./ButtonThemeChange"
 
-export const Settings = ({ children }) => {
+export const Settings = () => {
   const dispatch = useDispatch()
   const user = useSelector((state) => state.user.user)
   const [isOpen, setIsOpen] = useState(false)
@@ -69,13 +71,15 @@ export const Settings = ({ children }) => {
               <span>{user?.name ?? "Conectar"}</span>
             </LoginContainer>
             <ButtonClose onClick={() => setIsOpen(false)} />
+            <OptionsContainer>
+              <ButtonDarkLightTheme />
+              <ButtonThemeChange />
+            </OptionsContainer>
+
+            <LogoutContainer to="/">
+              Voltar ao início <IoIosLogOut />
+            </LogoutContainer>
           </>
-        )}
-        {isOpen && <OptionsContainer>{children}</OptionsContainer>}
-        {isOpen && (
-          <LogoutContainer to="/">
-            Voltar ao início <IoIosLogOut />
-          </LogoutContainer>
         )}
       </SettingsContainer>
     </>

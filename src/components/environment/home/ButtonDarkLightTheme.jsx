@@ -1,13 +1,13 @@
 import { useState } from "react"
-import { useCookies } from "react-cookie"
 import styled, { css, keyframes } from "styled-components"
 import { HiOutlineMoon, HiOutlineSun } from "react-icons/hi2"
-import { changeDarkLightMode } from "../../../utils/functions"
+import { useDispatch, useSelector } from "react-redux"
+import { changeDarkTheme } from "../../../store/themeSlice"
 
 export const ButtonDarkLightTheme = () => {
-  const [cookies, setCookies] = useCookies()
-  const darkTheme = cookies.darkTheme
+  const dispatch = useDispatch()
   const [isRotating, setIsRotating] = useState(false)
+  const darkTheme = useSelector((state) => state.theme.darkTheme)
 
   function handleChangeLightMode() {
     setIsRotating(true)
@@ -15,8 +15,7 @@ export const ButtonDarkLightTheme = () => {
       setIsRotating(false)
     }, 1000)
 
-    setCookies("darkTheme", !darkTheme)
-    changeDarkLightMode(!darkTheme)
+    dispatch(changeDarkTheme(!darkTheme))
   }
 
   return (

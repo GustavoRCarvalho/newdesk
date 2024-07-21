@@ -1,8 +1,7 @@
 import styled from "styled-components"
-import { changeTheme } from "../../../utils/functions"
-import { useState } from "react"
 import { FaCheck } from "react-icons/fa6"
-import { useCookies } from "react-cookie"
+import { useDispatch, useSelector } from "react-redux"
+import { changeColorTheme } from "../../../store/themeSlice"
 
 const colorList = [
   { color: "Red", hexColor: "#f55d5d" },
@@ -14,8 +13,8 @@ const colorList = [
 ]
 
 export const ButtonThemeChange = () => {
-  const [cookies, setCookies] = useCookies()
-  const [colorTheme, setColorTheme] = useState(cookies.themeColor ?? "Pink")
+  const dispatch = useDispatch()
+  const colorTheme = useSelector((state) => state.theme.colorTheme)
 
   return (
     <ThemeColorContainer>
@@ -28,9 +27,7 @@ export const ButtonThemeChange = () => {
             $color={hexColor}
             $ischeck={colorTheme === color}
             onClick={() => {
-              changeTheme(color)
-              setColorTheme(color)
-              setCookies("themeColor", color)
+              dispatch(changeColorTheme(color))
             }}
           >
             <FaCheck />
@@ -60,9 +57,9 @@ const ThemeColorContainer = styled.div`
 const ButtonChangeThemeColor = styled.button`
   background-color: ${(props) => props.$color ?? "#fff"};
 
-  border: ${(props) =>
-    props.$ischeck ? "2px solid #fff" : "2px solid transparent"};
-  /* border: none; */
+  /* border: ${(props) =>
+    props.$ischeck ? "2px solid #fff" : "2px solid transparent"}; */
+  border: none;
   border-radius: 3em;
 
   width: 1.6em;
@@ -71,6 +68,8 @@ const ButtonChangeThemeColor = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  box-shadow: ${(props) => props.$ischeck && `0 0 1em 2px ${props.$color}`};
 
   padding: 0;
 

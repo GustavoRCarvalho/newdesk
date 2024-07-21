@@ -5,6 +5,7 @@ import editorReducer from "./editorSlice"
 import modalReducer from "./modalSlice"
 import alertReducer from "./alertSlice"
 import userReducer from "./userSlice"
+import themeReducer from "./themeSlice"
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     modal: modalReducer,
     alert: alertReducer,
     user: userReducer,
+    theme: themeReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
