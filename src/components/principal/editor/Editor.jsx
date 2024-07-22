@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { useLocation } from "react-router-dom"
 import { EditorComponent } from "./EditorComponent"
 import styled from "styled-components"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { CategoryDropdown } from "./CategoryDropdown"
 import {
   changeBackgroundArticle,
@@ -17,6 +17,7 @@ import { Spinner } from "../driveApi/ManipulateListItem"
 import { LoadingScreen } from "../../../router/LoadingScreen"
 import { createAlertError, createAlertSucess } from "../../../store/alertSlice"
 import { useFetchData } from "../driveApi/useFetchData"
+import { useCookies } from "react-cookie"
 
 export const Editor = () => {
   const location = useLocation()
@@ -32,22 +33,48 @@ export const Editor = () => {
   ]
   const [isSaving, setIsSaving] = useState(false)
   const editorState = useSelector((state) => state.editor)
-  const editorData = editorState.environment
-  const articleBackgroundColor =
-    editorData?.categories[editorState.selectedCategoryIndex]?.subCategories[
-      editorState.selectedSubCategoryIndex
-    ]?.articles[editorState.selectedArticleIndex]?.backgroundColor
+  const editorData = useMemo(
+    () => editorState.environment,
+    [editorState.environment]
+  )
+  const articleBackgroundColor = useMemo(
+    () =>
+      editorData?.categories[editorState.selectedCategoryIndex]?.subCategories[
+        editorState.selectedSubCategoryIndex
+      ]?.articles[editorState.selectedArticleIndex]?.backgroundColor,
+    [
+      editorData?.categories,
+      editorState.selectedArticleIndex,
+      editorState.selectedCategoryIndex,
+      editorState.selectedSubCategoryIndex,
+    ]
+  )
 
   const params = new URLSearchParams(location.search)
   const environment = params.get("environment")
 
-  const { data, loading, error } = useFetchData(environment)
+  const [cookies, setCookies] = useCookies(["editor"])
+
+  const { data, loading, error } = useFetchData(
+    cookies["editor"] ? "" : environment
+  )
 
   useEffect(() => {
+    if (cookies["editor"]) {
+      dispatch(setEditorInitial(cookies["editor"]))
+      return
+    }
+    if (loading) return
     if (data) {
       dispatch(setEditorInitial(data))
+
+      const expires = new Date()
+      expires.setMinutes(expires.getMinutes() + 30)
+      setCookies("editor", data, { path: "/", expires })
+      return
     }
-  }, [data, dispatch])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, dispatch, environment])
 
   const handleChangeColor = () => {
     if (editorState.selectedArticleIndex === -1) {
@@ -67,6 +94,11 @@ export const Editor = () => {
     try {
       setIsSaving(true)
       await updateJsonFile(environment, editorData)
+
+      const expires = new Date()
+      expires.setMinutes(expires.getMinutes() + 30)
+      setCookies("editor", editorData, { path: "/", expires })
+
       dispatch(createAlertSucess("Dados salvos com sucesso!"))
     } catch (e) {
       dispatch(
@@ -79,7 +111,7 @@ export const Editor = () => {
     }
   }
 
-  return loading ? (
+  return !editorData ? (
     <LoadingScreen errorMessage={error} />
   ) : (
     <EditorContainer
