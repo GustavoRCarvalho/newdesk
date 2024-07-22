@@ -10,8 +10,9 @@ import { Modal } from "./router/Modal"
 import { Alerts } from "./router/Alerts"
 
 function App() {
-  const { width } = useWindowDimensions()
-  const isDesktop = width > 720
+  const { isDesktop } = useWindowDimensions()
+
+  console.log("reload", isDesktop)
 
   return (
     <Provider store={store}>

@@ -115,18 +115,29 @@ function getWindowDimensions() {
 }
 
 export default function useWindowDimensions() {
-  const [windowDimensions, setWindowDimensions] = useState(
-    getWindowDimensions()
-  )
+  const [windowDimensions, setWindowDimensions] = useState(() => {
+    const { width, height } = getWindowDimensions()
+    return {
+      width,
+      height,
+      isDesktop: width > 720, // ajuste o valor de largura conforme necessário
+    }
+  })
 
   useEffect(() => {
     function handleResize() {
-      setWindowDimensions(getWindowDimensions())
+      const { width, height } = getWindowDimensions()
+      const isDesktop = width > 720 // ajuste o valor de largura conforme necessário
+
+      // Verifique se a condição isDesktop mudou antes de atualizar o estado
+      if (isDesktop !== windowDimensions.isDesktop) {
+        setWindowDimensions({ width, height, isDesktop })
+      }
     }
 
     window.addEventListener("resize", handleResize)
     return () => window.removeEventListener("resize", handleResize)
-  }, [])
+  }, [windowDimensions.isDesktop])
 
   return windowDimensions
 }

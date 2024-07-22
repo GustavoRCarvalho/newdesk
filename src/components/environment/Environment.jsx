@@ -16,17 +16,17 @@ export const Environment = ({ children }) => {
   const categoriesSearched = homeData?.categoriesSearched
   const dispatch = useDispatch()
   const location = useLocation()
-  const [cookies, setCookies] = useCookies()
 
   const params = new URLSearchParams(location.search)
   const environment = params.get("environment")
+
+  const [cookies, setCookies] = useCookies([environment])
 
   const { data, loading, error } = useFetchData(
     cookies[environment] ? "" : environment
   )
 
   useEffect(() => {
-    if (loading) return
     if (cookies[environment]) {
       const obj = {
         ...cookies[environment],
@@ -35,6 +35,7 @@ export const Environment = ({ children }) => {
       dispatch(setInitial(obj))
       return
     }
+    if (loading) return
     if (data) {
       const obj = { ...data, categoriesSearched: data.categories }
       dispatch(setInitial(obj))
