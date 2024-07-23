@@ -1,5 +1,5 @@
-import { AnimatePresence, motion, useIsPresent } from "framer-motion"
-import { useEffect, useState } from "react"
+import { AnimatePresence, motion, Reorder, useIsPresent } from "framer-motion"
+import { memo, useEffect, useState } from "react"
 import { FaCaretDown } from "react-icons/fa"
 import { GoCheck, GoPencil, GoPlus, GoTrash } from "react-icons/go"
 import styled from "styled-components"
@@ -7,122 +7,131 @@ import { DynaminicIcon } from "../../../router/DynamicIcon"
 import { useDispatch } from "react-redux"
 import { toggleChangeIcon } from "../../../store/modalSlice"
 
-export const DropdownSelector = ({
-  options = [],
-  disabled = false,
-  placeholder = "select",
-  onSelect,
-  handleChange,
-  handleAdd,
-  handleRemove,
-}) => {
-  const dispatch = useDispatch()
-  const [isOpen, setIsOpen] = useState(false)
-  const [editable, setEditable] = useState()
-  const [newNameValue, setNewNameValue] = useState("")
+export const DropdownSelector = memo(
+  ({
+    options = [],
+    disabled = false,
+    placeholder = "select",
+    onSelect,
+    handleChange,
+    handleAdd,
+    handleRemove,
+    handleReorder,
+  }) => {
+    const dispatch = useDispatch()
+    const [isOpen, setIsOpen] = useState(false)
+    const [editable, setEditable] = useState()
+    const [newNameValue, setNewNameValue] = useState("")
 
-  useEffect(() => {
-    if (JSON.stringify(options) === "[]" && disabled) {
-      setIsOpen(false)
-    }
-  }, [options, disabled])
+    useEffect(() => {
+      if (JSON.stringify(options) === "[]" && disabled) {
+        setIsOpen(false)
+      }
+    }, [options, disabled])
 
-  const handleCheck = () => {
-    if (newNameValue === "") {
+    const handleCheck = () => {
+      if (newNameValue === "") {
+        setEditable("")
+        return
+      }
+      handleChange(newNameValue, editable)
       setEditable("")
-      return
     }
-    handleChange(newNameValue, editable)
-    setEditable("")
-  }
 
-  useEffect(() => {
-    if (editable === "") {
-      return
-    }
-    setNewNameValue(editable)
-  }, [editable])
+    useEffect(() => {
+      if (editable === "") {
+        return
+      }
+      setNewNameValue(editable)
+    }, [editable])
 
-  return (
-    <DropdownContainer layout>
-      <ButtonDropdown
-        layout
-        onClick={() => !disabled && setIsOpen((state) => !state)}
-        $disabled={disabled}
-        $isOpen={isOpen}
-      >
-        {placeholder.Icon !== undefined && (
+    return (
+      <DropdownContainer layout>
+        <ButtonDropdown
+          layout
+          onClick={() => !disabled && setIsOpen((state) => !state)}
+          $disabled={disabled}
+          $isOpen={isOpen}
+        >
           <DynaminicIcon iconName={placeholder.Icon} />
-        )}
-        <span>{placeholder.title}</span>
-        <FaCaretDown className="downArrow" />
-      </ButtonDropdown>
-      <DropdownOptions
-        layout
-        animate={isOpen ? "open" : "closed"}
-        initial={{
-          height: "0em",
-        }}
-        variants={{
-          open: {
-            width: "100%",
-            height: "auto",
-          },
-          closed: {
-            width: "100%",
+          <span>{placeholder.title}</span>
+          <FaCaretDown className="downArrow" />
+        </ButtonDropdown>
+        <DropdownOptions
+          layout
+          animate={isOpen ? "open" : "closed"}
+          initial={{
             height: "0em",
-          },
-        }}
-      >
-        <AnimatePresence>
-          {[...options].map(({ title, Icon }, index) => {
-            const isEditable = editable === title
-            return (
-              <Item key={title} isEditable={isEditable}>
-                <DropdownText onClick={() => onSelect(index)}>
-                  {Icon !== undefined && (
-                    <DynaminicIcon
-                      onClick={() => {
-                        dispatch(toggleChangeIcon({ title: title, Icon: Icon }))
-                      }}
-                      iconName={Icon}
-                    />
-                  )}
-                  <DropdownInput
-                    type="text"
-                    value={isEditable ? newNameValue || "" : title}
-                    onChange={(e) => setNewNameValue(e.target.value)}
-                    disabled={!isEditable}
-                  />
-                  <InputClick $disabled={isEditable}></InputClick>
+          }}
+          variants={{
+            open: {
+              width: "100%",
+              height: "auto",
+            },
+            closed: {
+              width: "100%",
+              height: "0em",
+            },
+          }}
+        >
+          <AnimatePresence>
+            <DropdownGroup axis="y" values={options} onReorder={handleReorder}>
+              {options.map(({ title, Icon }, index) => {
+                const isEditable = editable === title
+                return (
+                  <Item
+                    key={title}
+                    value={options[index]}
+                    isEditable={isEditable}
+                  >
+                    <DropdownText onClick={() => onSelect(index)}>
+                      {Icon !== undefined && (
+                        <DynaminicIcon
+                          onClick={() => {
+                            dispatch(
+                              toggleChangeIcon({ title: title, Icon: Icon })
+                            )
+                          }}
+                          iconName={Icon}
+                        />
+                      )}
+                      <DropdownInput
+                        type="text"
+                        value={isEditable ? newNameValue || "" : title}
+                        onChange={(e) => setNewNameValue(e.target.value)}
+                        disabled={!isEditable}
+                      />
+                      <InputClick $disabled={isEditable}></InputClick>
+                    </DropdownText>
+                    <OptionIcons>
+                      {isEditable ? (
+                        <GoCheck onClick={handleCheck} />
+                      ) : (
+                        <GoPencil onClick={() => setEditable(title)} />
+                      )}
+                      <GoTrash onClick={() => handleRemove(index)} />
+                    </OptionIcons>
+                  </Item>
+                )
+              })}
+              <AddDropdown layout onClick={handleAdd}>
+                <DropdownText>
+                  <FakeIcon></FakeIcon>
+                  Adicionar
                 </DropdownText>
                 <OptionIcons>
-                  {isEditable ? (
-                    <GoCheck onClick={handleCheck} />
-                  ) : (
-                    <GoPencil onClick={() => setEditable(title)} />
-                  )}
-                  <GoTrash onClick={() => handleRemove(index)} />
+                  <GoPlus />
                 </OptionIcons>
-              </Item>
-            )
-          })}
-          <AddDropdown layout onClick={handleAdd}>
-            <DropdownText>
-              <FakeIcon></FakeIcon>
-              Adicionar
-            </DropdownText>
-            <OptionIcons>
-              <GoPlus />
-            </OptionIcons>
-          </AddDropdown>
-        </AnimatePresence>
-      </DropdownOptions>
-    </DropdownContainer>
-  )
-}
+              </AddDropdown>
+            </DropdownGroup>
+          </AnimatePresence>
+        </DropdownOptions>
+      </DropdownContainer>
+    )
+  }
+)
 
-const Item = ({ children, isEditable }) => {
+const Item = memo(({ children, value, isEditable }) => {
   const isPresent = useIsPresent()
   const animations = {
     style: {
@@ -132,11 +141,11 @@ const Item = ({ children, isEditable }) => {
     animate: { scale: 1, opacity: 1 },
   }
   return (
-    <DropdownItem {...animations} layout $isEditable={isEditable}>
+    <DropdownItem {...animations} value={value} layout $isEditable={isEditable}>
       {children}
     </DropdownItem>
   )
-}
+})
 
 const ButtonDropdown = styled(motion.div)`
   width: calc(100% - 2em);
@@ -247,7 +256,12 @@ const DropdownOptions = styled(motion.div)`
   }
 `
 
-const DropdownItem = styled(motion.div)`
+const DropdownGroup = styled(Reorder.Group)`
+  margin: 0;
+  padding: 0;
+`
+
+const DropdownItem = styled(Reorder.Item)`
   display: flex;
   justify-content: space-between;
 

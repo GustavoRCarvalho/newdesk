@@ -41,7 +41,7 @@ export const Environment = ({ children }) => {
       dispatch(setInitial(obj))
 
       const expires = new Date()
-      expires.setMinutes(expires.getMinutes() + 10)
+      expires.setMinutes(expires.getMinutes() + 60)
       setCookies([environment], obj, { path: "/", expires })
       return
     }

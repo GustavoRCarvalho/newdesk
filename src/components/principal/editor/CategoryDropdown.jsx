@@ -3,6 +3,7 @@ import { DropdownSelector } from "./DropdownSelector"
 import {
   addCategory,
   changeNameCategory,
+  changeOrderCategory,
   removeCategory,
   selectCategory,
 } from "../../../store/editorSlice"
@@ -10,12 +11,14 @@ import {
   createAlertSucess,
   createAlertWarning,
 } from "../../../store/alertSlice"
-import { useMemo } from "react"
+import { memo, useMemo } from "react"
 
-export const CategoryDropdown = () => {
+export const CategoryDropdown = memo(() => {
   const dispatch = useDispatch()
-  const editorState = useSelector((state) => state.editor)
-  const editorData = editorState.environment
+  const editorData = useSelector((state) => state.editor.environment)
+  const selectedCategoryIndex = useSelector(
+    (state) => state.editor.selectedCategoryIndex
+  )
 
   const categoriesOptions = useMemo(
     () => editorData.categories ?? [],
@@ -59,12 +62,16 @@ export const CategoryDropdown = () => {
     dispatch(selectCategory(index))
   }
 
+  const handleReorder = (newList) => {
+    dispatch(changeOrderCategory(newList))
+  }
+
   const selected = () => {
     const objDefault = {
       title: "Categoria",
       Icon: "",
     }
-    const obj = categoriesOptions[editorState.selectedCategoryIndex]
+    const obj = categoriesOptions[selectedCategoryIndex]
     if (obj) {
       return obj
     }
@@ -79,6 +86,7 @@ export const CategoryDropdown = () => {
       handleChange={handleChangeCategory}
       handleAdd={handleAddCategory}
       handleRemove={handleRemoveCategory}
+      handleReorder={handleReorder}
     />
   )
-}
+})

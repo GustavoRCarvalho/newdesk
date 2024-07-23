@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { useLocation } from "react-router-dom"
 import { EditorComponent } from "./EditorComponent"
 import styled from "styled-components"
-import { useEffect, useMemo, useState } from "react"
+import { memo, useEffect, useMemo, useState } from "react"
 import { CategoryDropdown } from "./CategoryDropdown"
 import {
   changeBackgroundArticle,
@@ -19,7 +19,7 @@ import { createAlertError, createAlertSucess } from "../../../store/alertSlice"
 import { useFetchData } from "../driveApi/useFetchData"
 import { useCookies } from "react-cookie"
 
-export const Editor = () => {
+export const Editor = memo(() => {
   const location = useLocation()
   const dispatch = useDispatch()
   const [backgroundColor, setBackgroundColor] = useState(0)
@@ -34,43 +34,48 @@ export const Editor = () => {
   const [isSaving, setIsSaving] = useState(false)
   const editorState = useSelector((state) => state.editor)
   const editorData = useMemo(
-    () => editorState.environment,
+    () => editorState.environment ?? [],
     [editorState.environment]
   )
-  const articleBackgroundColor = useMemo(
-    () =>
-      editorData?.categories[editorState.selectedCategoryIndex]?.subCategories[
-        editorState.selectedSubCategoryIndex
-      ]?.articles[editorState.selectedArticleIndex]?.backgroundColor,
-    [
-      editorData?.categories,
-      editorState.selectedArticleIndex,
-      editorState.selectedCategoryIndex,
-      editorState.selectedSubCategoryIndex,
-    ]
-  )
+  const articleBackgroundColor = useMemo(() => {
+    if (
+      editorState.selectedCategoryIndex !== -1 &&
+      editorState.selectedSubCategoryIndex !== -1 &&
+      editorState.selectedArticleIndex !== -1
+    ) {
+      return editorData?.categories[editorState.selectedCategoryIndex]
+        ?.subCategories[editorState.selectedSubCategoryIndex]?.articles[
+        editorState.selectedArticleIndex
+      ]?.backgroundColor
+    } else {
+      return "var(--home-card-background)"
+    }
+  }, [
+    editorData?.categories,
+    editorState.selectedArticleIndex,
+    editorState.selectedCategoryIndex,
+    editorState.selectedSubCategoryIndex,
+  ])
 
   const params = new URLSearchParams(location.search)
   const environment = params.get("environment")
 
-  const [cookies, setCookies] = useCookies(["editor"])
+  const [cookies, setCookies] = useCookies([`editor${environment}`])
 
   const { data, loading, error } = useFetchData(
-    cookies["editor"] ? "" : environment
+    cookies[`editor${environment}`] ? "" : environment
   )
 
   useEffect(() => {
-    if (cookies["editor"]) {
-      dispatch(setEditorInitial(cookies["editor"]))
+    if (cookies[`editor${environment}`]) {
+      dispatch(setEditorInitial(cookies[`editor${environment}`]))
       return
     }
     if (loading) return
     if (data) {
       dispatch(setEditorInitial(data))
 
-      const expires = new Date()
-      expires.setMinutes(expires.getMinutes() + 30)
-      setCookies("editor", data, { path: "/", expires })
+      setCookies(`editor${environment}`, data, { path: "/" })
       return
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -111,7 +116,7 @@ export const Editor = () => {
     }
   }
 
-  return !editorData ? (
+  return !cookies[`editor${environment}`] ? (
     <LoadingScreen errorMessage={error} />
   ) : (
     <EditorContainer
@@ -134,7 +139,7 @@ export const Editor = () => {
       </SaveContainer>
     </EditorContainer>
   )
-}
+})
 
 const EditorContainer = styled.div`
   width: 100%;

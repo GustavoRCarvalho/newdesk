@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit"
 import { currentDate, generateUniqueId } from "../utils/functions"
 
 const initialState = {
-  environment: { categories: [] },
+  environment: {},
 
   selectedCategoryIndex: -1,
   selectedSubCategoryIndex: -1,
@@ -14,7 +14,7 @@ export const editorSlice = createSlice({
   initialState,
   reducers: {
     initialData: (state) => {
-      state.environment = { categories: [] }
+      state.environment = {}
       state.selectedCategoryIndex = -1
       state.selectedSubCategoryIndex = -1
       state.selectedArticleIndex = -1
@@ -115,6 +115,18 @@ export const editorSlice = createSlice({
         state.selectedSubCategoryIndex
       ].articles[index].title = newName
     },
+    changeOrderCategory: (state, action) => {
+      state.environment.categories = action.payload
+    },
+    changeOrderSubCategory: (state, action) => {
+      state.environment.categories[state.selectedCategoryIndex].subCategories =
+        action.payload
+    },
+    changeOrderArticle: (state, action) => {
+      state.environment.categories[state.selectedCategoryIndex].subCategories[
+        state.selectedSubCategoryIndex
+      ].articles = action.payload
+    },
     changeBackgroundArticle: (state, action) => {
       const newColor = action.payload.newColor
 
@@ -155,6 +167,9 @@ export const {
   changeNameCategory,
   changeNameSubCategory,
   changeNameArticle,
+  changeOrderCategory,
+  changeOrderSubCategory,
+  changeOrderArticle,
   changeBackgroundArticle,
   changeIconCategory,
   selectCategory,

@@ -5,28 +5,34 @@ import {
   removeArticle,
   selectArticle,
   changeNameArticle,
+  changeOrderArticle,
 } from "../../../store/editorSlice"
 import {
   createAlertSucess,
   createAlertWarning,
 } from "../../../store/alertSlice"
-import { useMemo } from "react"
+import { memo, useMemo } from "react"
 
-export const ArticleDropdown = () => {
+export const ArticleDropdown = memo(() => {
   const dispatch = useDispatch()
-  const editorState = useSelector((state) => state.editor)
-  const editorData = editorState.environment
+  const editorData = useSelector((state) => state.editor.environment)
+
+  const selectedCategoryIndex = useSelector(
+    (state) => state.editor.selectedCategoryIndex
+  )
+  const selectedSubCategoryIndex = useSelector(
+    (state) => state.editor.selectedSubCategoryIndex
+  )
+  const selectedArticleIndex = useSelector(
+    (state) => state.editor.selectedArticleIndex
+  )
 
   const articlesOptions = useMemo(
     () =>
-      editorData.categories[editorState.selectedCategoryIndex]?.subCategories[
-        editorState.selectedSubCategoryIndex
+      editorData.categories[selectedCategoryIndex]?.subCategories[
+        selectedSubCategoryIndex
       ]?.articles ?? [],
-    [
-      editorData.categories,
-      editorState.selectedSubCategoryIndex,
-      editorState.selectedCategoryIndex,
-    ]
+    [editorData.categories, selectedSubCategoryIndex, selectedCategoryIndex]
   )
   const articles = useMemo(
     () => articlesOptions.map(({ title }) => title),
@@ -66,11 +72,15 @@ export const ArticleDropdown = () => {
     dispatch(selectArticle(index))
   }
 
+  const handleReorder = (newList) => {
+    dispatch(changeOrderArticle(newList))
+  }
+
   const selected = () => {
     const objDefault = {
       title: "Artigo",
     }
-    const obj = articlesOptions[editorState.selectedArticleIndex]
+    const obj = articlesOptions[selectedArticleIndex]
     if (obj) {
       return obj
     }
@@ -80,12 +90,13 @@ export const ArticleDropdown = () => {
   return (
     <DropdownSelector
       options={articlesOptions}
-      disabled={editorState.selectedSubCategoryIndex === -1}
+      disabled={selectedSubCategoryIndex === -1}
       placeholder={selected()}
       onSelect={handleSelectCategory}
       handleChange={handleChangeCategory}
       handleAdd={handleAddArticle}
       handleRemove={handleRemoveArticle}
+      handleReorder={handleReorder}
     />
   )
-}
+})

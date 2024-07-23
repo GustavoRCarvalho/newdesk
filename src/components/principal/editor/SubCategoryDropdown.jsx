@@ -3,6 +3,7 @@ import { DropdownSelector } from "./DropdownSelector"
 import {
   addSubCategory,
   changeNameSubCategory,
+  changeOrderSubCategory,
   removeSubCategory,
   selectSubCategory,
 } from "../../../store/editorSlice"
@@ -10,18 +11,21 @@ import {
   createAlertSucess,
   createAlertWarning,
 } from "../../../store/alertSlice"
-import { useMemo } from "react"
+import { memo, useMemo } from "react"
 
-export const SubCategoryDropdown = () => {
+export const SubCategoryDropdown = memo(() => {
   const dispatch = useDispatch()
-  const editorState = useSelector((state) => state.editor)
-  const editorData = editorState.environment
+  const editorData = useSelector((state) => state.editor.environment)
+  const selectedCategoryIndex = useSelector(
+    (state) => state.editor.selectedCategoryIndex
+  )
+  const selectedSubCategoryIndex = useSelector(
+    (state) => state.editor.selectedSubCategoryIndex
+  )
 
   const subCategoriesOptions = useMemo(
-    () =>
-      editorData.categories[editorState.selectedCategoryIndex]?.subCategories ??
-      [],
-    [editorData.categories, editorState.selectedCategoryIndex]
+    () => editorData.categories[selectedCategoryIndex]?.subCategories ?? [],
+    [editorData.categories, selectedCategoryIndex]
   )
   const subCategories = useMemo(
     () => subCategoriesOptions.map(({ title }) => title),
@@ -63,11 +67,15 @@ export const SubCategoryDropdown = () => {
     dispatch(selectSubCategory(index))
   }
 
+  const handleReorder = (newList) => {
+    dispatch(changeOrderSubCategory(newList))
+  }
+
   const selected = () => {
     const objDefault = {
       title: "Sub Categoria",
     }
-    const obj = subCategoriesOptions[editorState.selectedSubCategoryIndex]
+    const obj = subCategoriesOptions[selectedSubCategoryIndex]
     if (obj) {
       return obj
     }
@@ -77,12 +85,13 @@ export const SubCategoryDropdown = () => {
   return (
     <DropdownSelector
       options={subCategoriesOptions}
-      disabled={editorState.selectedCategoryIndex === -1}
+      disabled={selectedCategoryIndex === -1}
       placeholder={selected()}
       onSelect={handleSelectCategory}
       handleChange={handleChangeSubCategory}
       handleAdd={handleAddSubCategory}
       handleRemove={handleRemoveSubCategory}
+      handleReorder={handleReorder}
     />
   )
-}
+})
