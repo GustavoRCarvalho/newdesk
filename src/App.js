@@ -12,8 +12,6 @@ import { Alerts } from "./router/Alerts"
 function App() {
   const { isDesktop } = useWindowDimensions()
 
-  console.log("reload", isDesktop)
-
   return (
     <Provider store={store}>
       <BrowserRouter>

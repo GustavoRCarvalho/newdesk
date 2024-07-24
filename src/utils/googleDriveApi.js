@@ -268,6 +268,12 @@ export const updateJsonFile = async (fileId, data) => {
       },
       body: multipartRequestBody,
     })
+    await gapi.client.drive.files.update({
+      fileId: fileId,
+      resource: {
+        name: data.environmentName,
+      },
+    })
   } catch (error) {
     throw error
   }

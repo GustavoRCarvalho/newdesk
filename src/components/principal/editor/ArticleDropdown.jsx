@@ -27,13 +27,14 @@ export const ArticleDropdown = memo(() => {
     (state) => state.editor.selectedArticleIndex
   )
 
-  const articlesOptions = useMemo(
-    () =>
-      editorData.categories[selectedCategoryIndex]?.subCategories[
-        selectedSubCategoryIndex
-      ]?.articles ?? [],
-    [editorData.categories, selectedSubCategoryIndex, selectedCategoryIndex]
-  )
+  const articlesOptions = useMemo(() => {
+    if (selectedCategoryIndex || selectedSubCategoryIndex) {
+      return []
+    }
+    return editorData.categories[selectedCategoryIndex]?.subCategories[
+      selectedSubCategoryIndex
+    ]?.articles
+  }, [editorData.categories, selectedSubCategoryIndex, selectedCategoryIndex])
   const articles = useMemo(
     () => articlesOptions.map(({ title }) => title),
     [articlesOptions]

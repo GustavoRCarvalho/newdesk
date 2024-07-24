@@ -22,6 +22,12 @@ export const editorSlice = createSlice({
     setEditorInitial: (state, action) => {
       state.environment = action.payload
     },
+    setEditorName: (state, action) => {
+      state.environment.environmentName = action.payload
+    },
+    setEditorImage: (state, action) => {
+      state.environment.environmentImage = action.payload
+    },
     changeContentArticle: (state, action) => {
       const content = action.payload
 
@@ -157,6 +163,8 @@ export const editorSlice = createSlice({
 
 export const {
   initialData,
+  setEditorName,
+  setEditorImage,
   changeContentArticle,
   addCategory,
   addSubCategory,

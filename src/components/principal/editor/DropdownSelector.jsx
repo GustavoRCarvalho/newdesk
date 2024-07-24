@@ -121,7 +121,7 @@ export const DropdownSelector = memo(
                   </Item>
                 )
               })}
-              <AddDropdown layout onClick={handleAdd}>
+              <AddDropdown onClick={handleAdd}>
                 <DropdownText>
                   <FakeIcon></FakeIcon>
                   Adicionar
@@ -154,7 +154,6 @@ const Item = memo(({ children, value, isEditable }) => {
       dragListener={false}
       dragControls={controls}
       value={value}
-      layout
       $isEditable={isEditable}
     >
       <GrabberButton onPointerDown={(e) => controls.start(e)}>
