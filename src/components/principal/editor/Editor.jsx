@@ -142,11 +142,13 @@ export const Editor = memo(() => {
 })
 
 const EditorContainer = styled.div`
+  position: relative;
   width: 100%;
   max-width: 920px;
   min-height: calc(100dvh - 2em);
 
   padding: 1em;
+  padding-top: 76px;
 
   display: flex;
   flex-direction: column;
@@ -264,12 +266,17 @@ const EditorContainer = styled.div`
 `
 
 const DropdownContainer = styled.div`
+  position: absolute;
+  left: 0;
+  top: 0;
+
   display: flex;
-  width: 100%;
+  width: calc(100% - 2em);
 
   gap: 1em;
 
   padding: 1em;
+  z-index: 1;
 `
 
 const SaveContainer = styled.div`

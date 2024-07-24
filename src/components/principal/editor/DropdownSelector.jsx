@@ -1,7 +1,14 @@
-import { AnimatePresence, motion, Reorder, useIsPresent } from "framer-motion"
+import {
+  AnimatePresence,
+  motion,
+  Reorder,
+  useDragControls,
+  useIsPresent,
+} from "framer-motion"
 import { memo, useEffect, useState } from "react"
 import { FaCaretDown } from "react-icons/fa"
 import { GoCheck, GoPencil, GoPlus, GoTrash } from "react-icons/go"
+import Grabber from "../../../assets/icons/Grabber.svg"
 import styled from "styled-components"
 import { DynaminicIcon } from "../../../router/DynamicIcon"
 import { useDispatch } from "react-redux"
@@ -132,6 +139,7 @@ export const DropdownSelector = memo(
 )
 
 const Item = memo(({ children, value, isEditable }) => {
+  const controls = useDragControls()
   const isPresent = useIsPresent()
   const animations = {
     style: {
@@ -141,7 +149,17 @@ const Item = memo(({ children, value, isEditable }) => {
     animate: { scale: 1, opacity: 1 },
   }
   return (
-    <DropdownItem {...animations} value={value} layout $isEditable={isEditable}>
+    <DropdownItem
+      {...animations}
+      dragListener={false}
+      dragControls={controls}
+      value={value}
+      layout
+      $isEditable={isEditable}
+    >
+      <GrabberButton onPointerDown={(e) => controls.start(e)}>
+        <GrabberIcon src={Grabber} />
+      </GrabberButton>
       {children}
     </DropdownItem>
   )
@@ -186,6 +204,7 @@ const ButtonDropdown = styled(motion.div)`
     transition: 0.4s;
   }
 
+  user-select: none;
   cursor: pointer;
 `
 
@@ -259,6 +278,8 @@ const DropdownOptions = styled(motion.div)`
 const DropdownGroup = styled(Reorder.Group)`
   margin: 0;
   padding: 0;
+
+  width: 100%;
 `
 
 const DropdownItem = styled(Reorder.Item)`
@@ -275,9 +296,20 @@ const DropdownItem = styled(Reorder.Item)`
   margin: 1em 1em 0em 1em;
 
   border-bottom: 1px solid var(--edit-dropdown-editable);
+  user-select: none;
 `
 
-const AddDropdown = styled(DropdownItem)`
+const AddDropdown = styled.div`
+  display: flex;
+  justify-content: space-between;
+
+  color: ${(props) =>
+    props.$isEditable
+      ? "var(--edit-dropdown-editable)"
+      : "var(--edit-dropdown)"};
+
+  border-bottom: 1px solid var(--edit-dropdown-editable);
+  user-select: none;
   width: calc(100% - 2em);
 
   border-bottom: none;
@@ -341,4 +373,21 @@ const InputClick = styled.div`
   height: 100%;
   background: transparent;
   cursor: pointer;
+`
+
+const GrabberButton = styled.div`
+  width: 1.2em;
+  height: 1.2em;
+
+  margin: 0.2em 0.6em 0.2em 0;
+  cursor: grab;
+
+  user-select: none;
+`
+const GrabberIcon = styled.img`
+  width: 100%;
+  height: 100%;
+
+  user-select: none;
+  pointer-events: none;
 `
