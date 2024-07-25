@@ -24,11 +24,12 @@ export const SubCategoryDropdown = memo(() => {
   )
 
   const subCategoriesOptions = useMemo(() => {
-    if (selectedCategoryIndex) {
+    if (selectedCategoryIndex === -1) {
       return []
     }
     return editorData?.categories[selectedCategoryIndex]?.subCategories
   }, [editorData.categories, selectedCategoryIndex])
+
   const subCategories = useMemo(
     () => subCategoriesOptions.map(({ title }) => title),
     [subCategoriesOptions]

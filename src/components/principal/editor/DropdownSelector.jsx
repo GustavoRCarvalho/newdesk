@@ -91,7 +91,7 @@ export const DropdownSelector = memo(
                     value={options[index]}
                     isEditable={isEditable}
                   >
-                    <DropdownText onClick={() => onSelect(index)}>
+                    <DropdownText>
                       {Icon !== undefined && (
                         <DynaminicIcon
                           onClick={() => {
@@ -108,7 +108,10 @@ export const DropdownSelector = memo(
                         onChange={(e) => setNewNameValue(e.target.value)}
                         disabled={!isEditable}
                       />
-                      <InputClick $disabled={isEditable}></InputClick>
+                      <InputClick
+                        onClick={() => onSelect(index)}
+                        $disabled={isEditable}
+                      ></InputClick>
                     </DropdownText>
                     <OptionIcons>
                       {isEditable ? (
@@ -121,7 +124,7 @@ export const DropdownSelector = memo(
                   </Item>
                 )
               })}
-              <AddDropdown onClick={handleAdd}>
+              <AddDropdown layout onClick={handleAdd}>
                 <DropdownText>
                   <FakeIcon></FakeIcon>
                   Adicionar
@@ -298,7 +301,7 @@ const DropdownItem = styled(Reorder.Item)`
   user-select: none;
 `
 
-const AddDropdown = styled.div`
+const AddDropdown = styled(motion.div)`
   display: flex;
   justify-content: space-between;
 

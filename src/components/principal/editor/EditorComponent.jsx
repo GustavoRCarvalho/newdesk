@@ -1,5 +1,4 @@
 import ReactQuill from "react-quill"
-import "react-quill/dist/quill.snow.css"
 import { useDispatch, useSelector } from "react-redux"
 import { changeContentArticle } from "../../../store/editorSlice"
 import { useEffect, useState } from "react"
