@@ -36,6 +36,10 @@ export const Editor = memo(() => {
   ]
   const [isSaving, setIsSaving] = useState(false)
   const editorState = useSelector((state) => state.editor)
+  const isChanged = useMemo(
+    () => editorState.isChanged,
+    [editorState.isChanged]
+  )
   const editorData = useMemo(
     () => editorState.environment ?? [],
     [editorState.environment]
@@ -120,6 +124,27 @@ export const Editor = memo(() => {
       setIsSaving(false)
     }
   }
+
+  useEffect(() => {
+    function beforeUnload(e) {
+      if (isChanged) {
+      }
+      e.preventDefault()
+    }
+    window.addEventListener("beforeunload", beforeUnload, { capture: true })
+    window.addEventListener("popstate", beforeUnload, {
+      capture: true,
+    })
+
+    return () => {
+      window.removeEventListener("beforeunload", beforeUnload, {
+        capture: true,
+      })
+      window.removeEventListener("popstate", beforeUnload, {
+        capture: true,
+      })
+    }
+  }, [isChanged])
 
   function handleFile(e) {
     if (!e.target.files.length) return

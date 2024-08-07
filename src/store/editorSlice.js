@@ -7,6 +7,7 @@ const initialState = {
   selectedCategoryIndex: -1,
   selectedSubCategoryIndex: -1,
   selectedArticleIndex: -1,
+  isChanged: false,
 }
 
 export const editorSlice = createSlice({
@@ -21,12 +22,15 @@ export const editorSlice = createSlice({
     },
     setEditorInitial: (state, action) => {
       state.environment = action.payload
+      state.isChanged = false
     },
     setEditorName: (state, action) => {
       state.environment.environmentName = action.payload
+      state.isChanged = true
     },
     setEditorImage: (state, action) => {
       state.environment.environmentImage = action.payload
+      state.isChanged = true
     },
     changeContentArticle: (state, action) => {
       const content = action.payload
@@ -38,6 +42,7 @@ export const editorSlice = createSlice({
       state.environment.categories[state.selectedCategoryIndex].subCategories[
         state.selectedSubCategoryIndex
       ].articles[state.selectedArticleIndex].date = currentDate()
+      state.isChanged = true
     },
     addCategory: (state) => {
       const newCategory = {
@@ -46,6 +51,7 @@ export const editorSlice = createSlice({
         subCategories: [],
       }
       state.environment.categories.push(newCategory)
+      state.isChanged = true
     },
     addSubCategory: (state) => {
       const newSubCategory = {
@@ -55,6 +61,7 @@ export const editorSlice = createSlice({
       state.environment.categories[
         state.selectedCategoryIndex
       ].subCategories.push(newSubCategory)
+      state.isChanged = true
     },
     addArticle: (state) => {
       const newArticle = {
@@ -67,6 +74,7 @@ export const editorSlice = createSlice({
       state.environment.categories[state.selectedCategoryIndex].subCategories[
         state.selectedSubCategoryIndex
       ].articles.push(newArticle)
+      state.isChanged = true
     },
     removeCategory: (state, action) => {
       const index = action.payload.index
@@ -77,6 +85,7 @@ export const editorSlice = createSlice({
         state.selectedSubCategoryIndex = -1
         state.selectedArticleIndex = -1
       }
+      state.isChanged = true
     },
     removeSubCategory: (state, action) => {
       const index = action.payload.index
@@ -88,6 +97,7 @@ export const editorSlice = createSlice({
         state.selectedSubCategoryIndex = -1
         state.selectedArticleIndex = -1
       }
+      state.isChanged = true
     },
     removeArticle: (state, action) => {
       const index = action.payload.index
@@ -98,12 +108,14 @@ export const editorSlice = createSlice({
       if (index === state.selectedArticleIndex) {
         state.selectedArticleIndex = -1
       }
+      state.isChanged = true
     },
     changeNameCategory: (state, action) => {
       const newName = action.payload.newName
       const index = action.payload.index
 
       state.environment.categories[index].title = newName
+      state.isChanged = true
     },
     changeNameSubCategory: (state, action) => {
       const newName = action.payload.newName
@@ -112,6 +124,7 @@ export const editorSlice = createSlice({
       state.environment.categories[state.selectedCategoryIndex].subCategories[
         index
       ].title = newName
+      state.isChanged = true
     },
     changeNameArticle: (state, action) => {
       const newName = action.payload.newName
@@ -120,18 +133,23 @@ export const editorSlice = createSlice({
       state.environment.categories[state.selectedCategoryIndex].subCategories[
         state.selectedSubCategoryIndex
       ].articles[index].title = newName
+      state.isChanged = true
+      state.isChanged = true
     },
     changeOrderCategory: (state, action) => {
       state.environment.categories = action.payload
+      state.isChanged = true
     },
     changeOrderSubCategory: (state, action) => {
       state.environment.categories[state.selectedCategoryIndex].subCategories =
         action.payload
+      state.isChanged = true
     },
     changeOrderArticle: (state, action) => {
       state.environment.categories[state.selectedCategoryIndex].subCategories[
         state.selectedSubCategoryIndex
       ].articles = action.payload
+      state.isChanged = true
     },
     changeBackgroundArticle: (state, action) => {
       const newColor = action.payload.newColor
@@ -139,12 +157,14 @@ export const editorSlice = createSlice({
       state.environment.categories[state.selectedCategoryIndex].subCategories[
         state.selectedSubCategoryIndex
       ].articles[state.selectedArticleIndex].backgroundColor = newColor
+      state.isChanged = true
     },
     changeIconCategory: (state, action) => {
       const newIcon = action.payload.newIcon
       const index = action.payload.index
 
       state.environment.categories[index].Icon = newIcon
+      state.isChanged = true
     },
     selectCategory: (state, action) => {
       state.selectedCategoryIndex = action.payload
