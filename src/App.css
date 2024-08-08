@@ -6,14 +6,30 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  button {
-    font-family: "Jost", sans-serif;
-    user-select: none;
-  }
+  --side-menu-color: #fff;
+  --side-menu-background: #323232;
 
-  input {
-    font-family: "Jost", sans-serif;
-  }
+  --side-menu-item-background-select: #4e4e4e;
+  --side-menu-item: #ffffff;
+  --side-menu-background-tooltip: #ffffff;
+
+  --card-button-color: #fff;
+
+  --manipulate-table-head-background: #ffffff;
+  --manipulate-table-head-color: #353535;
+  --manipulate-color: #ffffff;
+  --manipulate-table-button-background: #000000;
+  --manipulate-modal-button-background-disabled: #5a5a5a;
+}
+
+button {
+  user-select: none;
+}
+
+input,
+textarea,
+button {
+  font-family: inherit;
 }
 
 #root {
@@ -98,24 +114,9 @@ body::-webkit-scrollbar {
   --home-dark-button: #000;
   --home-dark-button-background: #808080;
 
-  --side-menu-color: #fff;
-  --side-menu-background: #363636;
-
-  --side-menu-item-background-select: #4e4e4e;
-  --side-menu-item: #ffffff;
-  --side-menu-background-tooltip: #ffffff;
-
-  --card-button-color: #fff;
-
   --edit-dropdown: #000000;
   --edit-dropdown-editable: #868686;
   --edit-dropdown-editable-hover: #c9c9c9;
-
-  --manipulate-table-head-background: #ffffff;
-  --manipulate-table-head-color: #353535;
-  --manipulate-color: #ffffff;
-  --manipulate-table-button-background: #000000;
-  --manipulate-modal-button-background-disabled: #5a5a5a;
 
   --editor-color: #000;
   --editor-color-hover: #0097fc;
@@ -133,24 +134,9 @@ body::-webkit-scrollbar {
   --home-dark-button: #ffffff;
   --home-dark-button-background: #808080;
 
-  --side-menu-color: #fff;
-  --side-menu-background: #323232;
-
-  --side-menu-item-background-select: #4e4e4e;
-  --side-menu-item: #ffffff;
-  --side-menu-background-tooltip: #ffffff;
-
-  --card-button-color: #fff;
-
   --edit-dropdown: #fff;
   --edit-dropdown-editable: #a0a0a0;
   --edit-dropdown-editable-hover: #868686;
-
-  --manipulate-table-head-background: #ffffff;
-  --manipulate-table-head-color: #353535;
-  --manipulate-color: #ffffff;
-  --manipulate-table-button-background: #000000;
-  --manipulate-modal-button-background-disabled: #5a5a5a;
 
   --editor-color: #fff;
   --editor-color-hover: #51e5ff;
