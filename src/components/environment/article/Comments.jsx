@@ -30,9 +30,21 @@ export const Comments = ({ articleId }) => {
       {commentsFiltered?.map((comment) => {
         return <Commentary key={comment.id} {...comment} />
       })}
+      {commentsFiltered.length === 0 && (
+        <NoComments>Ainda não há comentários!</NoComments>
+      )}
     </CommentsContainer>
   )
 }
+
+const NoComments = styled.span`
+  font-size: 1.25em;
+
+  width: 100%;
+  margin-block: 0.5em;
+
+  text-align: center;
+`
 
 const CommentsContainer = styled.div`
   color: var(--home-card-color);
