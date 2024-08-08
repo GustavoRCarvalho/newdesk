@@ -198,6 +198,7 @@ const ArticleContainer = styled.div`
   }
 
   .ql-editor {
+    background-color: var(--home-card-background);
     height: 100%;
 
     border-radius: 0.5em;

@@ -124,7 +124,7 @@ body::-webkit-scrollbar {
 
 .darkMode {
   --home-background: #222;
-  --home-card-background: #323232;
+  --home-card-background: #303030;
   --home-card-color: #fff;
 
   --home-settings-button-background-hover: #474747;
