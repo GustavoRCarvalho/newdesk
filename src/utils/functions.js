@@ -1,4 +1,8 @@
 import { useState, useEffect } from "react"
+import ImageResize from "quill-image-resize-module-react"
+import { Quill } from "react-quill"
+
+Quill.register("modules/imageResize", ImageResize)
 
 export const modules = {
   toolbar: [
@@ -14,6 +18,10 @@ export const modules = {
     ],
     ["link", "image", "video"],
   ],
+  imageResize: {
+    parchment: Quill.import("parchment"),
+    modules: ["Resize", "DisplaySize"],
+  },
 }
 
 export const generateUniqueId = () => {

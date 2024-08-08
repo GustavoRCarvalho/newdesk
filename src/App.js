@@ -8,6 +8,9 @@ import { Provider } from "react-redux"
 import "react-quill/dist/quill.snow.css"
 import { Modal } from "./router/Modal"
 import { Alerts } from "./router/Alerts"
+import { Quill } from "react-quill"
+
+window.Quill = Quill
 
 function App() {
   const { isDesktop } = useWindowDimensions()
