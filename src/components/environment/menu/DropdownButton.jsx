@@ -58,28 +58,28 @@ export const DropdownButton = ({
       ))}
     </DropdownContainer>
   ) : (
-    <DropdownIcon ref={refSideIcon} layout>
-      <NoStyleLinkRouter
-        onMouseEnter={() => {
-          var rect = refSideIcon.current.getBoundingClientRect()
-          var x = rect.x + rect.width
-          var y = rect.y + rect.height - 50
-          dispatch(
-            changeCard({
-              title: title,
-              options: subCategories,
-              x: x,
-              y: y,
-              isArticle: false,
-            })
-          )
-        }}
-        to="/environment"
-        state={{ scrollTo: title }}
-      >
+    <NoStyleLinkRouter
+      onMouseEnter={() => {
+        var rect = refSideIcon.current.getBoundingClientRect()
+        var x = rect.x + rect.width
+        var y = rect.y + rect.height - 50
+        dispatch(
+          changeCard({
+            title: title,
+            options: subCategories,
+            x: x,
+            y: y,
+            isArticle: false,
+          })
+        )
+      }}
+      to="/environment"
+      state={{ scrollTo: title }}
+    >
+      <DropdownIcon ref={refSideIcon} layout>
         <DynaminicIcon iconName={Icon} />
-      </NoStyleLinkRouter>
-    </DropdownIcon>
+      </DropdownIcon>
+    </NoStyleLinkRouter>
   )
 }
 
