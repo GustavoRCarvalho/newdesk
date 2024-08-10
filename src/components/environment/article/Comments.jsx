@@ -30,7 +30,7 @@ export const Comments = ({ articleId }) => {
       {commentsFiltered?.map((comment) => {
         return <Commentary key={comment.id} {...comment} />
       })}
-      {commentsFiltered.length === 0 && (
+      {commentsFiltered?.length === 0 && (
         <NoComments>Ainda não há comentários!</NoComments>
       )}
     </CommentsContainer>
