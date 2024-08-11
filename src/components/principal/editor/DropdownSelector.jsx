@@ -31,9 +31,7 @@ export const DropdownSelector = memo(
     const [newNameValue, setNewNameValue] = useState("")
 
     useEffect(() => {
-      if (JSON.stringify(options) === "[]" && disabled) {
-        setIsOpen(false)
-      }
+      setIsOpen(false)
     }, [options, disabled])
 
     const handleCheck = () => {
@@ -53,7 +51,17 @@ export const DropdownSelector = memo(
     }, [editable])
 
     return (
-      <DropdownContainer layout>
+      <DropdownContainer
+        layout
+        transition={{ duration: 0 }}
+        animate={isOpen ? "open" : "closed"}
+        variants={{
+          open: {},
+          closed: {
+            overflowY: "hidden",
+          },
+        }}
+      >
         <ButtonDropdown
           layout
           onClick={() => !disabled && setIsOpen((state) => !state)}
@@ -105,7 +113,9 @@ export const DropdownSelector = memo(
                       <DropdownInput
                         type="text"
                         value={isEditable ? newNameValue || "" : title}
-                        onChange={(e) => setNewNameValue(e.target.value)}
+                        onChange={(e) =>
+                          setNewNameValue(e.target.value.replace("/", ""))
+                        }
                         disabled={!isEditable}
                       />
                       <InputClick
@@ -168,7 +178,7 @@ const Item = memo(({ children, value, isEditable }) => {
 })
 
 const ButtonDropdown = styled(motion.div)`
-  width: calc(100% - 2em);
+  width: calc(100% - 2em - 4px);
   padding: 0.5em 1em;
 
   color: ${(props) =>
