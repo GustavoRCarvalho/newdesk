@@ -5,7 +5,7 @@ import {
   useDragControls,
   useIsPresent,
 } from "framer-motion"
-import { memo, useEffect, useState } from "react"
+import { memo, useEffect, useLayoutEffect, useState } from "react"
 import { FaCaretDown } from "react-icons/fa"
 import { GoCheck, GoPencil, GoPlus, GoTrash } from "react-icons/go"
 import Grabber from "../../../assets/icons/Grabber.svg"
@@ -30,9 +30,9 @@ export const DropdownSelector = memo(
     const [editable, setEditable] = useState()
     const [newNameValue, setNewNameValue] = useState("")
 
-    useEffect(() => {
-      setIsOpen(false)
-    }, [options, disabled])
+    useLayoutEffect(() => {
+      if (disabled) setIsOpen(false)
+    }, [disabled])
 
     const handleCheck = () => {
       if (newNameValue === "") {
@@ -56,7 +56,9 @@ export const DropdownSelector = memo(
         transition={{ duration: 0 }}
         animate={isOpen ? "open" : "closed"}
         variants={{
-          open: {},
+          open: {
+            overflowY: "hidden",
+          },
           closed: {
             overflowY: "hidden",
           },
