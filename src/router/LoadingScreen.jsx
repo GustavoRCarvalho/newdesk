@@ -1,5 +1,4 @@
 import styled, { keyframes } from "styled-components"
-import gif from "../assets/images/sr29ea2865be8aws3.gif"
 import { PiCoffeeLight } from "react-icons/pi"
 import { MdOutlineExitToApp } from "react-icons/md"
 import { useNavigate } from "react-router-dom"
@@ -34,10 +33,6 @@ export const LoadingScreen = ({ errorMessage = "" }) => {
           Enquanto preparamos tudo, <br /> aproveite um café virtual...
         </span>
       )}
-      <img
-        src={gif}
-        alt="gif de um gatinho em cima de uma mesa jogando uma bola de papel no chão"
-      />
     </LoadingContainer>
   )
 }

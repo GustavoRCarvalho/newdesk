@@ -2,22 +2,18 @@ import { useDispatch, useSelector } from "react-redux"
 import { useLocation } from "react-router-dom"
 import { EditorComponent } from "./EditorComponent"
 import styled from "styled-components"
-import { memo, useEffect, useMemo, useState } from "react"
+import { memo, useEffect, useMemo } from "react"
 import { CategoryDropdown } from "./CategoryDropdown"
 import {
-  changeBackgroundArticle,
   setEditorImage,
   setEditorInitial,
   setEditorName,
 } from "../../../store/editorSlice"
 import { SubCategoryDropdown } from "./SubCategoryDropdown"
 import { ArticleDropdown } from "./ArticleDropdown"
-import { updateJsonFile } from "../../../utils/googleDriveApi"
 import ReactQuill from "react-quill"
 import { modules } from "../../../utils/functions"
-import { Spinner } from "../driveApi/ManipulateListItem"
 import { LoadingScreen } from "../../../router/LoadingScreen"
-import { createAlertError, createAlertSucess } from "../../../store/alertSlice"
 import { useFetchData } from "../driveApi/useFetchData"
 import { useCookies } from "react-cookie"
 import { GoImage } from "react-icons/go"
@@ -25,18 +21,7 @@ import { GoImage } from "react-icons/go"
 export const Editor = memo(() => {
   const location = useLocation()
   const dispatch = useDispatch()
-  const [backgroundColor, setBackgroundColor] = useState(0)
-  const colors = [
-    "var(--home-card-background)",
-    "#3f7ee8",
-    "#66be67",
-    "#f3c324",
-    "#ef9441",
-    "#df5e5a",
-  ]
-  const [isSaving, setIsSaving] = useState(false)
   const editorState = useSelector((state) => state.editor)
-  console.log(editorState.environment.categories)
   const isChanged = useMemo(
     () => editorState.isChanged,
     [editorState.isChanged]
@@ -92,42 +77,6 @@ export const Editor = memo(() => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, dispatch, environment])
-
-  const handleChangeColor = () => {
-    if (editorState.selectedArticleIndex === -1) {
-      return
-    }
-
-    if (backgroundColor === colors.length - 1) {
-      setBackgroundColor(0)
-      return
-    }
-    setBackgroundColor((state) => (state += 1))
-
-    dispatch(changeBackgroundArticle({ newColor: colors[backgroundColor] }))
-  }
-
-  async function saveData() {
-    try {
-      setIsSaving(true)
-      await updateJsonFile(environment, editorData)
-
-      setCookies(`editor${environment}`, editorData, {
-        path: "/",
-        maxAge: 31536000,
-      })
-
-      dispatch(createAlertSucess("Dados salvos com sucesso!"))
-    } catch (e) {
-      dispatch(
-        createAlertError(
-          "Falha ao salvar os dados. Por favor, tente novamente."
-        )
-      )
-    } finally {
-      setIsSaving(false)
-    }
-  }
 
   useEffect(() => {
     function beforeUnload(e) {
@@ -203,10 +152,6 @@ export const Editor = memo(() => {
       ) : (
         <ReactQuill readOnly theme="snow" modules={modules} />
       )}
-      <SaveContainer>
-        <button onClick={handleChangeColor}>Trocar cor do fundo</button>
-        <button onClick={saveData}>Salvar {isSaving && <Spinner />}</button>
-      </SaveContainer>
     </EditorContainer>
   )
 })
@@ -336,36 +281,6 @@ const DropdownWrapper = styled.div`
   z-index: 1;
 `
 
-const SaveContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-
-  width: 100%;
-  max-width: 920px;
-
-  padding-block: 1em;
-  margin-top: 5em;
-
-  button {
-    background-color: var(--home-card-background);
-    color: var(--home-card);
-    font-size: 1em;
-
-    display: flex;
-    align-items: center;
-    gap: 1em;
-
-    border-radius: 0.5em;
-
-    border: none;
-    padding: 0.5em 1.5em;
-
-    box-shadow: 0em 0em 1em 0em #0000004b;
-
-    cursor: pointer;
-  }
-`
-
 const EditorContainer = styled.div`
   width: 100%;
   max-width: 920px;
@@ -407,6 +322,11 @@ const EditorContainer = styled.div`
   .quill {
     width: 100%;
     height: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 1em;
   }
 
   .ql-toolbar {
@@ -460,8 +380,7 @@ const EditorContainer = styled.div`
   .ql-container {
     border: none;
 
-    margin-top: 2em;
-    min-height: calc(100% - (24px + 5em));
+    /* min-height: calc(100% - (24px + 5em)); */
   }
 
   .ql-editor {

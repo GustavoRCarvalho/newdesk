@@ -15,7 +15,6 @@ export const useFetchData = (fileId) => {
     const signal = controller.signal
 
     const fetchData = async () => {
-      console.log(fileId)
       if (fileId === "") return
       if (fileId === null) {
         setError("Falha ao carregar. Por favor, verifique o código.")

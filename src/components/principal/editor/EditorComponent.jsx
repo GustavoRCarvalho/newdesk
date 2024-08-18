@@ -4,6 +4,7 @@ import { changeContentArticle } from "../../../store/editorSlice"
 import { useEffect, useState } from "react"
 import { modules } from "../../../utils/functions"
 import { createAlertSucess } from "../../../store/alertSlice"
+import { SaveButtons } from "./SaveButtons"
 
 export const EditorComponent = () => {
   const dispatch = useDispatch()
@@ -11,7 +12,7 @@ export const EditorComponent = () => {
   const editorData = editorState.environment
   const [value, setValue] = useState("")
 
-  const handleSave = (e) => {
+  const handleKeySave = (e) => {
     if (e.ctrlKey && e.key === "s") {
       e.preventDefault()
 
@@ -34,12 +35,15 @@ export const EditorComponent = () => {
   ])
 
   return (
-    <ReactQuill
-      theme="snow"
-      value={value}
-      onChange={setValue}
-      onKeyDown={handleSave}
-      modules={modules}
-    />
+    <>
+      <ReactQuill
+        theme="snow"
+        value={value}
+        onChange={setValue}
+        onKeyDown={handleKeySave}
+        modules={modules}
+      />
+      <SaveButtons value={value} />
+    </>
   )
 }
