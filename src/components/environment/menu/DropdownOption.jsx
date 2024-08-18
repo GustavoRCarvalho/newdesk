@@ -9,8 +9,10 @@ import { NoStyleLinkRouter } from "../../../router/NoStyleLinkRouter"
 
 export const DropdownOption = ({
   categoryTitle,
+  categoryLinkTitle,
   dropdownOpen,
   title,
+  linkTitle,
   articles,
 }) => {
   const refDownIcon = useRef(null)
@@ -24,7 +26,7 @@ export const DropdownOption = ({
     >
       <NoStyleLinkRouter
         to="/environment"
-        state={{ scrollTo: categoryTitle + title }}
+        state={{ scrollTo: categoryLinkTitle + linkTitle }}
       >
         <DropText layout={"size"} onMouseEnter={() => dispatch(resetCard())}>
           <MdOutlineLibraryBooks />
@@ -40,7 +42,9 @@ export const DropdownOption = ({
           dispatch(
             changeCard({
               title: title,
+              linkTitle: linkTitle,
               categoryTitle: categoryTitle,
+              categoryLinkTitle: categoryLinkTitle,
               options: articles,
               x: x,
               y: y,

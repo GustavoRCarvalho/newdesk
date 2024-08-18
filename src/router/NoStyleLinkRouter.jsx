@@ -1,11 +1,9 @@
-import { Link, useLocation } from "react-router-dom"
+import { Link, useSearchParams } from "react-router-dom"
 import styled from "styled-components"
 
 export const NoStyleLinkRouter = (props) => {
-  const location = useLocation()
-
-  const params = new URLSearchParams(location.search)
-  const environment = params.get("environment")
+  const [searchParams] = useSearchParams()
+  const environment = searchParams.get("environment")
 
   return (
     <NoStyleLink

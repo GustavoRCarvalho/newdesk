@@ -36,6 +36,7 @@ export const Editor = memo(() => {
   ]
   const [isSaving, setIsSaving] = useState(false)
   const editorState = useSelector((state) => state.editor)
+  console.log(editorState.environment.categories)
   const isChanged = useMemo(
     () => editorState.isChanged,
     [editorState.isChanged]
@@ -86,7 +87,7 @@ export const Editor = memo(() => {
     if (data) {
       dispatch(setEditorInitial(data))
 
-      setCookies(`editor${environment}`, data, { path: "/" })
+      setCookies(`editor${environment}`, data, { path: "/", maxAge: 31536000 })
       return
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -111,7 +112,10 @@ export const Editor = memo(() => {
       setIsSaving(true)
       await updateJsonFile(environment, editorData)
 
-      setCookies(`editor${environment}`, editorData, { path: "/" })
+      setCookies(`editor${environment}`, editorData, {
+        path: "/",
+        maxAge: 31536000,
+      })
 
       dispatch(createAlertSucess("Dados salvos com sucesso!"))
     } catch (e) {

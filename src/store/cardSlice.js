@@ -4,6 +4,7 @@ const initialState = {
   card: {
     title: "",
     categoryTitle: "",
+    categoryLinkTitle: "",
     options: [],
     x: 0,
     y: 0,

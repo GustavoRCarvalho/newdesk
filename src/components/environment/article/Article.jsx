@@ -86,20 +86,24 @@ export const Article = () => {
   const pathLabel = decodeURI(pathname.replace("/", "")).split("/")
 
   const indexCategory = articleData
-    .map(({ title }) => title)
+    .map(({ linkTitle }) => linkTitle)
     .indexOf(pathLabel[1])
   const indexSubCategory = articleData[indexCategory]?.subCategories
-    .map(({ title }) => title)
+    .map(({ linkTitle }) => linkTitle)
     .indexOf(pathLabel[2])
   const indexArticle = articleData[indexCategory]?.subCategories[
     indexSubCategory
   ]?.articles
-    .map(({ title }) => title)
+    .map(({ linkTitle }) => linkTitle)
     .indexOf(pathLabel[3])
   const article =
     articleData[indexCategory]?.subCategories[indexSubCategory]?.articles[
       indexArticle
     ] ?? {}
+
+  const categoryTitle = articleData[indexCategory].title
+  const subCategoryTitle =
+    articleData[indexCategory]?.subCategories[indexSubCategory].title
 
   async function handleFetch() {
     try {
@@ -128,11 +132,11 @@ export const Article = () => {
         <NoStyleLinkRouter
           to="/environment"
           state={{ scrollTo: pathLabel[1] }}
-        >{` ${pathLabel[1]} >`}</NoStyleLinkRouter>
+        >{` ${categoryTitle} >`}</NoStyleLinkRouter>
         <NoStyleLinkRouter
           to="/environment"
           state={{ scrollTo: pathLabel[1] + pathLabel[2] }}
-        >{` ${pathLabel[2]}`}</NoStyleLinkRouter>
+        >{` ${subCategoryTitle}`}</NoStyleLinkRouter>
       </NavigationArticle>
       <TitleArticle>{article.title}</TitleArticle>
       <DateArticle>Modificado em: {article.date}</DateArticle>

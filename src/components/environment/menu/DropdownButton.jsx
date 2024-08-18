@@ -12,6 +12,7 @@ export const DropdownButton = ({
   isOpen,
   Icon,
   title,
+  linkTitle,
   subCategories,
   openDropdownLabel,
   setOpenDropdownLabel,
@@ -33,7 +34,7 @@ export const DropdownButton = ({
         $isopen={dropdownOpen}
         onMouseEnter={() => dispatch(resetCard())}
       >
-        <NoStyleLinkRouter to="/environment" state={{ scrollTo: title }}>
+        <NoStyleLinkRouter to="/environment" state={{ scrollTo: linkTitle }}>
           <DropText>
             <DynaminicIcon iconName={Icon} />
             <motion.span>{title}</motion.span>
@@ -51,6 +52,7 @@ export const DropdownButton = ({
       {subCategories.map((data, index) => (
         <DropdownOption
           categoryTitle={title}
+          categoryLinkTitle={linkTitle}
           dropdownOpen={dropdownOpen}
           key={data.title + index}
           {...data}
@@ -66,6 +68,9 @@ export const DropdownButton = ({
         dispatch(
           changeCard({
             title: title,
+            linkTitle: linkTitle,
+            categoryTitle: title,
+            categoryLinkTitle: linkTitle,
             options: subCategories,
             x: x,
             y: y,
@@ -74,7 +79,7 @@ export const DropdownButton = ({
         )
       }}
       to="/environment"
-      state={{ scrollTo: title }}
+      state={{ scrollTo: linkTitle }}
     >
       <DropdownIcon ref={refSideIcon} layout>
         <DynaminicIcon iconName={Icon} />

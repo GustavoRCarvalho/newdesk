@@ -45,10 +45,10 @@ export const CardMenu = () => {
       onMouseLeave={() => dispatch(resetCard())}
     >
       {card.isArticle
-        ? card?.options?.map(({ title }, index) => (
+        ? card?.options?.map(({ title, linkTitle }, index) => (
             <NoStyleLinkRouter
               key={title + index}
-              to={`/environment/${card.categoryTitle}/${card.title}/${title}`}
+              to={`/environment/${card.categoryLinkTitle}/${card.linkTitle}/${linkTitle}`}
             >
               <Title>
                 <WiStars />
@@ -56,11 +56,11 @@ export const CardMenu = () => {
               </Title>
             </NoStyleLinkRouter>
           ))
-        : card?.options?.map(({ title }, index) => (
+        : card?.options?.map(({ title, linkTitle }, index) => (
             <NoStyleLinkRouter
               key={title + index}
               to="/environment"
-              state={{ scrollTo: card.title + title }}
+              state={{ scrollTo: card.linkTitle + linkTitle }}
             >
               <Title>
                 <GiOpenBook />

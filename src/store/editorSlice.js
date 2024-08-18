@@ -46,6 +46,7 @@ export const editorSlice = createSlice({
     },
     addCategory: (state) => {
       const newCategory = {
+        linkTitle: "Nova-categoria",
         title: "Nova categoria",
         Icon: "",
         subCategories: [],
@@ -55,6 +56,7 @@ export const editorSlice = createSlice({
     },
     addSubCategory: (state) => {
       const newSubCategory = {
+        linkTitle: "Nova-sub-categoria",
         title: "Nova sub categoria",
         articles: [],
       }
@@ -67,6 +69,7 @@ export const editorSlice = createSlice({
       const newArticle = {
         id: generateUniqueId(),
         date: currentDate(),
+        linkTitle: "Novo-artigo",
         title: "Novo artigo",
         content: "<p><br></p>",
         backgroundColor: "var(--home-card-background)",
@@ -115,6 +118,10 @@ export const editorSlice = createSlice({
       const index = action.payload.index
 
       state.environment.categories[index].title = newName
+      state.environment.categories[index].linkTitle = newName.replace(
+        /([^a-zA-Z0-9])/g,
+        "-"
+      )
       state.isChanged = true
     },
     changeNameSubCategory: (state, action) => {
@@ -124,6 +131,9 @@ export const editorSlice = createSlice({
       state.environment.categories[state.selectedCategoryIndex].subCategories[
         index
       ].title = newName
+      state.environment.categories[state.selectedCategoryIndex].subCategories[
+        index
+      ].linkTitle = newName.replace(/([^a-zA-Z0-9])/g, "-")
       state.isChanged = true
     },
     changeNameArticle: (state, action) => {
@@ -133,7 +143,9 @@ export const editorSlice = createSlice({
       state.environment.categories[state.selectedCategoryIndex].subCategories[
         state.selectedSubCategoryIndex
       ].articles[index].title = newName
-      state.isChanged = true
+      state.environment.categories[state.selectedCategoryIndex].subCategories[
+        state.selectedSubCategoryIndex
+      ].articles[index].linkTitle = newName.replace(/([^a-zA-Z0-9])/g, "-")
       state.isChanged = true
     },
     changeOrderCategory: (state, action) => {

@@ -4,7 +4,13 @@ import backgroundImage from "../../../assets/images/cardBackgroundImage.png"
 import { NoStyleLinkRouter } from "../../../router/NoStyleLinkRouter"
 import { prepareCardDate } from "../../../utils/functions"
 
-export const Card = ({ categoryTitle, subCategory, title, date }) => {
+export const Card = ({
+  linkTitleCategory,
+  linkTitleSubCategory,
+  linkTitle,
+  title,
+  date,
+}) => {
   return (
     <CardContainer>
       <img src={backgroundImage} alt="background card" />
@@ -14,7 +20,7 @@ export const Card = ({ categoryTitle, subCategory, title, date }) => {
         <CardDate>{prepareCardDate(date)}</CardDate>
       </CardTextGroup>
       <NoStyleLinkRouter
-        to={`/environment/${categoryTitle}/${subCategory}/${title}`}
+        to={`/environment/${linkTitleCategory}/${linkTitleSubCategory}/${linkTitle}`}
       >
         <CardButton>
           Ver mais <HiOutlineArrowUp />

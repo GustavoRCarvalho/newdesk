@@ -3,9 +3,14 @@ import { Card } from "./Card"
 import { MdOutlineLibraryBooks } from "react-icons/md"
 import { Element } from "react-scroll"
 
-export const SubCaregory = ({ categoryTitle, title, articles }) => {
+export const SubCategory = ({
+  linkTitleCategory,
+  title,
+  linkTitle,
+  articles,
+}) => {
   return (
-    <SubCategoriesContainer name={categoryTitle + title}>
+    <SubCategoriesContainer name={linkTitleCategory + linkTitle}>
       <SectionSubtitle>
         <MdOutlineLibraryBooks /> {title} ({articles.length})
       </SectionSubtitle>
@@ -13,8 +18,8 @@ export const SubCaregory = ({ categoryTitle, title, articles }) => {
         {articles.map((data, index) => (
           <Card
             key={data.title + index}
-            categoryTitle={categoryTitle}
-            subCategory={title}
+            linkTitleCategory={linkTitleCategory}
+            linkTitleSubCategory={linkTitle}
             {...data}
           />
         ))}

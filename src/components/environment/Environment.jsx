@@ -4,7 +4,7 @@ import { SideMenu } from "./menu/SideMenu"
 import { useDispatch, useSelector } from "react-redux"
 import { resetCard } from "../../store/cardSlice"
 import { Settings } from "./home/Settings"
-import { useLocation } from "react-router-dom"
+import { useSearchParams } from "react-router-dom"
 import { setInitial } from "../../store/homeDataSlice"
 import { useEffect } from "react"
 import { LoadingScreen } from "../../router/LoadingScreen"
@@ -15,10 +15,8 @@ export const Environment = ({ children }) => {
   const homeData = useSelector((state) => state.homeData.environment)
   const categoriesSearched = homeData?.categoriesSearched
   const dispatch = useDispatch()
-  const location = useLocation()
-
-  const params = new URLSearchParams(location.search)
-  const environment = params.get("environment")
+  const [searchParams] = useSearchParams()
+  const environment = searchParams.get("environment")
 
   const [cookies, setCookies] = useCookies([environment])
 
@@ -40,9 +38,7 @@ export const Environment = ({ children }) => {
       const obj = { ...data, categoriesSearched: data.categories }
       dispatch(setInitial(obj))
 
-      const expires = new Date()
-      expires.setMinutes(expires.getMinutes() + 60)
-      setCookies([environment], obj, { path: "/", expires })
+      setCookies([environment], obj, { path: "/", maxAge: 31536000 })
       return
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
