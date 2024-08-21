@@ -21,10 +21,19 @@ export const DesktopAlert = () => {
           pedimos desculpas, mas este site não foi idealizado para contemplar
           sua plataforma.
         </p>
+        <UnderlineParagraph>
+          3. Caso insista em utilizar o site em um dispositivo móvel, ative,
+          para esta página, a opção de navegação "Para computador" no seu
+          navegador.
+        </UnderlineParagraph>
       </AlertText>
     </AlertContainer>
   )
 }
+
+const UnderlineParagraph = styled.p`
+  text-decoration: underline;
+`
 
 const AlertContainer = styled.div`
   position: fixed;
@@ -41,6 +50,8 @@ const AlertContainer = styled.div`
   gap: 1em;
 
   svg {
+    color: #363636;
+
     width: 3em;
     height: 3em;
 
@@ -58,6 +69,7 @@ const AlertContainer = styled.div`
 const AlertTitle = styled.span`
   font-size: 2.5em;
   text-align: center;
+  color: #363636;
 
   width: 80%;
 
