@@ -1,9 +1,10 @@
-import styled from "styled-components"
+import styled, { keyframes } from "styled-components"
 import { PrincipalHeader } from "./PrincipalHeader"
 import { useEffect } from "react"
 import { useDispatch } from "react-redux"
 import { setInitial } from "../../store/homeDataSlice"
-import spaceCat from "../../assets/images/spaceCat.png"
+import onlySpaceCat from "../../assets/images/onlySpaceCat.png"
+import onlySpace from "../../assets/images/onlySpace.png"
 
 export const Principal = () => {
   const dispatch = useDispatch()
@@ -37,11 +38,60 @@ export const Principal = () => {
             mais colaborativo e produtivo. */}
           </ResumeContainer>
         </ContentText>
-        <img src={spaceCat} alt="" />
+        <SpaceImageWrapper>
+          <img src={onlySpace} alt="Imagem de espaço com estrelas e planetas" />
+          <img
+            src={onlySpaceCat}
+            alt="Imagem de um gato com capacete de astronauta"
+          />
+        </SpaceImageWrapper>
       </PrincipalContent>
     </PrincipalContainer>
   )
 }
+
+const animationCat = keyframes`
+  0%, 100% {
+    transform: translate(-50%, -45%);
+  }
+  50% {
+    transform: translate(-50%, -55%);
+  }
+`
+
+const SpaceImageWrapper = styled.div`
+  position: relative;
+
+  width: 50%;
+  aspect-ratio: 1;
+
+  user-select: none;
+  pointer-events: none;
+
+  img {
+    position: absolute;
+  }
+
+  img:nth-child(1) {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  img:nth-child(2) {
+    width: calc(100% / 3.1);
+
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    animation: ${animationCat} 5s ease-in-out infinite;
+  }
+
+  @media (max-width: 1000px) {
+    width: 70%;
+  }
+`
 
 const PrincipalContent = styled.div`
   position: relative;
@@ -56,14 +106,6 @@ const PrincipalContent = styled.div`
   @media (max-width: 1350px) {
     flex-direction: column;
   }
-
-  img {
-    width: 50%;
-    /* border: 1px solid black; */
-
-    user-select: none;
-    pointer-events: none;
-  }
 `
 
 const ContentText = styled.div`
@@ -73,6 +115,11 @@ const ContentText = styled.div`
 
   display: flex;
   flex-direction: column;
+
+  @media (max-width: 1350px) {
+    height: unset;
+    max-width: 100%;
+  }
 `
 
 const ResumeContainer = styled.span`
