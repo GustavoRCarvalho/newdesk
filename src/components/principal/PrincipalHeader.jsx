@@ -1,4 +1,4 @@
-import { handleIsSignIn } from "../../utils/googleDriveApi"
+import { getHasDrivePermission } from "../../utils/googleDriveApi"
 import { useDispatch } from "react-redux"
 import {
   toggleEnvironmentId,
@@ -18,7 +18,7 @@ export const PrincipalHeader = () => {
       <div>
         <button
           onClick={() => {
-            if (handleIsSignIn()) {
+            if (getHasDrivePermission()) {
               dispatch(toggleManipulate())
             } else {
               dispatch(toggleLogin())

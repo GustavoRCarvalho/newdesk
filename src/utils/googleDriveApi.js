@@ -16,11 +16,8 @@ export const initClient = () => {
         discoveryDocs: DISCOVERY_DOCS,
         scope: SCOPES,
       })
-      .then(() => {
-        console.log("Google API initialized")
-      })
+      .then(() => {})
       .catch((error) => {
-        console.error("Error initializing Google API", error)
         alert(
           "There was an issue initializing Google API. Please check your browser settings for third-party cookies."
         )
@@ -31,12 +28,16 @@ export const initClient = () => {
 export const handleSignIn = async () => {
   try {
     const user = await gapi.auth2.getAuthInstance().signIn()
+    const hasDrivePermission = await user
+      .getGrantedScopes()
+      .includes("https://www.googleapis.com/auth/drive.file")
     const profile = await user.getBasicProfile()
     const userProfile = {
       id: profile.getId(),
       name: profile.getName(),
       email: profile.getEmail(),
       imageUrl: profile.getImageUrl(),
+      hasDrivePermission: hasDrivePermission,
     }
     return userProfile
   } catch (e) {
@@ -56,18 +57,38 @@ export const handleIsSignIn = () => {
   return gapi.auth2.getAuthInstance().isSignedIn.get()
 }
 
+export const getHasDrivePermission = async () => {
+  try {
+    const auth = await gapi.auth2.getAuthInstance()
+
+    if (auth.isSignedIn.get()) {
+      const user = await auth.currentUser.get()
+      const hasDrivePermission = await user
+        .getGrantedScopes()
+        .includes("https://www.googleapis.com/auth/drive.file")
+      return hasDrivePermission
+    }
+    return false
+  } catch (e) {
+    throw e
+  }
+}
+
 export const handleWhoIsSignIn = async () => {
   try {
     const auth = await gapi.auth2.getAuthInstance()
-    // Verificar se o usuário está logado
     if (auth.isSignedIn.get()) {
       const user = await auth.currentUser.get()
+      const hasDrivePermission = await user
+        .getGrantedScopes()
+        .includes("https://www.googleapis.com/auth/drive.file")
       const profile = await user.getBasicProfile()
       const userProfile = {
         id: profile.getId(),
         name: profile.getName(),
         email: profile.getEmail(),
         imageUrl: profile.getImageUrl(),
+        hasDrivePermission: hasDrivePermission,
       }
       return userProfile
     }

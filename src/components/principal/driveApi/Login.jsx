@@ -84,6 +84,12 @@ export const Login = () => {
                 <span>{user.email}</span>
               </UserInfos>
             </UserInfosWrapper>
+            {user.hasDrivePermission && (
+              <UserHasDrivePermission>
+                * Para criar ambientes, relogue e permita a criação de arquivos
+                *
+              </UserHasDrivePermission>
+            )}
             <button onClick={onLogout}>Desconectar</button>
           </>
         ) : (
@@ -168,4 +174,10 @@ const UserInfos = styled.div`
     font-size: 0.9em;
     opacity: 0.8;
   }
+`
+
+const UserHasDrivePermission = styled.span`
+  font-size: 0.8em;
+
+  color: #c2a500;
 `
