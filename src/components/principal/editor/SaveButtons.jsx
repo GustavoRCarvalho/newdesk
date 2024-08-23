@@ -76,7 +76,7 @@ export const SaveButtons = ({ value }) => {
     <SaveContainer>
       <button onClick={handleChangeColor}>Trocar cor do fundo</button>
       <SaveWrapper>
-        <button onClick={handleSave}>Salvar</button>
+        {value && <button onClick={handleSave}>Salvar</button>}
         <button onClick={saveData}>Postar {isSaving && <Spinner />}</button>
       </SaveWrapper>
     </SaveContainer>

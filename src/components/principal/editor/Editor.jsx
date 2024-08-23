@@ -17,6 +17,7 @@ import { LoadingScreen } from "../../../router/LoadingScreen"
 import { useFetchData } from "../driveApi/useFetchData"
 import { useCookies } from "react-cookie"
 import { GoImage } from "react-icons/go"
+import { SaveButtons } from "./SaveButtons"
 
 export const Editor = memo(() => {
   const location = useLocation()
@@ -150,7 +151,10 @@ export const Editor = memo(() => {
       {editorState.selectedArticleIndex !== -1 ? (
         <EditorComponent />
       ) : (
-        <ReactQuill readOnly theme="snow" modules={modules} />
+        <>
+          <ReactQuill readOnly theme="snow" modules={modules} />
+          <SaveButtons />
+        </>
       )}
     </EditorContainer>
   )
