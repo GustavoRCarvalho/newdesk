@@ -107,9 +107,14 @@ const CommentaryWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.25em;
+  width: 90%;
 
   margin-block: 0.75em;
   margin-left: 1.5em;
+
+  @media (max-width: 720px) {
+    margin-left: 0em;
+  }
 `
 
 const CommentaryContainer = styled.div`
@@ -151,7 +156,9 @@ const DateSpan = styled.span`
   opacity: 0.8;
 `
 
-const ContentSpan = styled.span`
-  display: block;
+const ContentSpan = styled.div`
+  display: flex;
   margin-left: 4em;
+
+  overflow: hidden;
 `

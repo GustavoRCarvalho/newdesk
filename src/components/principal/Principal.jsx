@@ -91,6 +91,9 @@ const SpaceImageWrapper = styled.div`
   @media (max-width: 1000px) {
     width: 70%;
   }
+  @media (max-width: 720px) {
+    width: 75%;
+  }
 `
 
 const PrincipalContent = styled.div`
@@ -139,6 +142,9 @@ const ResumeContainer = styled.span`
     margin-inline: auto;
     text-align: center;
   }
+  @media (max-width: 720px) {
+    max-width: 90%;
+  }
 `
 
 const PrincipalTitle = styled.h1`
@@ -160,6 +166,9 @@ const PrincipalTitle = styled.h1`
     margin-inline: auto;
     text-align: center;
   }
+  @media (max-width: 720px) {
+    max-width: 90%;
+  }
 `
 
 const PrincipalContainer = styled.div`
@@ -178,6 +187,11 @@ const PrincipalContainer = styled.div`
 
   @media (max-width: 1000px) {
     font-size: 1em;
+  }
+
+  @media (max-width: 720px) {
+    width: calc(100vw - 2em);
+    padding-inline: 1em;
   }
 
   overflow-x: hidden;

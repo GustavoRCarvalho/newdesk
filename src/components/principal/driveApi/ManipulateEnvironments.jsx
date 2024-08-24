@@ -329,9 +329,15 @@ const Container = styled.div`
     border-collapse: collapse;
     th {
       padding-inline: 1em;
+      @media (max-width: 720px) {
+        padding-inline: 0.2em;
+      }
     }
     td {
       padding-inline: 1em;
+      @media (max-width: 720px) {
+        padding-inline: 0.2em;
+      }
     }
   }
 
@@ -349,12 +355,22 @@ const Container = styled.div`
     th:nth-child(1) {
       text-align: start;
       padding-left: 1.5em;
+
+      @media (max-width: 720px) {
+        padding-left: 0.75em;
+      }
+
       border-top-left-radius: 0.5em;
       border-bottom-left-radius: 0.5em;
     }
     th:last-child {
       text-align: end;
       padding-right: 1.5em;
+
+      @media (max-width: 720px) {
+        padding-right: 0.75em;
+      }
+
       border-top-right-radius: 0.5em;
       border-bottom-right-radius: 0.5em;
     }
@@ -377,6 +393,12 @@ const Container = styled.div`
 
       padding: 0.25em;
       margin-inline: 0.1em;
+
+      @media (max-width: 720px) {
+        padding: 0em;
+        width: 1.25em;
+        height: 1.25em;
+      }
 
       svg {
         color: var(--manipulate-color);
@@ -409,6 +431,10 @@ const Container = styled.div`
       text-align: start;
       padding-left: 1.5em;
 
+      @media (max-width: 720px) {
+        padding-left: 0.75em;
+      }
+
       border-top-left-radius: 0.5em;
       border-bottom-left-radius: 0.5em;
     }
@@ -418,6 +444,10 @@ const Container = styled.div`
     td:last-child {
       text-align: center;
       padding-right: 1.5em;
+
+      @media (max-width: 720px) {
+        padding-right: 0.75em;
+      }
 
       border-top-right-radius: 0.5em;
       border-bottom-right-radius: 0.5em;

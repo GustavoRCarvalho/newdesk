@@ -181,6 +181,11 @@ const ArticleContainer = styled.div`
   min-height: 100%;
   padding: 3em;
 
+  @media (max-width: 720px) {
+    padding-inline: 1em;
+    width: calc(100% - 2em);
+  }
+
   color: var(--home-card-color);
 
   .quill {

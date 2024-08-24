@@ -220,6 +220,11 @@ const NameRatingWrapper = styled.div`
   width: 100%;
 
   gap: 2em;
+
+  @media (max-width: 720px) {
+    flex-direction: column;
+    gap: 1em;
+  }
 `
 const RatingWrapper = styled.div`
   display: flex;
