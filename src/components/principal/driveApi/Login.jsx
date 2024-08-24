@@ -84,7 +84,7 @@ export const Login = () => {
                 <span>{user.email}</span>
               </UserInfos>
             </UserInfosWrapper>
-            {user.hasDrivePermission && (
+            {!user.hasDrivePermission && (
               <UserHasDrivePermission>
                 * Para criar ambientes, relogue e permita a criação de arquivos
                 *
