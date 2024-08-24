@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux"
 import { changeCard, resetCard } from "../../../store/cardSlice"
 import { useRef } from "react"
 import { NoStyleLinkRouter } from "../../../router/NoStyleLinkRouter"
+import useWindowDimensions from "../../../utils/functions"
 
 export const DropdownOption = ({
   categoryTitle,
@@ -17,6 +18,7 @@ export const DropdownOption = ({
 }) => {
   const refDownIcon = useRef(null)
   const dispatch = useDispatch()
+  const { isDesktop } = useWindowDimensions()
 
   return (
     <DropdownOptionContainer
@@ -36,6 +38,7 @@ export const DropdownOption = ({
       <OptionButtonOpen
         $isvisible={articles.length > 0}
         onMouseEnter={() => {
+          if (!isDesktop) return
           var rect = refDownIcon.current.getBoundingClientRect()
           var x = rect.x + rect.width
           var y = rect.y + rect.height - 50

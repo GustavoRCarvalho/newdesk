@@ -2,28 +2,44 @@ import styled from "styled-components"
 import { Search } from "./Search"
 import { SideHeader } from "./SideHead"
 import { LayoutGroup, motion } from "framer-motion"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { IoIosArrowBack } from "react-icons/io"
 import { DropdownButton } from "./DropdownButton"
 import { useSelector } from "react-redux"
+import useWindowDimensions from "../../../utils/functions"
+import { GoX } from "react-icons/go"
+import { CiMenuBurger } from "react-icons/ci"
 
 export const SideMenu = () => {
   const homeData = useSelector((state) => state.homeData.environment)
   const categoriesSearched = homeData?.categoriesSearched
   const [isOpen, setIsOpen] = useState(false)
+  const [isShow, setIsShow] = useState(false)
   const [openDropdownLabel, setOpenDropdownLabel] = useState("")
+  const { isDesktop } = useWindowDimensions()
+
+  useEffect(() => {
+    setIsOpen(true)
+  }, [isDesktop])
 
   return (
     <LayoutGroup>
-      <SideContainer layout>
-        <CloseButton
-          title="close"
-          layout
-          $isopen={isOpen}
-          onClick={() => setIsOpen((state) => !state)}
-        >
-          <IoIosArrowBack />
-        </CloseButton>
+      <BurguerIcon onClick={() => setIsShow(true)} />
+      <SideContainer layout $isDesktop={isDesktop} $isShow={isShow}>
+        {isDesktop ? (
+          <CloseButton
+            title="close"
+            layout
+            $isopen={isOpen}
+            onClick={() => setIsOpen((state) => !state)}
+          >
+            <IoIosArrowBack />
+          </CloseButton>
+        ) : (
+          <CloseXButton>
+            <GoX onClick={() => setIsShow(false)} />
+          </CloseXButton>
+        )}
         <SideHeader isOpen={isOpen} />
         <Search isOpen={isOpen} setIsOpen={setIsOpen} />
         <OptionsContainer layout>
@@ -54,6 +70,15 @@ export const SideMenu = () => {
   )
 }
 
+const BurguerIcon = styled(CiMenuBurger)`
+  position: fixed;
+  top: 1em;
+  left: 1em;
+
+  width: 1.5em;
+  height: 1.5em;
+`
+
 const OptionsContainer = styled(motion.div)`
   display: flex;
   flex-direction: column;
@@ -81,6 +106,33 @@ const OptionsContainer = styled(motion.div)`
   &::-webkit-scrollbar-thumb:hover {
     background: #aaa;
   }
+`
+
+const CloseXButton = styled(motion.button)`
+  position: absolute;
+  top: 1em;
+  left: 1em;
+  background-color: transparent;
+
+  font-size: 1em;
+
+  display: flex;
+  align-items: center;
+
+  width: 2em;
+  height: 2em;
+
+  border: none;
+  padding: 0;
+
+  svg {
+    width: 2em;
+    height: 2em;
+
+    color: #fff;
+  }
+
+  cursor: pointer;
 `
 
 const CloseButton = styled(motion.button)`
@@ -115,10 +167,11 @@ const CloseButton = styled(motion.button)`
 `
 
 const SideContainer = styled(motion.div)`
-  position: relative;
+  position: ${(props) => (props.$isDesktop ? "relative" : "fixed")};
   background-color: var(--side-menu-background);
   height: calc(100dvh - 2em);
-  min-width: min-content;
+  min-width: ${(props) =>
+    props.$isDesktop ? "min-content" : "calc(90% - 2em)"};
 
   padding: 1em;
   display: grid;
@@ -126,6 +179,8 @@ const SideContainer = styled(motion.div)`
   gap: 0.5em;
 
   user-select: none;
+
+  left: ${(props) => (props.$isDesktop ? 0 : props.$isShow ? 0 : "-100%")};
 
   z-index: 1;
 `
