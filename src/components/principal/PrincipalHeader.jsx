@@ -31,8 +31,8 @@ export const PrincipalHeader = () => {
       <Logo src={CatFace} />
       <nav>
         <button
-          onClick={() => {
-            if (getHasDrivePermission()) {
+          onClick={async () => {
+            if (await getHasDrivePermission()) {
               dispatch(toggleManipulate())
             } else {
               dispatch(toggleLogin())
