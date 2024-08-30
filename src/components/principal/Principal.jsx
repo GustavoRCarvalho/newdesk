@@ -173,7 +173,7 @@ const PrincipalTitle = styled.h1`
 
 const PrincipalContainer = styled.div`
   font-size: 1.2em;
-  background: linear-gradient(#2d3b4e, #050608);
+  background: var(--principal-background);
   color: #fff;
   position: relative;
 

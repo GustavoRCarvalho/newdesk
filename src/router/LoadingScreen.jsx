@@ -46,7 +46,7 @@ const gigle = keyframes`
 `
 
 const LoadingContainer = styled.div`
-  background: linear-gradient(#2d3b4e, #050608);
+  background: var(--principal-background);
   position: fixed;
 
   width: 100vw;

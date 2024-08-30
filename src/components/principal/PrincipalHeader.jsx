@@ -124,7 +124,7 @@ const SideNav = styled.nav`
   min-width: 15em;
   height: 100%;
 
-  background: linear-gradient(#2d3b4e, #050608);
+  background: var(--principal-background);
   z-index: 1;
 
   display: flex;

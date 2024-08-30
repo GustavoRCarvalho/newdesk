@@ -6,6 +6,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
+  --principal-background: linear-gradient(#2d3b4e, #050608);
+
   --side-menu-color: #fff;
   --side-menu-background: #323232;
 
