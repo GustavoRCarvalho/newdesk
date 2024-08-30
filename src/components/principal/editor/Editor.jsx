@@ -59,14 +59,18 @@ export const Editor = memo(() => {
   const environment = params.get("environment")
 
   const [cookies, setCookies] = useCookies([`editor${environment}`])
+  const environmentContent = useMemo(() => {
+    return cookies[`editor${environment}`]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [environment])
 
   const { data, loading, error } = useFetchData(
-    cookies[`editor${environment}`] ? "" : environment
+    environmentContent ? "" : environment
   )
 
   useEffect(() => {
-    if (cookies[`editor${environment}`]) {
-      dispatch(setEditorInitial(cookies[`editor${environment}`]))
+    if (environmentContent) {
+      dispatch(setEditorInitial(environmentContent ?? {}))
       return
     }
     if (loading) return
@@ -113,7 +117,7 @@ export const Editor = memo(() => {
     reader.readAsDataURL(file)
   }
 
-  return !cookies[`editor${environment}`] ? (
+  return !environmentContent ? (
     <LoadingScreen errorMessage={error} />
   ) : (
     <EditorContainer
