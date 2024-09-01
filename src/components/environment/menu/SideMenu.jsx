@@ -77,6 +77,8 @@ const BurguerIcon = styled(CiMenuBurger)`
 
   width: 1.5em;
   height: 1.5em;
+
+  z-index: 1;
 `
 
 const OptionsContainer = styled(motion.div)`
