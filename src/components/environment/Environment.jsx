@@ -6,7 +6,7 @@ import { resetCard } from "../../store/cardSlice"
 import { Settings } from "./home/Settings"
 import { useSearchParams } from "react-router-dom"
 import { setInitial } from "../../store/homeDataSlice"
-import { useEffect } from "react"
+import { useEffect, useMemo } from "react"
 import { LoadingScreen } from "../../router/LoadingScreen"
 import { useFetchData } from "../principal/driveApi/useFetchData"
 import { useCookies } from "react-cookie"
@@ -19,16 +19,20 @@ export const Environment = ({ children }) => {
   const environment = searchParams.get("environment")
 
   const [cookies, setCookies] = useCookies([environment])
+  const environmentContent = useMemo(() => {
+    return cookies[environment]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [environment])
 
   const { data, loading, error } = useFetchData(
-    cookies[environment] ? "" : environment
+    environmentContent ? "" : environment
   )
 
   useEffect(() => {
-    if (cookies[environment]) {
+    if (environmentContent) {
       const obj = {
-        ...cookies[environment],
-        categoriesSearched: cookies[environment].categories,
+        ...environmentContent,
+        categoriesSearched: environmentContent.categories,
       }
       dispatch(setInitial(obj))
       return
