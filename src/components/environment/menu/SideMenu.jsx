@@ -182,7 +182,7 @@ const SideContainer = styled(motion.div)`
 
   user-select: none;
 
-  left: ${(props) => (props.$isDesktop ? 0 : props.$isShow ? 0 : "-100%")};
+  left: ${(props) => (props.$isDesktop ? 0 : props.$isShow ? 0 : "-150%")};
 
   z-index: 1;
 `
