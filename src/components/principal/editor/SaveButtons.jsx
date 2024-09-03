@@ -29,7 +29,8 @@ export const SaveButtons = ({ value }) => {
   const [searchParams] = useSearchParams()
   const environment = searchParams.get("environment")
 
-  const [cookies, setCookies] = useCookies([`editor${environment}`])
+  // eslint-disable-next-line no-unused-vars
+  const [_, setCookies] = useCookies([`editor${environment}`])
 
   const handleSave = () => {
     dispatch(changeContentArticle(value))
