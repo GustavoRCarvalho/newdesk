@@ -28,9 +28,10 @@ export const Editor = memo(() => {
     [editorState.isChanged]
   )
   const editorData = useMemo(
-    () => editorState.environment ?? [],
+    () => editorState.environment ?? {},
     [editorState.environment]
   )
+  const hasLoad = JSON.stringify(editorData) !== "{}"
   const imageSrc = editorData.environmentImage
     ? `data:image/png;base64,${editorData.environmentImage}`
     : ""
@@ -117,7 +118,7 @@ export const Editor = memo(() => {
     reader.readAsDataURL(file)
   }
 
-  return !environmentContent ? (
+  return !hasLoad ? (
     <LoadingScreen errorMessage={error} />
   ) : (
     <EditorContainer
