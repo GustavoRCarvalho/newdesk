@@ -1,4 +1,4 @@
-import ReactQuill from "react-quill"
+import ReactQuill from "react-quill-new"
 import { useDispatch, useSelector } from "react-redux"
 import { changeContentArticle } from "../../../store/editorSlice"
 import { useEffect, useState } from "react"

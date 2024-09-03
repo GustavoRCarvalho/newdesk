@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom"
 import styled from "styled-components"
-import ReactQuill from "react-quill"
+import ReactQuill from "react-quill-new"
 import { NoStyleLinkRouter } from "../../../router/NoStyleLinkRouter"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect } from "react"
