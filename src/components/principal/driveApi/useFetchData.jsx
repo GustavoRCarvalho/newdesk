@@ -25,7 +25,6 @@ export const useFetchData = (fileId) => {
         return
       }
 
-      console.log("fetch")
       try {
         const response = await readJsonFile(fileId, signal)
         setData(response)
