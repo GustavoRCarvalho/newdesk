@@ -11,7 +11,7 @@ import {
 } from "../../../store/editorSlice"
 import { SubCategoryDropdown } from "./SubCategoryDropdown"
 import { ArticleDropdown } from "./ArticleDropdown"
-import ReactQuill from "react-quill"
+import ReactQuill from "react-quill-new"
 import { modules } from "../../../utils/functions"
 import { LoadingScreen } from "../../../router/LoadingScreen"
 import { useFetchData } from "../driveApi/useFetchData"
