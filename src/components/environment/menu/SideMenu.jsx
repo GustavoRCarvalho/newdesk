@@ -53,7 +53,7 @@ export const SideMenu = () => {
             openDropdownLabel={openDropdownLabel}
           />
           {categoriesSearched &&
-            categoriesSearched.map((data, index) => {
+            categoriesSearched.map((data) => {
               return (
                 <DropdownButton
                   key={data.title}

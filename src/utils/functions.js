@@ -185,17 +185,7 @@ export function changeDarkLightMode(isDark) {
   }
 }
 
-export function search(e, oriData, searchData) {
-  // if (
-  //   (e.key === "Backspace" || e.key === "Delete") &&
-  //   e.target.value.length === 1
-  // ) {
-  //   return oriData
-  // }
-  // if (e.key !== "Enter") {
-  //   return searchData
-  // }
-  // if (e.target.value === "") return oriData
+export function search(e, oriData) {
   const searchTermLower = e.target.value.toLowerCase()
 
   return oriData
