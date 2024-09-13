@@ -1,4 +1,3 @@
-import { getHasDrivePermission } from "../../utils/googleDriveApi"
 import { useDispatch } from "react-redux"
 import {
   toggleEnvironmentId,
@@ -12,9 +11,11 @@ import { BiSearch } from "react-icons/bi"
 import { useEffect, useState } from "react"
 import { GoX } from "react-icons/go"
 import { CiMenuBurger } from "react-icons/ci"
+import { useCookies } from "react-cookie"
 
 export const PrincipalHeader = () => {
   const dispatch = useDispatch()
+  const [cookies, setCookies] = useCookies()
   const [navMenuOpen, setNavMenuOpen] = useState(false)
   const { isDesktop } = useWindowDimensions()
 
@@ -31,8 +32,9 @@ export const PrincipalHeader = () => {
       <Logo src={CatFace} />
       <nav>
         <button
-          onClick={async () => {
-            if (await getHasDrivePermission()) {
+          onClick={() => {
+            console.log(cookies.GISToken)
+            if (cookies.GISToken) {
               dispatch(toggleManipulate())
             } else {
               dispatch(toggleLogin())
@@ -58,7 +60,7 @@ export const PrincipalHeader = () => {
         </CloseContainer>
         <button
           onClick={() => {
-            if (getHasDrivePermission()) {
+            if (cookies.GISToken) {
               dispatch(toggleManipulate())
             } else {
               dispatch(toggleLogin())

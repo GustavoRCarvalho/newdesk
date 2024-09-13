@@ -1,17 +1,16 @@
 import styled from "styled-components"
-import {
-  handleCreateContentFile,
-  listFiles,
-} from "../../../utils/googleDriveApi"
 import { useDispatch, useSelector } from "react-redux"
-import { toggleManipulate } from "../../../store/modalSlice"
+import { toggleLogin, toggleManipulate } from "../../../store/modalSlice"
 import { useEffect, useState } from "react"
 import { ManipulateListItem, Spinner } from "./ManipulateListItem"
 import { GoX, GoImage } from "react-icons/go"
 import { createAlertError, createAlertSucess } from "../../../store/alertSlice"
 import { ModalBackground } from "../../../router/Modal"
+import { createContentFile, listFiles } from "../../../utils/GISApi"
+import { useCookies } from "react-cookie"
 
 export const ManipulateEnvironments = () => {
+  const [cookies, setCookies] = useCookies()
   const isDeleteOpen = useSelector((state) => state.modal.delete)
   const [newEnvironments, setNewEnvironments] = useState("")
   const [newImage, setNewImage] = useState("")
@@ -35,7 +34,7 @@ export const ManipulateEnvironments = () => {
     setIsExecuting(true)
     setIsExecutingAnimation((state) => ({ ...state, create: true }))
     try {
-      await handleCreateContentFile(newEnvironments, newImage)
+      await createContentFile(cookies.GISToken, newEnvironments, newImage)
       dispatch(createAlertSucess("Ambiente criado com sucesso."))
     } catch (e) {
       dispatch(
@@ -51,8 +50,14 @@ export const ManipulateEnvironments = () => {
 
   const fetchFiles = async () => {
     try {
-      const files = await listFiles()
-      setList(files)
+      const response = await listFiles(cookies.GISToken)
+      if (response?.error?.code === 401) {
+        setCookies(`GISToken`, null)
+        dispatch(toggleManipulate())
+        dispatch(toggleLogin())
+        return
+      }
+      setList(response.files)
       setIsExecutingAnimation({
         create: false,
         rename: "",
@@ -138,15 +143,15 @@ export const ManipulateEnvironments = () => {
               <th>Ferramentas</th>
             </tr>
           </thead>
-          {list.length !== 0 && (
+          {list?.length !== 0 && (
             <tbody>
-              {list.map((item) => {
+              {list?.map((item) => {
                 return <ManipulateListItem key={item.id} item={item} />
               })}
             </tbody>
           )}
         </table>
-        {list.length === 0 && (
+        {list?.length === 0 && (
           <TableEmpty>
             {initialLoading ? <Spinner /> : "Nenhum ambiente adicionado"}{" "}
           </TableEmpty>

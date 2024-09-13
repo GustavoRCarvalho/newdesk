@@ -1,5 +1,4 @@
 import styled from "styled-components"
-import { updateJsonFile } from "../../../utils/googleDriveApi"
 import {
   changeBackgroundArticle,
   changeContentArticle,
@@ -10,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import { useCookies } from "react-cookie"
+import { updateJsonFile } from "../../../utils/GISApi"
 
 export const SaveButtons = ({ value }) => {
   const [backgroundColor, setBackgroundColor] = useState(0)
@@ -53,7 +53,7 @@ export const SaveButtons = ({ value }) => {
   async function saveData() {
     try {
       setIsSaving(true)
-      await updateJsonFile(environment, editorData)
+      await updateJsonFile(cookies.GISToken, environment, editorData)
 
       setCookies(`editor${environment}`, editorData, {
         path: "/",

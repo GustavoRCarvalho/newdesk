@@ -1,38 +1,24 @@
 import { motion } from "framer-motion"
-import { useEffect, useState } from "react"
+import { useMemo, useState } from "react"
 import { HiOutlineDotsHorizontal, HiOutlineX } from "react-icons/hi"
 import { LuUser2 } from "react-icons/lu"
 import { IoIosLogOut } from "react-icons/io"
 import styled from "styled-components"
 import { Link } from "react-router-dom"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 import { toggleLogin } from "../../../store/modalSlice"
-import { handleWhoIsSignIn } from "../../../utils/googleDriveApi"
-import { setUser } from "../../../store/userSlice"
-import { createAlertError } from "../../../store/alertSlice"
 import { ButtonDarkLightTheme } from "./ButtonDarkLightTheme"
 import { ButtonThemeChange } from "./ButtonThemeChange"
+import { useCookies } from "react-cookie"
 
 export const Settings = () => {
   const dispatch = useDispatch()
-  const user = useSelector((state) => state.user.user)
-  const [isOpen, setIsOpen] = useState(false)
-
-  async function getUser() {
-    try {
-      const user = await handleWhoIsSignIn()
-      dispatch(setUser(user))
-    } catch (e) {
-      dispatch(createAlertError(e.message))
-    }
-  }
-
-  useEffect(() => {
-    if (JSON.stringify(user) === "{}") {
-      getUser()
-    }
+  const [cookies, setCookies] = useCookies()
+  const user = useMemo(() => {
+    return cookies.GISuser
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user])
+  }, [])
+  const [isOpen, setIsOpen] = useState(false)
 
   return (
     <>
@@ -63,8 +49,8 @@ export const Settings = () => {
         {isOpen && (
           <>
             <LoginContainer onClick={() => dispatch(toggleLogin())}>
-              {user?.imageUrl !== undefined ? (
-                <img alt="foto do perfil" src={user.imageUrl} />
+              {user?.picture !== undefined ? (
+                <img alt="foto do perfil" src={user.picture} />
               ) : (
                 <LuUser2 />
               )}

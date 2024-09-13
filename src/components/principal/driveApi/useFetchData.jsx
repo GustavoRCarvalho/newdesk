@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { readJsonFile } from "../../../utils/googleDriveApi"
+import { readJsonFile } from "../../../utils/GISApi"
 import { useDispatch } from "react-redux"
 import { createAlertError, createAlertSucess } from "../../../store/alertSlice"
 

@@ -1,69 +1,49 @@
 import styled from "styled-components"
-import {
-  handleIsSignIn,
-  handleSignIn,
-  handleSignOut,
-  handleWhoIsSignIn,
-} from "../../../utils/googleDriveApi"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 import { toggleLogin } from "../../../store/modalSlice"
-import { createAlertError, createAlertSucess } from "../../../store/alertSlice"
+import { createAlertSucess } from "../../../store/alertSlice"
 import { FcGoogle } from "react-icons/fc"
-import { initialUser, setUser } from "../../../store/userSlice"
-import { useEffect } from "react"
 import logo from "../../../assets/images/Logo.svg"
 import { ModalBackground } from "../../../router/Modal"
+import { GISLogin, GISLogout, GISPermissionToken } from "../../../utils/GISApi"
+import { useCookies } from "react-cookie"
+import { useMemo } from "react"
 
 export const Login = () => {
   const dispatch = useDispatch()
-  const user = useSelector((state) => state.user.user)
+  const [cookies, setCookies] = useCookies()
+  const user = useMemo(() => {
+    return cookies.GISuser
+  }, [cookies.GISuser])
 
-  async function onLogin() {
-    try {
-      const user = await handleSignIn()
-      dispatch(setUser(user))
-
-      dispatch(toggleLogin())
-      dispatch(createAlertSucess("Login realizado com sucesso!"))
-    } catch (e) {
-      dispatch(
-        createAlertError(
-          "Falha ao realizadar o login. Por favor, tente novamente."
-        )
-      )
-    }
+  function onLogin() {
+    GISLogin()
   }
 
-  async function onLogout() {
-    try {
-      await handleSignOut()
-      dispatch(initialUser())
-      dispatch(toggleLogin())
-      dispatch(createAlertSucess("Logout realizado com sucesso!"))
-    } catch (e) {
-      dispatch(
-        createAlertError(
-          "Falha ao realizadar o logout. Por favor, tente novamente."
-        )
-      )
-    }
+  function onLogout() {
+    GISLogout()
+    setCookies("GISuser", {})
+    setCookies("GISToken", null)
+    dispatch(toggleLogin())
+    dispatch(createAlertSucess("Logout realizado com sucesso!"))
   }
 
-  async function getUser() {
-    try {
-      const user = await handleWhoIsSignIn()
-      dispatch(setUser(user))
-    } catch (e) {
-      dispatch(createAlertError(e.message))
+  function getToken() {
+    if (!user?.email_verified) return
+    if (cookies.GISToken) return
+    const getTokenCallback = (response) => {
+      if (
+        response.access_token &&
+        response.scope.includes("https://www.googleapis.com/auth/drive.file")
+      ) {
+        setCookies(`GISToken`, response.access_token, {
+          maxAge: response.expires_in,
+        })
+      }
     }
+    GISPermissionToken(getTokenCallback)
+    dispatch(toggleLogin())
   }
-
-  useEffect(() => {
-    if (JSON.stringify(user) === "{}") {
-      getUser()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user])
 
   return (
     <ModalBackground
@@ -73,10 +53,10 @@ export const Login = () => {
       }
     >
       <LoginContainer>
-        {handleIsSignIn() ? (
+        {user?.email_verified ? (
           <>
             <UserInfosWrapper>
-              <img alt="foto do perfil" src={user.imageUrl ?? logo} />
+              <img alt="foto do perfil" src={user.picture ?? logo} />
               <UserInfos>
                 <label>Nome:</label>
                 <span>{user.name}</span>
@@ -84,9 +64,15 @@ export const Login = () => {
                 <span>{user.email}</span>
               </UserInfos>
             </UserInfosWrapper>
-            {!user.hasDrivePermission && (
+            {!cookies.GISToken && (
               <UserHasDrivePermission>
-                * Para criar ambientes, relogue e permita a criação de arquivos
+                * Para criar ambientes,{" "}
+                <span
+                  onClick={getToken}
+                  style={{ textDecoration: "underline", cursor: "pointer" }}
+                >
+                  permita a criação de arquivos
+                </span>{" "}
                 *
               </UserHasDrivePermission>
             )}

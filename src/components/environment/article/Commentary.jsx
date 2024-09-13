@@ -3,8 +3,9 @@ import styled from "styled-components"
 import { createAlertError } from "../../../store/alertSlice"
 import { useDispatch, useSelector } from "react-redux"
 import { setComments } from "../../../store/homeDataSlice"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { Spinner } from "../../principal/driveApi/ManipulateListItem"
+import { useCookies } from "react-cookie"
 
 export const Commentary = ({
   id,
@@ -17,7 +18,11 @@ export const Commentary = ({
 }) => {
   const dispatch = useDispatch()
   const commentsData = useSelector((state) => state.homeData.comments)
-  const user = useSelector((state) => state.user.user)
+  const [cookies, setCookies] = useCookies()
+  const user = useMemo(() => {
+    return cookies.GISuser
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   const sameUser = userId === user.id
   const [loading, setLoading] = useState(null)
 

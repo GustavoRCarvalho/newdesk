@@ -1,13 +1,14 @@
 import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 import { GoStarFill, GoStar } from "react-icons/go"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { FcGoogle } from "react-icons/fc"
 import { toggleLogin } from "../../../store/modalSlice"
 import { setComments } from "../../../store/homeDataSlice"
 import { createAlertError, createAlertSucess } from "../../../store/alertSlice"
 import { currentDate, generateUniqueId } from "../../../utils/functions"
 import { Spinner } from "../../principal/driveApi/ManipulateListItem"
+import { useCookies } from "react-cookie"
 
 export const AddComment = ({ articleId }) => {
   const dispatch = useDispatch()
@@ -16,7 +17,11 @@ export const AddComment = ({ articleId }) => {
   const [loading, setLoading] = useState(null)
   const [rating, setRating] = useState(null)
   const commentsData = useSelector((state) => state.homeData.comments)
-  const user = useSelector((state) => state.user.user)
+  const [cookies, setCookies] = useCookies()
+  const user = useMemo(() => {
+    return cookies.GISuser
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   async function addCommentary() {
     if (content === "") {

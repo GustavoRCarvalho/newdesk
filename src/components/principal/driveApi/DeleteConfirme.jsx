@@ -1,5 +1,4 @@
 import styled from "styled-components"
-import { deleteFile } from "../../../utils/googleDriveApi"
 import { useDispatch, useSelector } from "react-redux"
 import { toggleDelete } from "../../../store/modalSlice"
 import { useState } from "react"
@@ -7,9 +6,12 @@ import { Spinner } from "./ManipulateListItem"
 import Trash from "../../../assets/images/lixeira.svg"
 import { createAlertError, createAlertSucess } from "../../../store/alertSlice"
 import { ModalBackground } from "../../../router/Modal"
+import { deleteFile } from "../../../utils/GISApi"
+import { useCookies } from "react-cookie"
 
 export const DeleteConfirme = () => {
   const dispatch = useDispatch()
+  const [cookies] = useCookies()
   const deleteId = useSelector((state) => state.modal.delete)
   const [inputAlert, setInputAlert] = useState(false)
   const [isWaiting, setIsWaiting] = useState(false)
@@ -23,7 +25,7 @@ export const DeleteConfirme = () => {
     if (isWaiting) return
     setIsWaiting(true)
     try {
-      await deleteFile(deleteId)
+      await deleteFile(cookies.GISToken, deleteId)
       dispatch(createAlertSucess("Deletado com sucesso!"))
     } catch (e) {
       dispatch(
