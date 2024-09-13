@@ -80,24 +80,20 @@ export const createContentFile = async (token, name, image) => {
     utf +
     closeDelimiter
 
-  try {
-    const response = await fetch(
-      "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": 'multipart/related; boundary="' + boundary + '"',
-        },
-        body: multipartRequestBody,
-      }
-    )
+  const response = await fetch(
+    "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart",
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": 'multipart/related; boundary="' + boundary + '"',
+      },
+      body: multipartRequestBody,
+    }
+  )
 
-    const data = await response.json()
-    await shareFile(token, data.id)
-  } catch (error) {
-    throw error
-  }
+  const data = await response.json()
+  await shareFile(token, data.id)
 }
 
 export const shareFile = async (token, fileId) => {
@@ -125,16 +121,12 @@ export const shareFile = async (token, fileId) => {
 }
 
 export const deleteFile = async (token, fileId) => {
-  try {
-    await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-  } catch (e) {
-    throw e
-  }
+  await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
 }
 
 export const updateJsonFile = async (token, fileId, data) => {
@@ -163,58 +155,50 @@ export const updateJsonFile = async (token, fileId, data) => {
     utf +
     closeDelimiter
 
-  try {
-    await fetch(
-      `https://www.googleapis.com/upload/drive/v3/files/${fileId}?uploadType=multipart`,
-      {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": 'multipart/related; boundary="' + boundary + '"',
-        },
-        body: multipartRequestBody,
-      }
-    )
-  } catch (error) {
-    throw error
-  }
+  await fetch(
+    `https://www.googleapis.com/upload/drive/v3/files/${fileId}?uploadType=multipart`,
+    {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": 'multipart/related; boundary="' + boundary + '"',
+      },
+      body: multipartRequestBody,
+    }
+  )
 }
 
 export const readJsonFile = async (fileId, signal) => {
-  try {
-    const response = await fetch(
-      `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media&key=${API_KEY}`,
-      {
-        signal,
-        headers: {
-          "Content-Type": "application/json; charset=utf-8",
-        },
-      }
+  const response = await fetch(
+    `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media&key=${API_KEY}`,
+    {
+      signal,
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
+    }
+  )
+  if (response.status === 400) {
+    throw new Error(
+      "Houve algum problema inesperado. Por favor, tente novamente."
     )
-    if (response.status === 400) {
-      throw new Error(
-        "Houve algum problema inesperado. Por favor, tente novamente."
-      )
-    }
-    if (response.status === 403) {
-      throw new Error("Falha no uso das credencias. Aguarde e tente novamente.")
-    }
-    if (response.status === 404) {
-      throw new Error("Falha ao carregar. Por favor, verifique o código.")
-    }
-    if (!response.ok) {
-      throw new Error(
-        "Houve algum problema inesperado. Por favor, tente novamente."
-      )
-    }
-
-    const buffer = await response.arrayBuffer()
-
-    const decoder = new TextDecoder("utf-8")
-    const decodedString = decoder.decode(buffer)
-
-    return JSON.parse(decodedString)
-  } catch (error) {
-    throw error
   }
+  if (response.status === 403) {
+    throw new Error("Falha no uso das credencias. Aguarde e tente novamente.")
+  }
+  if (response.status === 404) {
+    throw new Error("Falha ao carregar. Por favor, verifique o código.")
+  }
+  if (!response.ok) {
+    throw new Error(
+      "Houve algum problema inesperado. Por favor, tente novamente."
+    )
+  }
+
+  const buffer = await response.arrayBuffer()
+
+  const decoder = new TextDecoder("utf-8")
+  const decodedString = decoder.decode(buffer)
+
+  return JSON.parse(decodedString)
 }

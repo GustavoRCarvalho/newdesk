@@ -112,7 +112,6 @@ export const Article = () => {
     } catch (e) {
       dispatch(setComments([]))
       dispatch(createAlertError(e.message))
-    } finally {
     }
   }
   useEffect(() => {

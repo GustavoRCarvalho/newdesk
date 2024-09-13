@@ -13,7 +13,7 @@ import { useCookies } from "react-cookie"
 
 export const Settings = () => {
   const dispatch = useDispatch()
-  const [cookies, setCookies] = useCookies()
+  const [cookies, _setCookies] = useCookies()
   const user = useMemo(() => {
     return cookies.GISuser
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -15,7 +15,7 @@ import { useCookies } from "react-cookie"
 
 export default function Content() {
   const dispatch = useDispatch()
-  const [cookies, setCookies] = useCookies()
+  const [_cookies, setCookies] = useCookies()
 
   const handleLoginCallback = (response) => {
     const decoded = jwtDecode(response.credential)

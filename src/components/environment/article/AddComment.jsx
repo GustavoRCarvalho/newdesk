@@ -17,7 +17,7 @@ export const AddComment = ({ articleId }) => {
   const [loading, setLoading] = useState(null)
   const [rating, setRating] = useState(null)
   const commentsData = useSelector((state) => state.homeData.comments)
-  const [cookies, setCookies] = useCookies()
+  const [cookies, _setCookies] = useCookies()
   const user = useMemo(() => {
     return cookies.GISuser
     // eslint-disable-next-line react-hooks/exhaustive-deps

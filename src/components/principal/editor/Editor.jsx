@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { useLocation } from "react-router-dom"
 import { EditorComponent } from "./EditorComponent"
 import styled from "styled-components"
-import { memo, useEffect, useMemo } from "react"
+import { useEffect, useMemo } from "react"
 import { CategoryDropdown } from "./CategoryDropdown"
 import {
   setEditorImage,
@@ -18,7 +18,7 @@ import { useFetchData } from "../driveApi/useFetchData"
 import { GoImage } from "react-icons/go"
 import { SaveButtons } from "./SaveButtons"
 
-export const Editor = memo(() => {
+export const Editor = () => {
   const location = useLocation()
   const dispatch = useDispatch()
   const editorState = useSelector((state) => state.editor)
@@ -105,6 +105,7 @@ export const Editor = memo(() => {
   useEffect(() => {
     function beforeUnload(e) {
       if (isChanged) {
+        return
       }
       e.preventDefault()
     }
@@ -181,7 +182,7 @@ export const Editor = memo(() => {
       )}
     </EditorContainer>
   )
-})
+}
 
 const TitleText = styled.div`
   position: relative;

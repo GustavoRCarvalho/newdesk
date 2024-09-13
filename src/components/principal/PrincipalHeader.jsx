@@ -15,7 +15,7 @@ import { useCookies } from "react-cookie"
 
 export const PrincipalHeader = () => {
   const dispatch = useDispatch()
-  const [cookies, setCookies] = useCookies()
+  const [cookies, _setCookies] = useCookies()
   const [navMenuOpen, setNavMenuOpen] = useState(false)
   const { isDesktop } = useWindowDimensions()
 
@@ -46,13 +46,6 @@ export const PrincipalHeader = () => {
           <BiSearch /> Acessar Ambiente
         </MenuButton>
       </nav>
-      <button
-        onClick={() => {
-          sessionStorage.clear()
-        }}
-      >
-        clear
-      </button>
       <button onClick={() => dispatch(toggleLogin())}>Conta</button>
     </HeaderContainer>
   ) : (

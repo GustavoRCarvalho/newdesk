@@ -5,7 +5,7 @@ import {
   useDragControls,
   useIsPresent,
 } from "framer-motion"
-import { memo, useEffect, useLayoutEffect, useState } from "react"
+import { useEffect, useLayoutEffect, useState } from "react"
 import { FaCaretDown } from "react-icons/fa"
 import { GoCheck, GoPencil, GoPlus, GoTrash } from "react-icons/go"
 import Grabber from "../../../assets/icons/Grabber.svg"
@@ -14,146 +14,144 @@ import { DynaminicIcon } from "../../../router/DynamicIcon"
 import { useDispatch } from "react-redux"
 import { toggleChangeIcon } from "../../../store/modalSlice"
 
-export const DropdownSelector = memo(
-  ({
-    options = [],
-    disabled = false,
-    placeholder = "select",
-    onSelect,
-    handleChange,
-    handleAdd,
-    handleRemove,
-    handleReorder,
-  }) => {
-    const dispatch = useDispatch()
-    const [isOpen, setIsOpen] = useState(false)
-    const [editable, setEditable] = useState()
-    const [newNameValue, setNewNameValue] = useState("")
+export const DropdownSelector = ({
+  options = [],
+  disabled = false,
+  placeholder = "select",
+  onSelect,
+  handleChange,
+  handleAdd,
+  handleRemove,
+  handleReorder,
+}) => {
+  const dispatch = useDispatch()
+  const [isOpen, setIsOpen] = useState(false)
+  const [editable, setEditable] = useState()
+  const [newNameValue, setNewNameValue] = useState("")
 
-    useLayoutEffect(() => {
-      if (disabled) setIsOpen(false)
-    }, [disabled])
+  useLayoutEffect(() => {
+    if (disabled) setIsOpen(false)
+  }, [disabled])
 
-    const handleCheck = () => {
-      if (newNameValue === "") {
-        setEditable("")
-        return
-      }
-      handleChange(newNameValue, editable)
+  const handleCheck = () => {
+    if (newNameValue === "") {
       setEditable("")
+      return
     }
+    handleChange(newNameValue, editable)
+    setEditable("")
+  }
 
-    useEffect(() => {
-      if (editable === "") {
-        return
-      }
-      setNewNameValue(editable)
-    }, [editable])
+  useEffect(() => {
+    if (editable === "") {
+      return
+    }
+    setNewNameValue(editable)
+  }, [editable])
 
-    return (
-      <DropdownContainer
+  return (
+    <DropdownContainer
+      layout
+      transition={{ duration: 0 }}
+      animate={isOpen ? "open" : "closed"}
+      variants={{
+        open: {
+          overflowY: "hidden",
+        },
+        closed: {
+          overflowY: "hidden",
+        },
+      }}
+    >
+      <ButtonDropdown
         layout
-        transition={{ duration: 0 }}
+        onClick={() => !disabled && setIsOpen((state) => !state)}
+        $disabled={disabled}
+        $isOpen={isOpen}
+      >
+        <DynaminicIcon iconName={placeholder.Icon} />
+        <span>{placeholder.title}</span>
+        <FaCaretDown className="downArrow" />
+      </ButtonDropdown>
+      <DropdownOptions
+        layout
         animate={isOpen ? "open" : "closed"}
+        initial={{
+          height: "0em",
+        }}
         variants={{
           open: {
-            overflowY: "hidden",
+            width: "100%",
+            height: "auto",
           },
           closed: {
-            overflowY: "hidden",
+            width: "100%",
+            height: "0em",
           },
         }}
       >
-        <ButtonDropdown
-          layout
-          onClick={() => !disabled && setIsOpen((state) => !state)}
-          $disabled={disabled}
-          $isOpen={isOpen}
-        >
-          <DynaminicIcon iconName={placeholder.Icon} />
-          <span>{placeholder.title}</span>
-          <FaCaretDown className="downArrow" />
-        </ButtonDropdown>
-        <DropdownOptions
-          layout
-          animate={isOpen ? "open" : "closed"}
-          initial={{
-            height: "0em",
-          }}
-          variants={{
-            open: {
-              width: "100%",
-              height: "auto",
-            },
-            closed: {
-              width: "100%",
-              height: "0em",
-            },
-          }}
-        >
-          <AnimatePresence>
-            <DropdownGroup axis="y" values={options} onReorder={handleReorder}>
-              {options.map(({ title, Icon }, index) => {
-                const isEditable = editable === title
-                return (
-                  <Item
-                    key={title}
-                    value={options[index]}
-                    isEditable={isEditable}
-                  >
-                    <DropdownText>
-                      {Icon !== undefined && (
-                        <DynaminicIcon
-                          onClick={() => {
-                            dispatch(
-                              toggleChangeIcon({ title: title, Icon: Icon })
-                            )
-                          }}
-                          iconName={Icon}
-                        />
-                      )}
-                      <DropdownInput
-                        type="text"
-                        value={isEditable ? newNameValue || "" : title}
-                        onChange={(e) =>
-                          setNewNameValue(e.target.value.replace("/", ""))
-                        }
-                        disabled={!isEditable}
+        <AnimatePresence>
+          <DropdownGroup axis="y" values={options} onReorder={handleReorder}>
+            {options.map(({ title, Icon }, index) => {
+              const isEditable = editable === title
+              return (
+                <Item
+                  key={title}
+                  value={options[index]}
+                  isEditable={isEditable}
+                >
+                  <DropdownText>
+                    {Icon !== undefined && (
+                      <DynaminicIcon
+                        onClick={() => {
+                          dispatch(
+                            toggleChangeIcon({ title: title, Icon: Icon })
+                          )
+                        }}
+                        iconName={Icon}
                       />
-                      <InputClick
-                        onClick={() => onSelect(index)}
-                        $disabled={isEditable}
-                      ></InputClick>
-                    </DropdownText>
-                    <OptionIcons>
-                      {isEditable ? (
-                        <GoCheck onClick={handleCheck} />
-                      ) : (
-                        <GoPencil onClick={() => setEditable(title)} />
-                      )}
-                      <GoTrash onClick={() => handleRemove(index)} />
-                    </OptionIcons>
-                  </Item>
-                )
-              })}
-              <AddDropdown layout onClick={handleAdd}>
-                <DropdownText>
-                  <FakeIcon></FakeIcon>
-                  Adicionar
-                </DropdownText>
-                <OptionIcons>
-                  <GoPlus />
-                </OptionIcons>
-              </AddDropdown>
-            </DropdownGroup>
-          </AnimatePresence>
-        </DropdownOptions>
-      </DropdownContainer>
-    )
-  }
-)
+                    )}
+                    <DropdownInput
+                      type="text"
+                      value={isEditable ? newNameValue || "" : title}
+                      onChange={(e) =>
+                        setNewNameValue(e.target.value.replace("/", ""))
+                      }
+                      disabled={!isEditable}
+                    />
+                    <InputClick
+                      onClick={() => onSelect(index)}
+                      $disabled={isEditable}
+                    ></InputClick>
+                  </DropdownText>
+                  <OptionIcons>
+                    {isEditable ? (
+                      <GoCheck onClick={handleCheck} />
+                    ) : (
+                      <GoPencil onClick={() => setEditable(title)} />
+                    )}
+                    <GoTrash onClick={() => handleRemove(index)} />
+                  </OptionIcons>
+                </Item>
+              )
+            })}
+            <AddDropdown layout onClick={handleAdd}>
+              <DropdownText>
+                <FakeIcon></FakeIcon>
+                Adicionar
+              </DropdownText>
+              <OptionIcons>
+                <GoPlus />
+              </OptionIcons>
+            </AddDropdown>
+          </DropdownGroup>
+        </AnimatePresence>
+      </DropdownOptions>
+    </DropdownContainer>
+  )
+}
 
-const Item = memo(({ children, value, isEditable }) => {
+const Item = ({ children, value, isEditable }) => {
   const controls = useDragControls()
   const isPresent = useIsPresent()
   const animations = {
@@ -177,7 +175,7 @@ const Item = memo(({ children, value, isEditable }) => {
       {children}
     </DropdownItem>
   )
-})
+}
 
 const ButtonDropdown = styled(motion.div)`
   width: calc(100% - 2em - 4px);

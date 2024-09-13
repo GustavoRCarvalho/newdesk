@@ -11,9 +11,9 @@ import {
   createAlertSucess,
   createAlertWarning,
 } from "../../../store/alertSlice"
-import { memo, useMemo } from "react"
+import { useMemo } from "react"
 
-export const SubCategoryDropdown = memo(() => {
+export const SubCategoryDropdown = () => {
   const dispatch = useDispatch()
   const editorData = useSelector((state) => state.editor.environment)
   const selectedCategoryIndex = useSelector(
@@ -97,4 +97,4 @@ export const SubCategoryDropdown = memo(() => {
       handleReorder={handleReorder}
     />
   )
-})
+}

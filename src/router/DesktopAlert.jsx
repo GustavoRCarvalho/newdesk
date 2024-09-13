@@ -23,6 +23,7 @@ export const DesktopAlert = () => {
         </p>
         <UnderlineParagraph>
           3. Caso insista em utilizar o site em um dispositivo móvel, ative,
+          {/* eslint-disable-next-line react/no-unescaped-entities */}
           para esta página, a opção de navegação "Para computador" no seu
           navegador.
         </UnderlineParagraph>

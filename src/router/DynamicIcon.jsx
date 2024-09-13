@@ -1,8 +1,8 @@
-import React, { memo, Suspense } from "react"
+import React, { Suspense } from "react"
 import { FaIcons } from "react-icons/fa6"
 import { Spinner } from "../components/principal/driveApi/ManipulateListItem"
 
-export const DynaminicIcon = memo(({ iconName, onClick = () => {} }) => {
+export const DynaminicIcon = ({ iconName, onClick = () => {} }) => {
   if (iconName === undefined) return <></>
   const library = iconName.split(/(?=[A-Z])/)[0].toLowerCase()
 
@@ -353,4 +353,4 @@ export const DynaminicIcon = memo(({ iconName, onClick = () => {} }) => {
       <IconComponent onClick={onClick} />
     </Suspense>
   )
-})
+}

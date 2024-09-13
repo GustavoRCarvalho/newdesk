@@ -11,9 +11,9 @@ import {
   createAlertSucess,
   createAlertWarning,
 } from "../../../store/alertSlice"
-import { memo, useMemo } from "react"
+import { useMemo } from "react"
 
-export const ArticleDropdown = memo(() => {
+export const ArticleDropdown = () => {
   const dispatch = useDispatch()
   const editorData = useSelector((state) => state.editor.environment)
 
@@ -101,4 +101,4 @@ export const ArticleDropdown = memo(() => {
       handleReorder={handleReorder}
     />
   )
-})
+}

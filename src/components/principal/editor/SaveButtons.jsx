@@ -29,7 +29,7 @@ export const SaveButtons = ({ value }) => {
   const [searchParams] = useSearchParams()
   const environment = searchParams.get("environment")
 
-  const [cookies, setCookies] = useCookies()
+  const [cookies, _setCookies] = useCookies()
 
   const handleSave = () => {
     dispatch(changeContentArticle(value))
