@@ -29,7 +29,7 @@ export const SaveButtons = ({ value }) => {
   const [searchParams] = useSearchParams()
   const environment = searchParams.get("environment")
 
-  const [cookies, setCookies] = useCookies([`editor${environment}`])
+  const [cookies, setCookies] = useCookies()
 
   const handleSave = () => {
     dispatch(changeContentArticle(value))
@@ -55,11 +55,19 @@ export const SaveButtons = ({ value }) => {
       setIsSaving(true)
       await updateJsonFile(cookies.GISToken, environment, editorData)
 
-      setCookies(`editor${environment}`, editorData, {
-        path: "/",
-        maxAge: 31536000,
-      })
+      var expiresTime = new Date()
+      expiresTime.setTime(expiresTime.getTime() + 15 * 60 * 1000)
 
+      const content = {
+        ...editorData,
+        expires: expiresTime,
+      }
+
+      try {
+        sessionStorage.setItem(environment, JSON.stringify(content))
+      } catch (e) {
+        sessionStorage.clear()
+      }
       dispatch(createAlertSucess("Dados salvos com sucesso!"))
     } catch (e) {
       dispatch(

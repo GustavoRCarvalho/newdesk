@@ -11,7 +11,7 @@ import { useCookies } from "react-cookie"
 
 export const DeleteConfirme = () => {
   const dispatch = useDispatch()
-  const [cookies] = useCookies()
+  const [cookies, setCookies] = useCookies()
   const deleteId = useSelector((state) => state.modal.delete)
   const [inputAlert, setInputAlert] = useState(false)
   const [isWaiting, setIsWaiting] = useState(false)

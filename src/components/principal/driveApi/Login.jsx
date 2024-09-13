@@ -36,8 +36,10 @@ export const Login = () => {
         response.access_token &&
         response.scope.includes("https://www.googleapis.com/auth/drive.file")
       ) {
+        var expiresTime = new Date()
+        expiresTime.setTime(expiresTime.getTime() + 60 * 60 * 1000)
         setCookies(`GISToken`, response.access_token, {
-          maxAge: response.expires_in,
+          expires: expiresTime,
         })
       }
     }

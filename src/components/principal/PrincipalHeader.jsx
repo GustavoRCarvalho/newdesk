@@ -33,7 +33,6 @@ export const PrincipalHeader = () => {
       <nav>
         <button
           onClick={() => {
-            console.log(cookies.GISToken)
             if (cookies.GISToken) {
               dispatch(toggleManipulate())
             } else {
@@ -47,6 +46,13 @@ export const PrincipalHeader = () => {
           <BiSearch /> Acessar Ambiente
         </MenuButton>
       </nav>
+      <button
+        onClick={() => {
+          sessionStorage.clear()
+        }}
+      >
+        clear
+      </button>
       <button onClick={() => dispatch(toggleLogin())}>Conta</button>
     </HeaderContainer>
   ) : (

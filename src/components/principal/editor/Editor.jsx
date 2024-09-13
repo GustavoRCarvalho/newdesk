@@ -15,7 +15,6 @@ import ReactQuill from "react-quill"
 import { modules } from "../../../utils/functions"
 import { LoadingScreen } from "../../../router/LoadingScreen"
 import { useFetchData } from "../driveApi/useFetchData"
-import { useCookies } from "react-cookie"
 import { GoImage } from "react-icons/go"
 import { SaveButtons } from "./SaveButtons"
 
@@ -59,10 +58,17 @@ export const Editor = memo(() => {
   const params = new URLSearchParams(location.search)
   const environment = params.get("environment")
 
-  const [cookies, setCookies] = useCookies([`editor${environment}`])
   const environmentContent = useMemo(() => {
-    return cookies[`editor${environment}`]
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const content = JSON.parse(sessionStorage.getItem(environment))
+
+    var nowTime = new Date()
+    var expiresTime = new Date(content?.expires)
+
+    if (expiresTime.getTime() - nowTime.getTime() < 0) {
+      sessionStorage.removeItem(environment)
+      return null
+    }
+    return content
   }, [environment])
 
   const { data, loading, error } = useFetchData(
@@ -76,9 +82,21 @@ export const Editor = memo(() => {
     }
     if (loading) return
     if (data) {
+      var expiresTime = new Date()
+      expiresTime.setTime(expiresTime.getTime() + 15 * 60 * 1000)
+
       dispatch(setEditorInitial(data))
 
-      setCookies(`editor${environment}`, data, { path: "/", maxAge: 31536000 })
+      const content = {
+        ...data,
+        expires: expiresTime,
+      }
+
+      try {
+        sessionStorage.setItem(environment, JSON.stringify(content))
+      } catch (e) {
+        sessionStorage.clear()
+      }
       return
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

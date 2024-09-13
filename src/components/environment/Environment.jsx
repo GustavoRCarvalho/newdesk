@@ -9,7 +9,6 @@ import { setInitial } from "../../store/homeDataSlice"
 import { useEffect, useMemo } from "react"
 import { LoadingScreen } from "../../router/LoadingScreen"
 import { useFetchData } from "../principal/driveApi/useFetchData"
-import { useCookies } from "react-cookie"
 
 export const Environment = ({ children }) => {
   const homeData = useSelector((state) => state.homeData.environment)
@@ -18,10 +17,17 @@ export const Environment = ({ children }) => {
   const [searchParams] = useSearchParams()
   const environment = searchParams.get("environment")
 
-  const [cookies, setCookies] = useCookies([environment])
   const environmentContent = useMemo(() => {
-    return cookies[environment]
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const content = JSON.parse(sessionStorage.getItem(environment))
+
+    var nowTime = new Date()
+    var expiresTime = new Date(content?.expires)
+
+    if (expiresTime.getTime() - nowTime.getTime() < 0) {
+      sessionStorage.removeItem(environment)
+      return null
+    }
+    return content
   }, [environment])
 
   const { data, loading, error } = useFetchData(
@@ -39,10 +45,25 @@ export const Environment = ({ children }) => {
     }
     if (loading) return
     if (data) {
-      const obj = { ...data, categoriesSearched: data.categories }
-      dispatch(setInitial(obj))
+      var expiresTime = new Date()
+      expiresTime.setTime(expiresTime.getTime() + 15 * 60 * 1000)
 
-      setCookies([environment], obj, { path: "/", maxAge: 31536000 })
+      const localContent = {
+        ...data,
+        expires: expiresTime,
+      }
+      try {
+        sessionStorage.setItem(environment, JSON.stringify(localContent))
+      } catch (e) {
+        sessionStorage.clear()
+      }
+
+      const content = {
+        ...localContent,
+        categoriesSearched: data.categories,
+      }
+      dispatch(setInitial(content))
+
       return
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
