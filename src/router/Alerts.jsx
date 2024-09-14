@@ -73,6 +73,7 @@ const AlertContainer = styled(motion.div)`
 
 const AlertMessage = styled(motion.div)`
   background-color: ${(props) => props.$color ?? "#8b8b8b"};
+  color: var(--card-button-color);
 
   width: max-content;
 
