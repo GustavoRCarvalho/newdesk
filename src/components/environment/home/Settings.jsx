@@ -16,8 +16,7 @@ export const Settings = () => {
   const [cookies, _setCookies] = useCookies()
   const user = useMemo(() => {
     return cookies.GISuser
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [cookies.GISuser])
   const [isOpen, setIsOpen] = useState(false)
 
   return (
