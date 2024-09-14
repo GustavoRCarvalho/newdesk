@@ -33,11 +33,13 @@ export const Login = () => {
     if (cookies.GISToken) return
     const getTokenCallback = (response) => {
       if (
-        response.access_token &&
-        response.scope.includes("https://www.googleapis.com/auth/drive.file")
+        window.google.accounts.oauth2.hasGrantedAllScopes(
+          response,
+          "https://www.googleapis.com/auth/drive.file"
+        )
       ) {
         var expiresTime = new Date()
-        expiresTime.setTime(expiresTime.getTime() + 60 * 60 * 1000)
+        expiresTime.setTime(expiresTime.getTime() + response.expires_in * 1000)
         setCookies(`GISToken`, response.access_token, {
           expires: expiresTime,
         })
