@@ -160,7 +160,7 @@ export const updateJsonFile = async (token, fileId, data) => {
     utf +
     closeDelimiter
 
-  await fetch(
+  const response = await fetch(
     `https://www.googleapis.com/upload/drive/v3/files/${fileId}?uploadType=multipart`,
     {
       method: "PATCH",
@@ -171,6 +171,19 @@ export const updateJsonFile = async (token, fileId, data) => {
       body: multipartRequestBody,
     }
   )
+
+  if (response.status === 401 || response.status === 403) {
+    throw new Error("Sessão expirada! Por favor, confirme seu login.")
+  }
+  if (response.status === 404) {
+    throw new Error(
+      "Arquivo não encontrado na conta escolhida. Escolha outra conta!"
+    )
+  }
+  if (response.status !== 200) {
+    throw new Error("Falha ao salvar os dados. Por favor, tente novamente.")
+  }
+  return response
 }
 
 export const readJsonFile = async (fileId, signal) => {

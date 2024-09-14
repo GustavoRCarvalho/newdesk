@@ -70,12 +70,12 @@ export const Login = () => {
             </UserInfosWrapper>
             {!cookies.GISToken && (
               <UserHasDrivePermission>
-                * Para criar ambientes,{" "}
+                * Para acessar/editar Meus Ambientes,{" "}
                 <span
                   onClick={getToken}
                   style={{ textDecoration: "underline", cursor: "pointer" }}
                 >
-                  permita a criação de arquivos
+                  conceda acesso para o app
                 </span>{" "}
                 *
               </UserHasDrivePermission>

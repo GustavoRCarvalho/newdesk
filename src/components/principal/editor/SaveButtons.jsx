@@ -3,13 +3,17 @@ import {
   changeBackgroundArticle,
   changeContentArticle,
 } from "../../../store/editorSlice"
-import { createAlertError, createAlertSucess } from "../../../store/alertSlice"
+import {
+  createAlertError,
+  createAlertSucess,
+  createAlertWarning,
+} from "../../../store/alertSlice"
 import { Spinner } from "../driveApi/ManipulateListItem"
 import { useDispatch, useSelector } from "react-redux"
 import { useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import { useCookies } from "react-cookie"
-import { updateJsonFile } from "../../../utils/GISApi"
+import { GISPermissionToken, updateJsonFile } from "../../../utils/GISApi"
 
 export const SaveButtons = ({ value }) => {
   const [backgroundColor, setBackgroundColor] = useState(0)
@@ -29,7 +33,7 @@ export const SaveButtons = ({ value }) => {
   const [searchParams] = useSearchParams()
   const environment = searchParams.get("environment")
 
-  const [cookies, _setCookies] = useCookies()
+  const [cookies, setCookies] = useCookies()
 
   const handleSave = () => {
     dispatch(changeContentArticle(value))
@@ -50,10 +54,33 @@ export const SaveButtons = ({ value }) => {
     dispatch(changeBackgroundArticle({ newColor: colors[backgroundColor] }))
   }
 
-  async function saveData() {
+  function getToken() {
+    if (cookies.GISToken) {
+      setCookies("GISToken", null)
+    }
+    const getTokenCallback = (response) => {
+      if (
+        window.google.accounts.oauth2.hasGrantedAllScopes(
+          response,
+          "https://www.googleapis.com/auth/drive.file"
+        )
+      ) {
+        var expiresTime = new Date()
+        expiresTime.setTime(expiresTime.getTime() + response.expires_in * 1000)
+        setCookies(`GISToken`, response.access_token, {
+          expires: expiresTime,
+        })
+        saveData(response.access_token)
+      }
+    }
+    GISPermissionToken(getTokenCallback)
+  }
+
+  async function saveData(token) {
+    setIsSaving(true)
+    const acessToken = token ?? cookies.GISToken
     try {
-      setIsSaving(true)
-      await updateJsonFile(cookies.GISToken, environment, editorData)
+      await updateJsonFile(acessToken, environment, editorData)
 
       var expiresTime = new Date()
       expiresTime.setTime(expiresTime.getTime() + 15 * 60 * 1000)
@@ -70,11 +97,22 @@ export const SaveButtons = ({ value }) => {
       }
       dispatch(createAlertSucess("Dados salvos com sucesso!"))
     } catch (e) {
-      dispatch(
-        createAlertError(
-          "Falha ao salvar os dados. Por favor, tente novamente."
+      if (e.message === "Sessão expirada! Por favor, confirme seu login.") {
+        dispatch(
+          createAlertWarning("Sessão expirada! Por favor, confirme seu login.")
         )
-      )
+        getToken()
+        return
+      }
+      if (
+        e.message ===
+        "Arquivo não encontrado na conta escolhida. Escolha outra conta!"
+      ) {
+        dispatch(createAlertError(e.message))
+        getToken()
+        return
+      }
+      dispatch(createAlertError(e.message))
     } finally {
       setIsSaving(false)
     }
@@ -85,7 +123,9 @@ export const SaveButtons = ({ value }) => {
       <button onClick={handleChangeColor}>Trocar cor do fundo</button>
       <SaveWrapper>
         {value && <button onClick={handleSave}>Salvar</button>}
-        <button onClick={saveData}>Postar {isSaving && <Spinner />}</button>
+        <button onClick={() => saveData()}>
+          Postar {isSaving && <Spinner />}
+        </button>
       </SaveWrapper>
     </SaveContainer>
   )

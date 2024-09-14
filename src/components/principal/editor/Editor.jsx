@@ -17,6 +17,7 @@ import { LoadingScreen } from "../../../router/LoadingScreen"
 import { useFetchData } from "../driveApi/useFetchData"
 import { GoImage } from "react-icons/go"
 import { SaveButtons } from "./SaveButtons"
+import { Settings } from "../../environment/home/Settings"
 
 export const Editor = () => {
   const location = useLocation()
@@ -144,6 +145,7 @@ export const Editor = () => {
       $readOnly={editorState.selectedArticleIndex === -1}
       $backgroundColor={articleBackgroundColor}
     >
+      <Settings />
       <EditInfoContainer>
         <InputImage $select={editorData.environmentImage !== ""}>
           <label htmlFor="file-upload">
