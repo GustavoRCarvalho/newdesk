@@ -180,7 +180,7 @@ const SettingsContainer = styled(motion.div)`
   box-shadow: 0em 0em 1em 0em #0000004b;
   overflow: hidden;
 
-  z-index: 1;
+  z-index: 2;
 `
 
 const SettingsButton = styled(motion.button)`
@@ -211,4 +211,6 @@ const SettingsButton = styled(motion.button)`
     width: 2em;
     height: 2em;
   }
+
+  z-index: 2;
 `
