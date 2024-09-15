@@ -1,5 +1,4 @@
-const CLIENT_ID =
-  "957224851469-vvghdahkn1j1scf8afh8a1ef8igf5as4.apps.googleusercontent.com"
+const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID
 export const API_KEY = process.env.REACT_APP_GOOGLE_API_KEY
 
 export const GISPermissionToken = (callback) => {
