@@ -47,6 +47,16 @@ export const ChangeIcon = () => {
       }
     >
       <ChangeIconContainer>
+        <span>
+          Escolha um icone disponível em{" "}
+          <a
+            href="https://react-icons.github.io/react-icons/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            React Icons
+          </a>
+        </span>
         <DynaminicIcon iconName={value} />
         <InputWrapper>
           <ChangeIconInput
@@ -126,5 +136,9 @@ const ChangeIconContainer = styled.div`
     height: 5em;
 
     padding: 1em;
+  }
+
+  a {
+    color: var(--manipulate-color);
   }
 `
