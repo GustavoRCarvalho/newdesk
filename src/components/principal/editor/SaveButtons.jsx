@@ -15,8 +15,9 @@ import { useSearchParams } from "react-router-dom"
 import { useCookies } from "react-cookie"
 import { GISPermissionToken, updateJsonFile } from "../../../utils/GISApi"
 import { VscSettings } from "react-icons/vsc"
+import { IoAlertCircleOutline } from "react-icons/io5"
 
-export const SaveButtons = ({ value }) => {
+export const SaveButtons = ({ value, hasChange, setHasChange }) => {
   const [isSaving, setIsSaving] = useState(false)
   const dispatch = useDispatch()
   const editorState = useSelector((state) => state.editor)
@@ -53,6 +54,7 @@ export const SaveButtons = ({ value }) => {
   const [cookies, setCookies] = useCookies()
 
   const handleSave = () => {
+    setHasChange(false)
     dispatch(changeContentArticle(value))
     dispatch(createAlertSucess("Salvo!"))
   }
@@ -142,7 +144,7 @@ export const SaveButtons = ({ value }) => {
   }
 
   return (
-    <SaveContainer>
+    <SaveContainer $onlyPost={!value}>
       {value && (
         <ColorButton $color={articleBackgroundColor}>
           <VscSettings />
@@ -154,7 +156,12 @@ export const SaveButtons = ({ value }) => {
         </ColorButton>
       )}
       <SaveWrapper>
-        {value && <button onClick={handleSave}>Salvar</button>}
+        {value && hasChange && (
+          <button onClick={handleSave}>
+            <AlertIcon />
+            Salvar
+          </button>
+        )}
         <button onClick={() => saveData()}>
           Postar {isSaving && <Spinner />}
         </button>
@@ -162,6 +169,13 @@ export const SaveButtons = ({ value }) => {
     </SaveContainer>
   )
 }
+
+const AlertIcon = styled(IoAlertCircleOutline)`
+  color: yellow;
+
+  width: 1.5em;
+  height: 1.5em;
+`
 
 const ColorButton = styled.div`
   position: relative;
@@ -219,7 +233,7 @@ const SaveWrapper = styled.div`
 
 const SaveContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: ${(props) => (props.$onlyPost ? "end" : "space-between")};
 
   width: 100%;
   max-width: 920px;
