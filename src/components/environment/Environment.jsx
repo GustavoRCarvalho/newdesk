@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { resetCard } from "../../store/cardSlice"
 import { Settings } from "./home/Settings"
 import { useSearchParams } from "react-router-dom"
-import { setInitial } from "../../store/homeDataSlice"
+import { resetData, setInitial } from "../../store/homeDataSlice"
 import { useEffect, useMemo } from "react"
 import { LoadingScreen } from "../../router/LoadingScreen"
 import { useFetchData } from "../principal/driveApi/useFetchData"
@@ -18,13 +18,13 @@ export const Environment = ({ children }) => {
   const environment = searchParams.get("environment")
 
   const environmentContent = useMemo(() => {
-    const content = JSON.parse(sessionStorage.getItem(environment))
+    const content = JSON.parse(sessionStorage.getItem([environment]))
 
     var nowTime = new Date()
     var expiresTime = new Date(content?.expires)
 
     if (expiresTime.getTime() - nowTime.getTime() < 0) {
-      sessionStorage.removeItem(environment)
+      sessionStorage.removeItem([environment])
       return null
     }
     return content
@@ -33,6 +33,10 @@ export const Environment = ({ children }) => {
   const { data, loading, error } = useFetchData(
     environmentContent ? "" : environment
   )
+
+  useEffect(() => {
+    dispatch(resetData())
+  }, [])
 
   useEffect(() => {
     if (environmentContent) {

@@ -10,8 +10,8 @@ export const homeDataSlice = createSlice({
   initialState,
   reducers: {
     resetData: (state) => {
-      state.environment = initialState.environment
-      state.environment = initialState.comments
+      state.environment = {}
+      state.comments = undefined
     },
     setInitial: (state, action) => {
       state.environment = action.payload
@@ -29,7 +29,7 @@ export const homeDataSlice = createSlice({
   },
 })
 
-export const { setComments, setInitial, changeData, searchData } =
+export const { resetData, setComments, setInitial, changeData, searchData } =
   homeDataSlice.actions
 
 export default homeDataSlice.reducer

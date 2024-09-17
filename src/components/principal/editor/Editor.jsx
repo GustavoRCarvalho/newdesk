@@ -5,6 +5,7 @@ import styled from "styled-components"
 import { useEffect, useMemo } from "react"
 import { CategoryDropdown } from "./CategoryDropdown"
 import {
+  initialData,
   setEditorImage,
   setEditorInitial,
   setEditorName,
@@ -60,13 +61,13 @@ export const Editor = () => {
   const environment = params.get("environment")
 
   const environmentContent = useMemo(() => {
-    const content = JSON.parse(sessionStorage.getItem(environment))
+    const content = JSON.parse(sessionStorage.getItem([environment]))
 
     var nowTime = new Date()
     var expiresTime = new Date(content?.expires)
 
     if (expiresTime.getTime() - nowTime.getTime() < 0) {
-      sessionStorage.removeItem(environment)
+      sessionStorage.removeItem([environment])
       return null
     }
     return content
@@ -75,6 +76,9 @@ export const Editor = () => {
   const { data, loading, error } = useFetchData(
     environmentContent ? "" : environment
   )
+  useEffect(() => {
+    dispatch(initialData())
+  }, [])
 
   useEffect(() => {
     if (environmentContent) {
