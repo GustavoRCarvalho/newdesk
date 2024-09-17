@@ -122,7 +122,7 @@ export const Article = () => {
   }, [articleComments])
 
   return (
-    <ArticleContainer>
+    <ArticleContainer $backgroundColor={article.backgroundColor}>
       <NavigationArticle>
         <NoStyleLinkRouter
           to="/environment"
@@ -206,7 +206,8 @@ const ArticleContainer = styled.div`
   }
 
   .ql-editor {
-    background-color: var(--home-card-background);
+    background-color: ${(props) =>
+      props.$backgroundColor ?? "var(--home-card-background)"};
     height: 100%;
 
     border-radius: 0.5em;
