@@ -15,7 +15,6 @@ import { useMemo } from "react"
 
 export const ArticleDropdown = () => {
   const dispatch = useDispatch()
-  const editorData = useSelector((state) => state.editor.environment)
 
   const selectedCategoryIndex = useSelector(
     (state) => state.editor.selectedCategoryIndex
@@ -27,16 +26,18 @@ export const ArticleDropdown = () => {
     (state) => state.editor.selectedArticleIndex
   )
 
-  const articlesOptions = useMemo(() => {
-    if (selectedCategoryIndex === -1 || selectedSubCategoryIndex === -1) {
-      return []
-    }
-    return editorData.categories[selectedCategoryIndex]?.subCategories[
-      selectedSubCategoryIndex
-    ]?.articles
-  }, [editorData.categories, selectedSubCategoryIndex, selectedCategoryIndex])
+  const articles = useSelector(
+    (state) =>
+      state.editor.environment?.categories[selectedCategoryIndex]
+        ?.subCategories[selectedSubCategoryIndex]?.articles
+  )
 
-  const articles = useMemo(
+  const articlesOptions = useMemo(
+    () => articles ?? [],
+    [articles, selectedSubCategoryIndex, selectedCategoryIndex]
+  )
+
+  const articlesTitles = useMemo(
     () => articlesOptions.map(({ title }) => title),
     [articlesOptions]
   )
@@ -44,19 +45,19 @@ export const ArticleDropdown = () => {
   const handleChangeCategory = useMemo(
     () => (newName, oldName) => {
       if (newName === oldName) return
-      const articleIndex = articles.indexOf(oldName)
-      if (articleIndex === -1 || articles.includes(newName)) {
+      const articleIndex = articlesTitles.indexOf(oldName)
+      if (articleIndex === -1 || articlesTitles.includes(newName)) {
         dispatch(createAlertWarning("Atenção: Este artigo já existe."))
         return
       }
       dispatch(changeNameArticle({ newName: newName, index: articleIndex }))
       dispatch(createAlertSucess("Alterado com sucesso!"))
     },
-    [dispatch, articles]
+    [dispatch, articlesTitles]
   )
 
   const handleAddArticle = () => {
-    if (articles.includes("Novo artigo")) {
+    if (articlesTitles.includes("Novo artigo")) {
       dispatch(createAlertWarning("Atenção: Este artigo já existe."))
       return
     }
