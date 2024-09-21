@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux"
 import { setInitial } from "../../store/homeDataSlice"
 import onlySpaceCat from "../../assets/images/onlySpaceCat.png"
 import onlySpace from "../../assets/images/onlySpace.png"
+import PageTitle from "../../router/PageTitle"
 
 export const Principal = () => {
   const dispatch = useDispatch()
@@ -15,6 +16,7 @@ export const Principal = () => {
 
   return (
     <PrincipalContainer>
+      <PageTitle title={"New Desk"} />
       <PrincipalHeader />
       <PrincipalContent>
         <ContentText>

@@ -9,22 +9,24 @@ import { resetData, setInitial } from "../../store/homeDataSlice"
 import { useEffect, useMemo } from "react"
 import { LoadingScreen } from "../../router/LoadingScreen"
 import { useFetchData } from "../principal/driveApi/useFetchData"
+import PageTitle from "../../router/PageTitle"
 
 export const Environment = ({ children }) => {
   const homeData = useSelector((state) => state.homeData.environment)
   const categoriesSearched = homeData?.categoriesSearched
+  const titleEnvironment = homeData?.environmentName
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
   const environment = searchParams.get("environment")
 
   const environmentContent = useMemo(() => {
-    const content = JSON.parse(sessionStorage.getItem([environment]))
+    const content = JSON.parse(localStorage.getItem([environment]))
 
     var nowTime = new Date()
     var expiresTime = new Date(content?.expires)
 
     if (expiresTime.getTime() - nowTime.getTime() < 0) {
-      sessionStorage.removeItem([environment])
+      localStorage.removeItem([environment])
       return null
     }
     return content
@@ -57,9 +59,9 @@ export const Environment = ({ children }) => {
         expires: expiresTime,
       }
       try {
-        sessionStorage.setItem(environment, JSON.stringify(localContent))
+        localStorage.setItem(environment, JSON.stringify(localContent))
       } catch (e) {
-        sessionStorage.clear()
+        localStorage.clear()
       }
 
       const content = {
@@ -77,6 +79,7 @@ export const Environment = ({ children }) => {
     <LoadingScreen errorMessage={error} />
   ) : (
     <EnvironmentContainer>
+      <PageTitle title={titleEnvironment + " - New Desk"} />
       <Settings />
       <SideMenu />
       <MainContainer

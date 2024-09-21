@@ -116,9 +116,9 @@ export const SaveButtons = ({ value, hasChange, setHasChange }) => {
       }
 
       try {
-        sessionStorage.setItem(environment, JSON.stringify(content))
+        localStorage.setItem(environment, JSON.stringify(content))
       } catch (e) {
-        sessionStorage.clear()
+        localStorage.clear()
       }
       dispatch(createAlertSucess("Dados salvos com sucesso!"))
     } catch (e) {
