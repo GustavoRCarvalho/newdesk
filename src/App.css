@@ -53,7 +53,20 @@ body::-webkit-scrollbar {
 }
 
 .quill {
+  width: 100%;
   max-width: 920px;
+}
+
+.ql-container {
+  border: none;
+}
+
+.ql-editor {
+  height: max-content;
+
+  border-radius: 0.5em;
+
+  box-shadow: 0em 0em 1em 0em #0000004b;
 }
 
 .themePurple {

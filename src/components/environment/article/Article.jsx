@@ -189,9 +189,6 @@ const ArticleContainer = styled.div`
 
   .quill {
     margin-top: 1em;
-    width: 100%;
-    height: max-content;
-    min-height: 70dvh;
   }
 
   .ql-toolbar {
@@ -200,18 +197,10 @@ const ArticleContainer = styled.div`
 
   .ql-container {
     border: none;
-
-    height: max-content;
-    min-height: 100%;
   }
 
   .ql-editor {
     background-color: ${(props) =>
       props.$backgroundColor ?? "var(--home-card-background)"};
-    height: 100%;
-
-    border-radius: 0.5em;
-
-    box-shadow: 0em 0em 1em 0em #0000004b;
   }
 `

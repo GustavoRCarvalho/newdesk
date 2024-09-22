@@ -324,7 +324,6 @@ const EditorContainer = styled.div`
   min-height: calc(100dvh - (2em));
 
   padding: 1em;
-  /* padding-top: 76px; */
 
   display: flex;
   flex-direction: column;
@@ -357,7 +356,6 @@ const EditorContainer = styled.div`
   }
 
   .quill {
-    width: 100%;
     height: 100%;
 
     display: flex;
@@ -411,24 +409,14 @@ const EditorContainer = styled.div`
     }
   }
 
-  .ql-picker-item {
-  }
-
   .ql-container {
     border: none;
-
-    /* min-height: calc(100% - (24px + 5em)); */
   }
 
   .ql-editor {
     background-color: ${(props) =>
       props.$backgroundColor ?? "var(--home-card-background)"};
 
-    height: 100%;
-
-    border-radius: 0.5em;
-
-    box-shadow: 0em 0em 1em 0em #0000004b;
     * {
       cursor: ${(props) => (props.$readOnly ? "default" : "text")};
     }
