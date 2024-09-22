@@ -61,11 +61,17 @@ export const SaveButtons = ({ value, hasChange, setHasChange }) => {
 
   useEffect(() => {
     if (
+      color === "#303030" &&
+      articleBackgroundColor === "var(--home-card-background)"
+    )
+      return
+    if (
       editorState.selectedCategoryIndex !== -1 &&
       editorState.selectedSubCategoryIndex !== -1 &&
       editorState.selectedArticleIndex !== -1
     ) {
       const timeout = setTimeout(() => {
+        handleSave()
         dispatch(changeBackgroundArticle({ newColor: color }))
       }, 50)
       return () => {
