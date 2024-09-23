@@ -2,7 +2,7 @@ import styled, { keyframes } from "styled-components"
 import { PrincipalHeader } from "./PrincipalHeader"
 import { useEffect } from "react"
 import { useDispatch } from "react-redux"
-import { setInitial } from "../../store/homeDataSlice"
+import { resetData } from "../../store/homeDataSlice"
 import onlySpaceCat from "../../assets/images/onlySpaceCat.png"
 import onlySpace from "../../assets/images/onlySpace.png"
 import PageTitle from "../../router/PageTitle"
@@ -11,7 +11,7 @@ export const Principal = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(setInitial({}))
+    dispatch(resetData())
   }, [dispatch])
 
   return (

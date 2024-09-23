@@ -42,11 +42,7 @@ export const Environment = ({ children }) => {
 
   useEffect(() => {
     if (environmentContent) {
-      const obj = {
-        ...environmentContent,
-        categoriesSearched: environmentContent.categories,
-      }
-      dispatch(setInitial(obj))
+      dispatch(setInitial(environmentContent))
       return
     }
     if (loading) return
@@ -64,11 +60,7 @@ export const Environment = ({ children }) => {
         localStorage.clear()
       }
 
-      const content = {
-        ...localContent,
-        categoriesSearched: data.categories,
-      }
-      dispatch(setInitial(content))
+      dispatch(setInitial(localContent))
 
       return
     }
