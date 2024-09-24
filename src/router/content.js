@@ -21,7 +21,7 @@ export default function Content() {
     const decoded = jwtDecode(response.credential)
 
     try {
-      setCookies("GISuser", decoded)
+      setCookies("GISuser", decoded, { path: "/", maxAge: 34560000 })
 
       dispatch(toggleLogin())
       dispatch(createAlertSucess("Login realizado com sucesso!"))
@@ -36,8 +36,14 @@ export default function Content() {
 
   useEffect(() => {
     let isDark = window.matchMedia("(prefers-color-scheme: dark)").matches
-    setCookies("darkTheme", cookies.darkTheme ?? isDark)
-    setCookies("colorTheme", cookies.colorTheme ?? "Blue")
+    setCookies("darkTheme", cookies.darkTheme ?? isDark, {
+      path: "/",
+      maxAge: 34560000,
+    })
+    setCookies("colorTheme", cookies.colorTheme ?? "Blue", {
+      path: "/",
+      maxAge: 34560000,
+    })
 
     /* Load GIS (Google Identity Services) script */
     const script = document.createElement("script")
