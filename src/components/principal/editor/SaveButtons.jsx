@@ -87,7 +87,7 @@ export const SaveButtons = ({ value, hasChange, setHasChange }) => {
 
   function getToken() {
     if (cookies.GISToken) {
-      setCookies("GISToken", null)
+      setCookies("GISToken", null, { path: "/", maxAge: 34560000 })
     }
     const getTokenCallback = (response) => {
       if (
@@ -99,6 +99,7 @@ export const SaveButtons = ({ value, hasChange, setHasChange }) => {
         var expiresTime = new Date()
         expiresTime.setTime(expiresTime.getTime() + response.expires_in * 1000)
         setCookies(`GISToken`, response.access_token, {
+          path: "/",
           expires: expiresTime,
         })
         saveData(response.access_token)

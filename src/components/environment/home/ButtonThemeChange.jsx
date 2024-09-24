@@ -25,7 +25,7 @@ export const ButtonThemeChange = () => {
             $color={hexColor}
             $ischeck={cookies.colorTheme === color}
             onClick={() => {
-              setCookies("colorTheme", color)
+              setCookies("colorTheme", color, { path: "/", maxAge: 34560000 })
             }}
           >
             <FaCheck />

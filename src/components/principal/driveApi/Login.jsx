@@ -23,8 +23,8 @@ export const Login = () => {
 
   function onLogout() {
     GISLogout()
-    setCookies("GISuser", {})
-    setCookies("GISToken", null)
+    setCookies("GISuser", {}, { path: "/", maxAge: 34560000 })
+    setCookies("GISToken", null, { path: "/", maxAge: 34560000 })
     dispatch(toggleLogin())
     dispatch(createAlertSucess("Logout realizado com sucesso!"))
   }
@@ -42,6 +42,7 @@ export const Login = () => {
         var expiresTime = new Date()
         expiresTime.setTime(expiresTime.getTime() + response.expires_in * 1000)
         setCookies(`GISToken`, response.access_token, {
+          path: "/",
           expires: expiresTime,
         })
       }

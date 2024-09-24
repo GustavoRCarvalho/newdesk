@@ -13,7 +13,7 @@ export const ButtonDarkLightTheme = () => {
       setIsRotating(false)
     }, 1000)
 
-    setCookies("darkTheme", !cookies.darkTheme)
+    setCookies("darkTheme", !cookies.darkTheme, { path: "/", maxAge: 34560000 })
   }
 
   return (
