@@ -3,6 +3,9 @@ import { HiOutlineArrowUp } from "react-icons/hi"
 import backgroundImage from "../../../assets/images/cardBackgroundImage.png"
 import { NoStyleLinkRouter } from "../../../router/NoStyleLinkRouter"
 import { prepareCardDate } from "../../../utils/functions"
+import { FaRegHeart, FaHeart } from "react-icons/fa"
+import { useDispatch, useSelector } from "react-redux"
+import { addFavorite, removeFavorite } from "../../../store/homeDataSlice"
 
 export const Card = ({
   linkTitleCategory,
@@ -10,9 +13,27 @@ export const Card = ({
   linkTitle,
   title,
   date,
+  id,
 }) => {
+  const dispatch = useDispatch()
+  const favoritesData = useSelector((state) => state.homeData.favorites)
+  const isFav = favoritesData?.includes(id)
+
   return (
     <CardContainer>
+      <FavoriteButton
+        $isFav={isFav}
+        onClick={() => {
+          if (isFav) {
+            dispatch(removeFavorite(id))
+          } else {
+            dispatch(addFavorite(id))
+          }
+        }}
+      >
+        <FaHeart />
+        <FaRegHeart />
+      </FavoriteButton>
       <img src={backgroundImage} alt="background card" />
       <CardTextGroup>
         <CardTitle>{title}</CardTitle>
@@ -29,6 +50,32 @@ export const Card = ({
     </CardContainer>
   )
 }
+
+const FavoriteButton = styled.div`
+  position: absolute;
+
+  top: 0;
+  right: 0;
+
+  svg {
+    position: absolute;
+    right: 1em;
+    top: 1em;
+
+    cursor: pointer;
+    transition: opacity 250ms;
+  }
+  svg:nth-child(1) {
+    opacity: ${(props) => (props.$isFav ? "1" : "0")};
+    color: red;
+  }
+  svg:nth-child(2) {
+    opacity: ${(props) => (props.$isFav ? "0" : "1")};
+    color: var(--home-card-color);
+  }
+
+  user-select: none;
+`
 
 const CardContainer = styled.div`
   position: relative;

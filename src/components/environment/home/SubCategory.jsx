@@ -15,9 +15,9 @@ export const SubCategory = ({
         <MdOutlineLibraryBooks /> {title} ({articles.length})
       </SectionSubtitle>
       <SectionCardList>
-        {articles.map((data, index) => (
+        {articles.map((data) => (
           <Card
-            key={data.title + index}
+            key={data.id}
             linkTitleCategory={linkTitleCategory}
             linkTitleSubCategory={linkTitle}
             {...data}

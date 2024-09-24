@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
   environment: {},
+  favorites: null,
   comments: undefined,
 }
 
@@ -11,6 +12,7 @@ export const homeDataSlice = createSlice({
   reducers: {
     resetData: (state) => {
       state.environment = {}
+      state.favorites = []
       state.comments = undefined
     },
     setInitial: (state, action) => {
@@ -21,12 +23,27 @@ export const homeDataSlice = createSlice({
 
       state.environment = content
     },
+    setFavorites: (state, action) => {
+      state.favorites = action.payload
+    },
+    addFavorite: (state, action) => {
+      if (state.favorites.includes(action.payload)) {
+        return
+      }
+      state.favorites.push(action.payload)
+    },
+    removeFavorite: (state, action) => {
+      if (state.favorites.length === 1) {
+        state.favorites = []
+        return
+      }
+      const newFavorites = state.favorites.filter(
+        (favoriteId) => favoriteId !== action.payload
+      )
+      state.favorites = newFavorites
+    },
     setComments: (state, action) => {
       state.comments = action.payload
-    },
-    changeData: (state, action) => {
-      state.environment.categoriesSearched = action.payload
-      state.environment.categories = action.payload
     },
     searchData: (state, action) => {
       state.environment.categoriesSearched = action.payload
@@ -34,7 +51,14 @@ export const homeDataSlice = createSlice({
   },
 })
 
-export const { resetData, setComments, setInitial, changeData, searchData } =
-  homeDataSlice.actions
+export const {
+  resetData,
+  setComments,
+  setInitial,
+  searchData,
+  addFavorite,
+  removeFavorite,
+  setFavorites,
+} = homeDataSlice.actions
 
 export default homeDataSlice.reducer
