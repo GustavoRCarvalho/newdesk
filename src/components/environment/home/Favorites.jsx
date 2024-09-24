@@ -5,6 +5,7 @@ import { useEffect, useMemo } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useCookies } from "react-cookie"
 import { setFavorites } from "../../../store/homeDataSlice"
+import { useSearchParams } from "react-router-dom"
 
 export const Favorites = () => {
   const dispatch = useDispatch()
@@ -12,6 +13,8 @@ export const Favorites = () => {
   const homeData = useSelector((state) => state.homeData.environment)
   const favoritesData = useSelector((state) => state.homeData.favorites)
   const categoriesSearched = homeData?.categoriesSearched
+  const [searchParams] = useSearchParams()
+  const environment = searchParams.get("environment")
 
   const favorites = useMemo(() => {
     const favorites = []
@@ -41,17 +44,17 @@ export const Favorites = () => {
   }, [favoritesData, categoriesSearched])
 
   useEffect(() => {
-    if (!cookies.favorites) {
+    if (!cookies[`favorites${environment}`]) {
       return
     }
-    dispatch(setFavorites(cookies.favorites))
+    dispatch(setFavorites(cookies[`favorites${environment}`]))
   }, [])
 
   useEffect(() => {
     if (!favoritesData) {
       return
     }
-    setCookies("favorites", favoritesData)
+    setCookies(`favorites${environment}`, favoritesData)
   }, [favoritesData])
 
   if (!favorites || favorites.length === 0) {
