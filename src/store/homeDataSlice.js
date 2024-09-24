@@ -27,6 +27,10 @@ export const homeDataSlice = createSlice({
       state.favorites = action.payload
     },
     addFavorite: (state, action) => {
+      if (state.favorites === null) {
+        state.favorites = [action.payload]
+        return
+      }
       if (state.favorites.includes(action.payload)) {
         return
       }
