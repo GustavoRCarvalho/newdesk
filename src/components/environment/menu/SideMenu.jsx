@@ -47,7 +47,7 @@ export const SideMenu = () => {
             isOpen={isOpen}
             Icon={"IoIosHeart"}
             title={"Favoritos"}
-            linkTitle={"Favoritos"}
+            linkTitle={"Favorites"}
             subCategories={[]}
             setOpenDropdownLabel={setOpenDropdownLabel}
             openDropdownLabel={openDropdownLabel}
