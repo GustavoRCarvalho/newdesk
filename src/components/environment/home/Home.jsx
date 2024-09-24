@@ -32,7 +32,7 @@ export const Home = () => {
           <Category key={data.title + index} {...data} />
         ))}
       {categoriesSearched?.length === 0 && (
-        <div>Parece que não há nenhum artigo ainda</div>
+        <div>Nenhum artigo foi encontrado</div>
       )}
     </HomeContainer>
   )
