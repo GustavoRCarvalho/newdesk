@@ -22,6 +22,10 @@ body {
   --manipulate-color: #ffffff;
   --manipulate-table-button-background: #000000;
   --manipulate-modal-button-background-disabled: #5a5a5a;
+
+  --side-menu-item-select: #84f5fd;
+  --alert-background: #cefdff;
+  --card-button-background: #18a7c0;
 }
 
 button {
