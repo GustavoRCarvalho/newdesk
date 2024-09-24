@@ -5,14 +5,17 @@ import { useDispatch, useSelector } from "react-redux"
 import { resetCard } from "../../store/cardSlice"
 import { Settings } from "./home/Settings"
 import { useSearchParams } from "react-router-dom"
-import { resetData, setInitial } from "../../store/homeDataSlice"
+import { resetData, setFavorites, setInitial } from "../../store/homeDataSlice"
 import { useEffect, useMemo } from "react"
 import { LoadingScreen } from "../../router/LoadingScreen"
 import { useFetchData } from "../principal/driveApi/useFetchData"
 import PageTitle from "../../router/PageTitle"
+import { useCookies } from "react-cookie"
 
 export const Environment = ({ children }) => {
   const homeData = useSelector((state) => state.homeData.environment)
+  const favoritesData = useSelector((state) => state.homeData.favorites)
+  const [cookies, setCookies] = useCookies()
   const categoriesSearched = homeData?.categoriesSearched
   const titleEnvironment = homeData?.environmentName
   const dispatch = useDispatch()
@@ -66,6 +69,26 @@ export const Environment = ({ children }) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, dispatch, environment])
+
+  useEffect(() => {
+    if (favoritesData !== null) {
+      return
+    }
+    if (cookies[`favorites${environment}`] === undefined) {
+      return
+    }
+    dispatch(setFavorites(cookies[`favorites${environment}`]))
+  }, [environment])
+
+  useEffect(() => {
+    if (!favoritesData) {
+      return
+    }
+    setCookies(`favorites${environment}`, favoritesData, {
+      path: "/",
+      maxAge: 34560000,
+    })
+  }, [favoritesData])
 
   return !categoriesSearched ? (
     <LoadingScreen errorMessage={error} />

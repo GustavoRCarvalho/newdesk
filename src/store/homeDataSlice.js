@@ -12,7 +12,7 @@ export const homeDataSlice = createSlice({
   reducers: {
     resetData: (state) => {
       state.environment = {}
-      state.favorites = []
+      state.favorites = null
       state.comments = undefined
     },
     setInitial: (state, action) => {

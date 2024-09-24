@@ -7,6 +7,7 @@ import { useEffect } from "react"
 import { setComments } from "../../../store/homeDataSlice"
 import { createAlertError } from "../../../store/alertSlice"
 import { Comments } from "./Comments"
+import { FavoriteButton } from "../home/FavoriteButton"
 
 const commentList = [
   {
@@ -100,7 +101,6 @@ export const Article = () => {
     articleData[indexCategory]?.subCategories[indexSubCategory]?.articles[
       indexArticle
     ] ?? {}
-
   const categoryTitle = articleData[indexCategory].title
   const subCategoryTitle =
     articleData[indexCategory]?.subCategories[indexSubCategory].title
@@ -137,7 +137,10 @@ export const Article = () => {
           state={{ scrollTo: pathLabel[1] + pathLabel[2] }}
         >{` ${subCategoryTitle}`}</NoStyleLinkRouter>
       </NavigationArticle>
-      <TitleArticle>{article.title}</TitleArticle>
+      <TitleWrapper>
+        <TitleArticle>{article.title}</TitleArticle>
+        <FavoriteButton id={article.id} />
+      </TitleWrapper>
       <DateArticle>Modificado em: {article.date}</DateArticle>
       <ReactQuill
         readOnly={true}
@@ -153,8 +156,17 @@ const DateArticle = styled.span`
   width: 100%;
 `
 
+const TitleWrapper = styled.div`
+  position: relative;
+  font-size: 1.5em;
+
+  display: flex;
+  gap: 1em;
+`
+
 const TitleArticle = styled.h2`
   width: 100%;
+  font-size: 1em;
 
   margin-block: 0.75em;
 `

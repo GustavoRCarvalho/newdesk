@@ -1,20 +1,13 @@
 import styled from "styled-components"
 import { Element } from "react-scroll"
 import { Card } from "./Card"
-import { useEffect, useMemo } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { useCookies } from "react-cookie"
-import { setFavorites } from "../../../store/homeDataSlice"
-import { useSearchParams } from "react-router-dom"
+import { useMemo } from "react"
+import { useSelector } from "react-redux"
 
 export const Favorites = () => {
-  const dispatch = useDispatch()
-  const [cookies, setCookies] = useCookies()
   const homeData = useSelector((state) => state.homeData.environment)
   const favoritesData = useSelector((state) => state.homeData.favorites)
   const categoriesSearched = homeData?.categoriesSearched
-  const [searchParams] = useSearchParams()
-  const environment = searchParams.get("environment")
 
   const favorites = useMemo(() => {
     const favorites = []
@@ -42,20 +35,6 @@ export const Favorites = () => {
     }
     return favorites
   }, [favoritesData, categoriesSearched])
-
-  useEffect(() => {
-    if (!cookies[`favorites${environment}`]) {
-      return
-    }
-    dispatch(setFavorites(cookies[`favorites${environment}`]))
-  }, [])
-
-  useEffect(() => {
-    if (!favoritesData) {
-      return
-    }
-    setCookies(`favorites${environment}`, favoritesData)
-  }, [favoritesData])
 
   if (!favorites || favorites.length === 0) {
     return null
