@@ -50,6 +50,6 @@ Bem-vindo ao projeto New Desk, uma aplicação web para criação, organização
 
 ## Contribuições
 
-Contribuições são bem-vindas! Se você tiver sugestões de melhorias, correções de bugs ou novas funcionalidades, sinta-se à vontade para abrir uma [issue](https://github.com/GustavoRCarvalho/lolja-template/issues) ou enviar um [pull request](https://github.com/GustavoRCarvalho/newdesk/pulls).
+Contribuições são bem-vindas! Se você tiver sugestões de melhorias, correções de bugs ou novas funcionalidades, sinta-se à vontade para abrir uma [issue](https://github.com/GustavoRCarvalho/newdesk/issues) ou enviar um [pull request](https://github.com/GustavoRCarvalho/newdesk/pulls).
 
 Desenvolvido por [Gustavo Rafael de Carvalho](https://github.com/GustavoRCarvalho) - [LinkedIn](https://www.linkedin.com/in/gustavo-carvalho-0/)
