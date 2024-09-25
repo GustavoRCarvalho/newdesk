@@ -1,70 +1,55 @@
-# Getting Started with Create React App
+# New Desk é uma aplicação web de help desk
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Acesse: [New Desk](https://newdesk.gustavocarvalho.dev.br/) <br />
+Este site está hospedado na plataforma Amazon Amplify.
 
-## Available Scripts
+Bem-vindo ao projeto New Desk, uma aplicação web para criação, organização e compartilhamento de artigos. Feita com o objetivo de ser uma plataforma intuitiva e eficiente, conta com recursos que permitem uma navegabilidade rápida para qualquer usuário.
 
-In the project directory, you can run:
+## Tecnologias Utilizadas
 
-### `npm start`
+### Base: 
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+[React](https://github.com/facebook/react) <br />
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Estilos:
 
-### `npm test`
+[styled-components](https://github.com/styled-components/styled-components) <br />
+[react-icons](https://github.com/react-icons/react-icons) <br />
+[framer-motion](https://github.com/framer/motion) <br />
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Gerenciamento:
 
-### `npm run build`
+[react-redux](https://github.com/reduxjs/redux-toolkit) <br />
+[react-router-dom](https://github.com/remix-run/react-router) <br />
+[react-scroll](https://github.com/fisshy/react-scroll) <br />
+[react-cookie](https://github.com/bendotcodes/cookies/tree/main/packages/react-cookie) <br />
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Editor Textual:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+[quill](https://github.com/slab/quill) <br />
+[quill-image-resize-module-react](https://github.com/kensnyder/quill-image-resize-module) <br />
+[react-quill-new](https://github.com/zenoamaro/react-quill) <br />
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Google One Tap + JWT Decode:
 
-### `npm run eject`
+[google-one-tap](https://github.com/BurakGur/google-one-tap) <br />
+[jwt-decode](https://github.com/auth0/jwt-decode) <br />
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Eslint + Prettier:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+[eslint](https://github.com/eslint/eslint) <br />
+[Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) <br />
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Como Iniciar o Projeto
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+1. Clone este repositório: `git clone https://github.com/GustavoRCarvalho/newdesk`
+2. Instale as dependências: `npm install`
+3. Crie uma API Key do Google e um client ID dentro de um projeto no Google Cloud Console, após configurados, adicione em um .env no seu repositório clone usando REACT_APP_GOOGLE_API_KEY e REACT_APP_GOOGLE_CLIENT_ID.
+4. Inicie o servidor de desenvolvimento: `npm start`
+5. Acesse o aplicativo em seu navegador: `http://localhost:3000`
 
-## Learn More
+## Contribuições
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Contribuições são bem-vindas! Se você tiver sugestões de melhorias, correções de bugs ou novas funcionalidades, sinta-se à vontade para abrir uma [issue](https://github.com/GustavoRCarvalho/lolja-template/issues) ou enviar um [pull request](https://github.com/GustavoRCarvalho/newdesk/pulls).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Desenvolvido por [Gustavo Rafael de Carvalho](https://github.com/GustavoRCarvalho) - [LinkedIn](https://www.linkedin.com/in/gustavo-carvalho-0/)
