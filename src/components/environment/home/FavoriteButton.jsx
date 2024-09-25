@@ -1,7 +1,7 @@
-import { FaHeart, FaRegHeart } from "react-icons/fa"
 import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 import { addFavorite, removeFavorite } from "../../../store/homeDataSlice"
+import { GoHeart, GoHeartFill } from "react-icons/go"
 
 export const FavoriteButton = ({ id }) => {
   const favoritesData = useSelector((state) => state.homeData.favorites)
@@ -19,8 +19,8 @@ export const FavoriteButton = ({ id }) => {
         }
       }}
     >
-      <FaHeart />
-      <FaRegHeart />
+      <GoHeartFill />
+      <GoHeart />
     </IconButton>
   )
 }

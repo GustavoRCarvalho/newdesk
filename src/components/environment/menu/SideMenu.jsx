@@ -45,7 +45,7 @@ export const SideMenu = () => {
         <OptionsContainer layout>
           <DropdownButton
             isOpen={isOpen}
-            Icon={"IoIosHeart"}
+            Icon={"GoHeartFill"}
             title={"Favoritos"}
             linkTitle={"Favorites"}
             subCategories={[]}
