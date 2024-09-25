@@ -32,11 +32,15 @@ export const Home = () => {
           <Category key={data.title + index} {...data} />
         ))}
       {categoriesSearched?.length === 0 && (
-        <div>Nenhum artigo foi encontrado</div>
+        <EmptySearch>Nenhum artigo foi encontrado!</EmptySearch>
       )}
     </HomeContainer>
   )
 }
+
+const EmptySearch = styled.p`
+  text-align: center;
+`
 
 const HomeContainer = styled.div`
   padding: 2em;
