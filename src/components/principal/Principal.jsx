@@ -2,19 +2,21 @@ import styled, { keyframes } from "styled-components"
 import { PrincipalHeader } from "./PrincipalHeader"
 import { useEffect } from "react"
 import { useDispatch } from "react-redux"
-import { setInitial } from "../../store/homeDataSlice"
+import { resetData } from "../../store/homeDataSlice"
 import onlySpaceCat from "../../assets/images/onlySpaceCat.png"
 import onlySpace from "../../assets/images/onlySpace.png"
+import PageTitle from "../../router/PageTitle"
 
 export const Principal = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(setInitial({}))
+    dispatch(resetData())
   }, [dispatch])
 
   return (
     <PrincipalContainer>
+      <PageTitle title={"New Desk"} />
       <PrincipalHeader />
       <PrincipalContent>
         <ContentText>
@@ -62,7 +64,7 @@ const animationCat = keyframes`
 const SpaceImageWrapper = styled.div`
   position: relative;
 
-  width: 50%;
+  width: 40%;
   aspect-ratio: 1;
 
   user-select: none;
@@ -88,8 +90,8 @@ const SpaceImageWrapper = styled.div`
     animation: ${animationCat} 5s ease-in-out infinite;
   }
 
-  @media (max-width: 1000px) {
-    width: 70%;
+  @media (max-width: 1024px) {
+    width: 60%;
   }
   @media (max-width: 720px) {
     width: 75%;
@@ -106,7 +108,7 @@ const PrincipalContent = styled.div`
   justify-content: center;
   align-items: center;
 
-  @media (max-width: 1350px) {
+  @media (max-width: 1024px) {
     flex-direction: column;
   }
 `
@@ -119,7 +121,7 @@ const ContentText = styled.div`
   display: flex;
   flex-direction: column;
 
-  @media (max-width: 1350px) {
+  @media (max-width: 1024px) {
     height: unset;
     max-width: 100%;
   }
@@ -136,7 +138,7 @@ const ResumeContainer = styled.span`
   padding: 0.5em;
   border-radius: 1em;
 
-  @media (max-width: 1350px) {
+  @media (max-width: 1024px) {
     font-size: 1em;
 
     margin-inline: auto;
@@ -160,7 +162,7 @@ const PrincipalTitle = styled.h1`
   margin: 0em;
   margin-bottom: 1em;
 
-  @media (max-width: 1350px) {
+  @media (max-width: 1024px) {
     font-size: 1.9em;
 
     margin-inline: auto;

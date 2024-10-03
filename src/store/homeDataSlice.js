@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
   environment: {},
+  favorites: null,
   comments: undefined,
 }
 
@@ -10,18 +11,43 @@ export const homeDataSlice = createSlice({
   initialState,
   reducers: {
     resetData: (state) => {
-      state.environment = initialState.environment
-      state.environment = initialState.comments
+      state.environment = {}
+      state.favorites = null
+      state.comments = undefined
     },
     setInitial: (state, action) => {
-      state.environment = action.payload
+      const content = {
+        ...action.payload,
+        categoriesSearched: action.payload.categories,
+      }
+
+      state.environment = content
+    },
+    setFavorites: (state, action) => {
+      state.favorites = action.payload
+    },
+    addFavorite: (state, action) => {
+      if (state.favorites === null) {
+        state.favorites = [action.payload]
+        return
+      }
+      if (state.favorites.includes(action.payload)) {
+        return
+      }
+      state.favorites.push(action.payload)
+    },
+    removeFavorite: (state, action) => {
+      if (state.favorites.length === 1) {
+        state.favorites = []
+        return
+      }
+      const newFavorites = state.favorites.filter(
+        (favoriteId) => favoriteId !== action.payload
+      )
+      state.favorites = newFavorites
     },
     setComments: (state, action) => {
       state.comments = action.payload
-    },
-    changeData: (state, action) => {
-      state.environment.categoriesSearched = action.payload
-      state.environment.categories = action.payload
     },
     searchData: (state, action) => {
       state.environment.categoriesSearched = action.payload
@@ -29,7 +55,14 @@ export const homeDataSlice = createSlice({
   },
 })
 
-export const { setComments, setInitial, changeData, searchData } =
-  homeDataSlice.actions
+export const {
+  resetData,
+  setComments,
+  setInitial,
+  searchData,
+  addFavorite,
+  removeFavorite,
+  setFavorites,
+} = homeDataSlice.actions
 
 export default homeDataSlice.reducer

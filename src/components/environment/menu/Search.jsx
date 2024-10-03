@@ -45,7 +45,7 @@ export const Search = ({ isOpen, setIsOpen }) => {
 const SearchInput = styled.input`
   background-color: #fff;
   width: calc(100% - 2em);
-  height: 1.5em;
+  height: 1em;
 
   padding: 0.85em 1em;
 
@@ -57,7 +57,6 @@ const SearchInput = styled.input`
 
 const SearchContainer = styled(motion.div)`
   width: 100%;
-  height: 3.5em;
 `
 
 const SearchIconContainer = styled(motion.div)`

@@ -52,7 +52,7 @@ export const ManipulateEnvironments = () => {
     try {
       const response = await listFiles(cookies.GISToken)
       if (response?.error?.code === 401) {
-        setCookies(`GISToken`, null)
+        setCookies(`GISToken`, null, { path: "/", maxAge: 34560000 })
         dispatch(toggleManipulate())
         dispatch(toggleLogin())
         return
@@ -216,7 +216,6 @@ const CloseContainer = styled.div`
 `
 
 const CloseButton = styled.button`
-  font-size: 1em;
   background-color: transparent;
 
   padding: 0;
@@ -251,7 +250,6 @@ const CreateContainer = styled.div`
 `
 
 const CreateButton = styled.button`
-  font-size: 1em;
   background-color: var(--manipulate-table-head-background);
   color: var(--manipulate-table-head-color);
 

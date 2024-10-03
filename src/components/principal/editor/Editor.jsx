@@ -5,6 +5,7 @@ import styled from "styled-components"
 import { useEffect, useMemo } from "react"
 import { CategoryDropdown } from "./CategoryDropdown"
 import {
+  initialData,
   setEditorImage,
   setEditorInitial,
   setEditorName,
@@ -18,6 +19,7 @@ import { useFetchData } from "../driveApi/useFetchData"
 import { GoImage } from "react-icons/go"
 import { SaveButtons } from "./SaveButtons"
 import { Settings } from "../../environment/home/Settings"
+import PageTitle from "../../../router/PageTitle"
 
 export const Editor = () => {
   const location = useLocation()
@@ -31,6 +33,7 @@ export const Editor = () => {
     () => editorState.environment ?? {},
     [editorState.environment]
   )
+  const titleEnvironment = editorData?.environmentName
   const hasLoad = JSON.stringify(editorData) !== "{}"
   const imageSrc = editorData.environmentImage
     ? `data:image/png;base64,${editorData.environmentImage}`
@@ -60,13 +63,13 @@ export const Editor = () => {
   const environment = params.get("environment")
 
   const environmentContent = useMemo(() => {
-    const content = JSON.parse(sessionStorage.getItem(environment))
+    const content = JSON.parse(localStorage.getItem([environment]))
 
     var nowTime = new Date()
     var expiresTime = new Date(content?.expires)
 
     if (expiresTime.getTime() - nowTime.getTime() < 0) {
-      sessionStorage.removeItem(environment)
+      localStorage.removeItem([environment])
       return null
     }
     return content
@@ -75,6 +78,9 @@ export const Editor = () => {
   const { data, loading, error } = useFetchData(
     environmentContent ? "" : environment
   )
+  useEffect(() => {
+    dispatch(initialData())
+  }, [])
 
   useEffect(() => {
     if (environmentContent) {
@@ -94,9 +100,9 @@ export const Editor = () => {
       }
 
       try {
-        sessionStorage.setItem(environment, JSON.stringify(content))
+        localStorage.setItem(environment, JSON.stringify(content))
       } catch (e) {
-        sessionStorage.clear()
+        localStorage.clear()
       }
       return
     }
@@ -145,6 +151,7 @@ export const Editor = () => {
       $readOnly={editorState.selectedArticleIndex === -1}
       $backgroundColor={articleBackgroundColor}
     >
+      <PageTitle title={titleEnvironment + " - New Desk"} />
       <Settings />
       <EditInfoContainer>
         <InputImage $select={editorData.environmentImage !== ""}>
@@ -317,7 +324,6 @@ const EditorContainer = styled.div`
   min-height: calc(100dvh - (2em));
 
   padding: 1em;
-  /* padding-top: 76px; */
 
   display: flex;
   flex-direction: column;
@@ -350,7 +356,6 @@ const EditorContainer = styled.div`
   }
 
   .quill {
-    width: 100%;
     height: 100%;
 
     display: flex;
@@ -404,24 +409,14 @@ const EditorContainer = styled.div`
     }
   }
 
-  .ql-picker-item {
-  }
-
   .ql-container {
     border: none;
-
-    /* min-height: calc(100% - (24px + 5em)); */
   }
 
   .ql-editor {
     background-color: ${(props) =>
       props.$backgroundColor ?? "var(--home-card-background)"};
 
-    height: 100%;
-
-    border-radius: 0.5em;
-
-    box-shadow: 0em 0em 1em 0em #0000004b;
     * {
       cursor: ${(props) => (props.$readOnly ? "default" : "text")};
     }

@@ -53,7 +53,6 @@ export const EnvironmentAcess = () => {
 }
 
 const AcessButton = styled.button`
-  font-size: 1em;
   background-color: var(--manipulate-table-head-background);
   color: var(--manipulate-table-head-color);
 

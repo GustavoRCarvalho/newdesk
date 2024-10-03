@@ -3,6 +3,7 @@ import { HiOutlineArrowUp } from "react-icons/hi"
 import backgroundImage from "../../../assets/images/cardBackgroundImage.png"
 import { NoStyleLinkRouter } from "../../../router/NoStyleLinkRouter"
 import { prepareCardDate } from "../../../utils/functions"
+import { FavoriteButton } from "./FavoriteButton"
 
 export const Card = ({
   linkTitleCategory,
@@ -10,9 +11,13 @@ export const Card = ({
   linkTitle,
   title,
   date,
+  id,
 }) => {
   return (
     <CardContainer>
+      <FavoriteWrapper>
+        <FavoriteButton id={id} />
+      </FavoriteWrapper>
       <img src={backgroundImage} alt="background card" />
       <CardTextGroup>
         <CardTitle>{title}</CardTitle>
@@ -29,6 +34,12 @@ export const Card = ({
     </CardContainer>
   )
 }
+const FavoriteWrapper = styled.div`
+  position: absolute;
+
+  right: 1em;
+  top: 1.5em;
+`
 
 const CardContainer = styled.div`
   position: relative;
@@ -58,6 +69,11 @@ const CardContainer = styled.div`
 
     user-select: none;
     pointer-events: none;
+  }
+
+  @media (max-width: 405px) {
+    width: 11em;
+    height: 11em;
   }
 `
 
@@ -106,7 +122,6 @@ const CardButton = styled.button`
   color: var(--card-button-color);
   font-weight: 500;
   line-height: 1px;
-  font-size: 1em;
 
   display: flex;
   align-items: center;

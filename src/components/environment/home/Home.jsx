@@ -4,6 +4,7 @@ import { useSelector } from "react-redux"
 import { useLocation } from "react-router-dom"
 import { useEffect } from "react"
 import { scroller } from "react-scroll"
+import { Favorites } from "./Favorites"
 
 export const Home = () => {
   const homeData = useSelector((state) => state.homeData.environment)
@@ -25,18 +26,27 @@ export const Home = () => {
 
   return (
     <HomeContainer>
+      <Favorites />
       {categoriesSearched &&
         categoriesSearched.map((data, index) => (
           <Category key={data.title + index} {...data} />
         ))}
       {categoriesSearched?.length === 0 && (
-        <div>Parece que não há nenhum artigo ainda</div>
+        <EmptySearch>Nenhum artigo foi encontrado!</EmptySearch>
       )}
     </HomeContainer>
   )
 }
 
+const EmptySearch = styled.p`
+  text-align: center;
+`
+
 const HomeContainer = styled.div`
   padding: 2em;
   width: calc(100% - 4em);
+
+  @media (max-width: 600px) {
+    padding: 1em;
+  }
 `

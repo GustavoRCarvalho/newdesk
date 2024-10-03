@@ -10,16 +10,22 @@ export const EditorComponent = () => {
   const dispatch = useDispatch()
   const editorState = useSelector((state) => state.editor)
   const editorData = editorState.environment
+  const [hasChange, setHasChange] = useState(false)
   const [value, setValue] = useState("")
 
   const handleKeySave = (e) => {
     if (e.ctrlKey && e.key === "s") {
       e.preventDefault()
 
+      setHasChange(false)
       dispatch(changeContentArticle(value))
       dispatch(createAlertSucess("Salvo!"))
     }
   }
+
+  useEffect(() => {
+    setHasChange(false)
+  }, [editorState.selectedArticleIndex])
 
   useEffect(() => {
     setValue(
@@ -39,11 +45,18 @@ export const EditorComponent = () => {
       <ReactQuill
         theme="snow"
         value={value}
-        onChange={setValue}
+        onChange={(value) => {
+          !hasChange && setHasChange(true)
+          setValue(value)
+        }}
         onKeyDown={handleKeySave}
         modules={modules}
       />
-      <SaveButtons value={value} />
+      <SaveButtons
+        value={value}
+        hasChange={hasChange}
+        setHasChange={setHasChange}
+      />
     </>
   )
 }

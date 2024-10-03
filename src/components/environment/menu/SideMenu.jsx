@@ -45,9 +45,9 @@ export const SideMenu = () => {
         <OptionsContainer layout>
           <DropdownButton
             isOpen={isOpen}
-            Icon={"IoIosHeart"}
+            Icon={"GoHeartFill"}
             title={"Favoritos"}
-            linkTitle={"Favoritos"}
+            linkTitle={"Favorites"}
             subCategories={[]}
             setOpenDropdownLabel={setOpenDropdownLabel}
             openDropdownLabel={openDropdownLabel}
@@ -79,6 +79,13 @@ const BurguerIcon = styled(CiMenuBurger)`
   height: 1.5em;
 
   z-index: 1;
+  &:hover {
+    background-color: var(--home-card-background);
+  }
+  border-radius: 2em;
+
+  padding: 0.5em;
+  cursor: pointer;
 `
 
 const OptionsContainer = styled(motion.div)`
@@ -115,8 +122,6 @@ const CloseXButton = styled(motion.button)`
   top: 1em;
   left: 1em;
   background-color: transparent;
-
-  font-size: 1em;
 
   display: flex;
   align-items: center;

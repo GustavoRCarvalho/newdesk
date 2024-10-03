@@ -10,25 +10,43 @@ import {
 } from "../../../store/alertSlice"
 import { Spinner } from "../driveApi/ManipulateListItem"
 import { useDispatch, useSelector } from "react-redux"
-import { useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import { useCookies } from "react-cookie"
 import { GISPermissionToken, updateJsonFile } from "../../../utils/GISApi"
+import { VscSettings } from "react-icons/vsc"
+import { IoAlertCircleOutline } from "react-icons/io5"
 
-export const SaveButtons = ({ value }) => {
-  const [backgroundColor, setBackgroundColor] = useState(0)
+export const SaveButtons = ({ value, hasChange, setHasChange }) => {
   const [isSaving, setIsSaving] = useState(false)
-  const colors = [
-    "var(--home-card-background)",
-    "#3f7ee8",
-    "#66be67",
-    "#f3c324",
-    "#ef9441",
-    "#df5e5a",
-  ]
   const dispatch = useDispatch()
   const editorState = useSelector((state) => state.editor)
   const editorData = editorState.environment
+
+  const articleBackgroundColor = useMemo(() => {
+    if (
+      editorState.selectedCategoryIndex !== -1 &&
+      editorState.selectedSubCategoryIndex !== -1 &&
+      editorState.selectedArticleIndex !== -1
+    ) {
+      return editorData?.categories[editorState.selectedCategoryIndex]
+        ?.subCategories[editorState.selectedSubCategoryIndex]?.articles[
+        editorState.selectedArticleIndex
+      ]?.backgroundColor
+    } else {
+      return "var(--home-card-background)"
+    }
+  }, [
+    editorData?.categories,
+    editorState.selectedArticleIndex,
+    editorState.selectedCategoryIndex,
+    editorState.selectedSubCategoryIndex,
+  ])
+  const [color, setColor] = useState(
+    articleBackgroundColor === "var(--home-card-background)"
+      ? "#303030"
+      : articleBackgroundColor
+  )
 
   const [searchParams] = useSearchParams()
   const environment = searchParams.get("environment")
@@ -36,27 +54,40 @@ export const SaveButtons = ({ value }) => {
   const [cookies, setCookies] = useCookies()
 
   const handleSave = () => {
+    setHasChange(false)
     dispatch(changeContentArticle(value))
     dispatch(createAlertSucess("Salvo!"))
   }
 
-  const handleChangeColor = () => {
-    if (editorState.selectedArticleIndex === -1) {
+  useEffect(() => {
+    if (
+      color === "#303030" &&
+      articleBackgroundColor === "var(--home-card-background)"
+    )
       return
+    if (
+      editorState.selectedCategoryIndex !== -1 &&
+      editorState.selectedSubCategoryIndex !== -1 &&
+      editorState.selectedArticleIndex !== -1
+    ) {
+      const timeout = setTimeout(() => {
+        handleSave()
+        dispatch(changeBackgroundArticle({ newColor: color }))
+      }, 50)
+      return () => {
+        clearTimeout(timeout)
+      }
     }
+  }, [color])
 
-    if (backgroundColor === colors.length - 1) {
-      setBackgroundColor(0)
-      return
-    }
-    setBackgroundColor((state) => (state += 1))
-
-    dispatch(changeBackgroundArticle({ newColor: colors[backgroundColor] }))
+  const handleChangeColor = (event) => {
+    const color = event.target.value
+    setColor(color)
   }
 
   function getToken() {
     if (cookies.GISToken) {
-      setCookies("GISToken", null)
+      setCookies("GISToken", null, { path: "/", maxAge: 34560000 })
     }
     const getTokenCallback = (response) => {
       if (
@@ -68,6 +99,7 @@ export const SaveButtons = ({ value }) => {
         var expiresTime = new Date()
         expiresTime.setTime(expiresTime.getTime() + response.expires_in * 1000)
         setCookies(`GISToken`, response.access_token, {
+          path: "/",
           expires: expiresTime,
         })
         saveData(response.access_token)
@@ -91,9 +123,9 @@ export const SaveButtons = ({ value }) => {
       }
 
       try {
-        sessionStorage.setItem(environment, JSON.stringify(content))
+        localStorage.setItem(environment, JSON.stringify(content))
       } catch (e) {
-        sessionStorage.clear()
+        localStorage.clear()
       }
       dispatch(createAlertSucess("Dados salvos com sucesso!"))
     } catch (e) {
@@ -119,10 +151,24 @@ export const SaveButtons = ({ value }) => {
   }
 
   return (
-    <SaveContainer>
-      <button onClick={handleChangeColor}>Trocar cor do fundo</button>
+    <SaveContainer $onlyPost={!value}>
+      {value && (
+        <ColorButton $color={articleBackgroundColor}>
+          <VscSettings />
+          <input
+            type="color"
+            value={color}
+            onChange={handleChangeColor}
+          ></input>
+        </ColorButton>
+      )}
       <SaveWrapper>
-        {value && <button onClick={handleSave}>Salvar</button>}
+        {value && hasChange && (
+          <button onClick={handleSave}>
+            <AlertIcon />
+            Salvar
+          </button>
+        )}
         <button onClick={() => saveData()}>
           Postar {isSaving && <Spinner />}
         </button>
@@ -130,6 +176,61 @@ export const SaveButtons = ({ value }) => {
     </SaveContainer>
   )
 }
+
+const AlertIcon = styled(IoAlertCircleOutline)`
+  color: yellow;
+
+  width: 1.5em;
+  height: 1.5em;
+`
+
+const ColorButton = styled.div`
+  position: relative;
+
+  background-color: ${(props) => props.$color ?? "var(--home-card-background)"};
+  width: 2.5em;
+  height: 2.5em;
+
+  border-radius: 0.5em;
+
+  box-shadow: 0em 0em 1em 0em #0000004b;
+
+  svg {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 1.5em;
+    height: 1.5em;
+    color: var(--home-card);
+  }
+
+  input {
+    position: absolute;
+    opacity: 0;
+    font-size: 1em;
+
+    width: 2.5em;
+    height: 2.5em;
+
+    border: none;
+    padding: 0;
+
+    border-radius: 0.5em;
+    aspect-ratio: 1;
+
+    &::-webkit-color-swatch-wrapper {
+      padding: 0;
+    }
+    &::-webkit-color-swatch {
+      border: none;
+      border-radius: 0.5em;
+    }
+    cursor: pointer;
+  }
+`
 
 const SaveWrapper = styled.div`
   display: flex;
@@ -139,7 +240,7 @@ const SaveWrapper = styled.div`
 
 const SaveContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: ${(props) => (props.$onlyPost ? "end" : "space-between")};
 
   width: 100%;
   max-width: 920px;

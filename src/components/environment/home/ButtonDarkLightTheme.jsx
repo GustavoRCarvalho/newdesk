@@ -1,13 +1,11 @@
 import { useState } from "react"
 import styled, { css, keyframes } from "styled-components"
 import { HiOutlineMoon, HiOutlineSun } from "react-icons/hi2"
-import { useDispatch, useSelector } from "react-redux"
-import { changeDarkTheme } from "../../../store/themeSlice"
+import { useCookies } from "react-cookie"
 
 export const ButtonDarkLightTheme = () => {
-  const dispatch = useDispatch()
+  const [cookies, setCookies] = useCookies()
   const [isRotating, setIsRotating] = useState(false)
-  const darkTheme = useSelector((state) => state.theme.darkTheme)
 
   function handleChangeLightMode() {
     setIsRotating(true)
@@ -15,7 +13,7 @@ export const ButtonDarkLightTheme = () => {
       setIsRotating(false)
     }, 1000)
 
-    dispatch(changeDarkTheme(!darkTheme))
+    setCookies("darkTheme", !cookies.darkTheme, { path: "/", maxAge: 34560000 })
   }
 
   return (
@@ -26,7 +24,7 @@ export const ButtonDarkLightTheme = () => {
         onClick={() => {
           if (!isRotating) handleChangeLightMode()
         }}
-        $isvisible={!darkTheme}
+        $isvisible={!cookies.darkTheme}
         $isrotating={isRotating}
       >
         <HiOutlineMoon />
@@ -69,13 +67,13 @@ const ButtonChangelightTheme = styled.button`
   border: 1px solid var(--home-dark-button-background);
   border-radius: 3em;
 
-  width: 3.6em;
-  height: 2em;
+  width: 2.8em;
+  height: 1.5em;
 
   svg {
     position: absolute;
-    width: 1.6em;
-    height: 1.6em;
+    width: 1.2em;
+    height: 1.2em;
     top: 50%;
     left: 50%;
     transition: transform 0.5s;

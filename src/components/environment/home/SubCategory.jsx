@@ -15,9 +15,9 @@ export const SubCategory = ({
         <MdOutlineLibraryBooks /> {title} ({articles.length})
       </SectionSubtitle>
       <SectionCardList>
-        {articles.map((data, index) => (
+        {articles.map((data) => (
           <Card
-            key={data.title + index}
+            key={data.id}
             linkTitleCategory={linkTitleCategory}
             linkTitleSubCategory={linkTitle}
             {...data}
@@ -48,11 +48,15 @@ const SubCategoriesContainer = styled(Element)`
   margin-bottom: 1em;
 `
 
-const SectionCardList = styled.div`
+export const SectionCardList = styled.div`
   display: flex;
   flex-wrap: wrap;
 
   gap: 1em;
 
   margin-left: 1.2em;
+
+  @media (max-width: 600px) {
+    margin-left: 0;
+  }
 `

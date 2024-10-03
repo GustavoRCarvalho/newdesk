@@ -1,7 +1,6 @@
 import styled from "styled-components"
 import { FaCheck } from "react-icons/fa6"
-import { useDispatch, useSelector } from "react-redux"
-import { changeColorTheme } from "../../../store/themeSlice"
+import { useCookies } from "react-cookie"
 
 const colorList = [
   { color: "Red", hexColor: "#f55d5d" },
@@ -13,8 +12,7 @@ const colorList = [
 ]
 
 export const ButtonThemeChange = () => {
-  const dispatch = useDispatch()
-  const colorTheme = useSelector((state) => state.theme.colorTheme)
+  const [cookies, setCookies] = useCookies()
 
   return (
     <ThemeColorContainer>
@@ -25,9 +23,9 @@ export const ButtonThemeChange = () => {
             key={color + index}
             title="change color"
             $color={hexColor}
-            $ischeck={colorTheme === color}
+            $ischeck={cookies.colorTheme === color}
             onClick={() => {
-              dispatch(changeColorTheme(color))
+              setCookies("colorTheme", color, { path: "/", maxAge: 34560000 })
             }}
           >
             <FaCheck />
@@ -62,8 +60,8 @@ const ButtonChangeThemeColor = styled.button`
   border: none;
   border-radius: 3em;
 
-  width: 1.6em;
-  height: 1.6em;
+  width: 1.2em;
+  height: 1.2em;
 
   display: flex;
   align-items: center;

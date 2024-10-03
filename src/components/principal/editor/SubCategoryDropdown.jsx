@@ -15,22 +15,23 @@ import { useMemo } from "react"
 
 export const SubCategoryDropdown = () => {
   const dispatch = useDispatch()
-  const editorData = useSelector((state) => state.editor.environment)
   const selectedCategoryIndex = useSelector(
     (state) => state.editor.selectedCategoryIndex
   )
   const selectedSubCategoryIndex = useSelector(
     (state) => state.editor.selectedSubCategoryIndex
   )
+  const subCategories = useSelector(
+    (state) =>
+      state.editor.environment?.categories[selectedCategoryIndex]?.subCategories
+  )
 
-  const subCategoriesOptions = useMemo(() => {
-    if (selectedCategoryIndex === -1) {
-      return []
-    }
-    return editorData?.categories[selectedCategoryIndex]?.subCategories
-  }, [editorData.categories, selectedCategoryIndex])
+  const subCategoriesOptions = useMemo(
+    () => subCategories ?? [],
+    [subCategories, selectedCategoryIndex]
+  )
 
-  const subCategories = useMemo(
+  const subCategoriesTitles = useMemo(
     () => subCategoriesOptions.map(({ title }) => title),
     [subCategoriesOptions]
   )
@@ -38,8 +39,8 @@ export const SubCategoryDropdown = () => {
   const handleChangeSubCategory = useMemo(
     () => (newName, oldName) => {
       if (newName === oldName) return
-      const subCategoryIndex = subCategories.indexOf(oldName)
-      if (subCategoryIndex === -1 || subCategories.includes(newName)) {
+      const subCategoryIndex = subCategoriesTitles.indexOf(oldName)
+      if (subCategoryIndex === -1 || subCategoriesTitles.includes(newName)) {
         dispatch(createAlertWarning("Atenção: Está sub categoria já existe."))
         return
       }
@@ -48,11 +49,11 @@ export const SubCategoryDropdown = () => {
       )
       dispatch(createAlertSucess("Alterado com sucesso!"))
     },
-    [dispatch, subCategories]
+    [dispatch, subCategoriesTitles]
   )
 
   const handleAddSubCategory = () => {
-    if (subCategories.includes("Nova sub categoria")) {
+    if (subCategoriesTitles.includes("Nova sub categoria")) {
       dispatch(createAlertWarning("Atenção: Está sub categoria já existe."))
       return
     }

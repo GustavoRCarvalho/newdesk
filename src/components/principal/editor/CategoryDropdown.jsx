@@ -15,25 +15,25 @@ import { useMemo } from "react"
 
 export const CategoryDropdown = () => {
   const dispatch = useDispatch()
-  const editorData = useSelector((state) => state.editor.environment)
   const selectedCategoryIndex = useSelector(
     (state) => state.editor.selectedCategoryIndex
   )
-
-  const categoriesOptions = useMemo(
-    () => editorData.categories ?? [],
-    [editorData.categories]
+  const categories = useSelector(
+    (state) => state.editor.environment?.categories
   )
-  const categories = useMemo(
-    () => categoriesOptions.map(({ title }) => title),
-    [categoriesOptions]
+
+  const categoriesOptions = useMemo(() => categories ?? [], [categories])
+
+  const categoriesTitles = useMemo(
+    () => categories.map(({ title }) => title),
+    [categories]
   )
 
   const handleChangeCategory = useMemo(
     () => (newName, oldName) => {
       if (newName === oldName) return
-      const categoryIndex = categories.indexOf(oldName)
-      if (categoryIndex === -1 || categories.includes(newName)) {
+      const categoryIndex = categoriesTitles.indexOf(oldName)
+      if (categoryIndex === -1 || categoriesTitles.includes(newName)) {
         dispatch(createAlertWarning("Atenção: Está categoria já existe."))
         return
       }
@@ -41,11 +41,11 @@ export const CategoryDropdown = () => {
       dispatch(changeNameCategory({ newName: newName, index: categoryIndex }))
       dispatch(createAlertSucess("Alterado com sucesso!"))
     },
-    [categories, dispatch]
+    [categoriesTitles, dispatch]
   )
 
   const handleAddCategory = () => {
-    if (categories.includes("Nova categoria")) {
+    if (categoriesTitles.includes("Nova categoria")) {
       dispatch(createAlertWarning("Atenção: Está categoria já existe."))
       return
     }

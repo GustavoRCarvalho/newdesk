@@ -8,6 +8,7 @@ import { ModalBackground } from "../../../router/Modal"
 import { GISLogin, GISLogout, GISPermissionToken } from "../../../utils/GISApi"
 import { useCookies } from "react-cookie"
 import { useMemo } from "react"
+import { GoLinkExternal } from "react-icons/go"
 
 export const Login = () => {
   const dispatch = useDispatch()
@@ -22,8 +23,8 @@ export const Login = () => {
 
   function onLogout() {
     GISLogout()
-    setCookies("GISuser", {})
-    setCookies("GISToken", null)
+    setCookies("GISuser", {}, { path: "/", maxAge: 34560000 })
+    setCookies("GISToken", null, { path: "/", maxAge: 34560000 })
     dispatch(toggleLogin())
     dispatch(createAlertSucess("Logout realizado com sucesso!"))
   }
@@ -41,6 +42,7 @@ export const Login = () => {
         var expiresTime = new Date()
         expiresTime.setTime(expiresTime.getTime() + response.expires_in * 1000)
         setCookies(`GISToken`, response.access_token, {
+          path: "/",
           expires: expiresTime,
         })
       }
@@ -69,15 +71,12 @@ export const Login = () => {
               </UserInfos>
             </UserInfosWrapper>
             {!cookies.GISToken && (
-              <UserHasDrivePermission>
-                * Para acessar/editar Meus Ambientes,{" "}
-                <span
-                  onClick={getToken}
-                  style={{ textDecoration: "underline", cursor: "pointer" }}
-                >
+              <UserHasDrivePermission onClick={getToken}>
+                Para acessar/editar Meus Ambientes,
+                <span className="underlineSpan">
                   conceda acesso para o app
-                </span>{" "}
-                *
+                  <GoLinkExternal />
+                </span>
               </UserHasDrivePermission>
             )}
             <button onClick={onLogout}>Desconectar</button>
@@ -167,7 +166,25 @@ const UserInfos = styled.div`
 `
 
 const UserHasDrivePermission = styled.span`
+  display: flex;
   font-size: 0.8em;
+  gap: 0.2em;
 
   color: #c2a500;
+
+  cursor: pointer;
+
+  svg {
+    width: 1em;
+    height: 1em;
+  }
+
+  .underlineSpan {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2em;
+
+    text-decoration: underline;
+  }
 `

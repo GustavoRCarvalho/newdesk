@@ -4,7 +4,6 @@ import cardReducer from "./cardSlice"
 import editorReducer from "./editorSlice"
 import modalReducer from "./modalSlice"
 import alertReducer from "./alertSlice"
-import themeReducer from "./themeSlice"
 
 export const store = configureStore({
   reducer: {
@@ -13,7 +12,6 @@ export const store = configureStore({
     editor: editorReducer,
     modal: modalReducer,
     alert: alertReducer,
-    theme: themeReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

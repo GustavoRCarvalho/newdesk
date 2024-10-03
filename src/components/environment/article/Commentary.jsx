@@ -21,9 +21,8 @@ export const Commentary = ({
   const [cookies, _setCookies] = useCookies()
   const user = useMemo(() => {
     return cookies.GISuser
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-  const sameUser = userId === user.id
+  }, [cookies.GISuser])
+  const sameUser = userId === user.sub
   const [loading, setLoading] = useState(null)
 
   async function handleDelete() {
@@ -74,7 +73,6 @@ export const Commentary = ({
 }
 
 const DeleteButton = styled.button`
-  font-size: 1em;
   background-color: transparent;
   color: var(--home-card-color);
 

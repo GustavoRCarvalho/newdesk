@@ -20,18 +20,18 @@ export const Category = ({ title, linkTitle, subCategories }) => {
   )
 }
 
-const SectionContainer = styled.section`
+export const SectionContainer = styled.section`
   margin-block: 1em;
 `
 
-const SectionTitle = styled.h2`
+export const SectionTitle = styled.h2`
   font-size: 1.6em;
   font-weight: 500;
 
   margin: 0 0 0 0.2em;
 `
 
-const SectionLine = styled.hr`
+export const SectionLine = styled.hr`
   width: 20%;
 
   margin: 0 0 0.5em 0.35em;
