@@ -91,7 +91,7 @@ const SpaceImageWrapper = styled.div`
   }
 
   @media (max-width: 1024px) {
-    width: 70%;
+    width: 60%;
   }
   @media (max-width: 720px) {
     width: 75%;

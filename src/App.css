@@ -26,16 +26,25 @@ body {
   --side-menu-item-select: #84f5fd;
   --alert-background: #cefdff;
   --card-button-background: #18a7c0;
+
+  @media (max-width: 635px) {
+    font-size: 0.8em;
+  }
+  @media (max-width: 500px) {
+    font-size: 0.65em;
+  }
 }
 
 button {
   user-select: none;
+  font-size: 1em;
 }
 
 input,
 textarea,
 button {
   font-family: inherit;
+  font-size: 1em;
 }
 
 #root {
@@ -63,6 +72,7 @@ body::-webkit-scrollbar {
 
 .ql-container {
   border: none;
+  font-size: 0.9em !important;
 }
 
 .ql-editor {

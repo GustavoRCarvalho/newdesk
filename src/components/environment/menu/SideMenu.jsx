@@ -116,8 +116,6 @@ const CloseXButton = styled(motion.button)`
   left: 1em;
   background-color: transparent;
 
-  font-size: 1em;
-
   display: flex;
   align-items: center;
 

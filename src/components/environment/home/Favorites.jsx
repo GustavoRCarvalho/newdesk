@@ -1,8 +1,9 @@
-import styled from "styled-components"
 import { Element } from "react-scroll"
 import { Card } from "./Card"
 import { useMemo } from "react"
 import { useSelector } from "react-redux"
+import { SectionCardList } from "./SubCategory"
+import { SectionContainer, SectionLine, SectionTitle } from "./Category"
 
 export const Favorites = () => {
   const homeData = useSelector((state) => state.homeData.environment)
@@ -54,30 +55,3 @@ export const Favorites = () => {
     </Element>
   )
 }
-
-const SectionContainer = styled.section`
-  margin-block: 1em;
-`
-const SectionCardList = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-
-  gap: 1em;
-
-  margin-left: 1.2em;
-`
-
-const SectionTitle = styled.h2`
-  font-size: 1.6em;
-  font-weight: 500;
-
-  margin: 0 0 0 0.2em;
-`
-
-const SectionLine = styled.hr`
-  width: 20%;
-
-  margin: 0 0 0.5em 0.35em;
-  border-width: 0;
-  border-top: 1px solid var(--home-card-color);
-`

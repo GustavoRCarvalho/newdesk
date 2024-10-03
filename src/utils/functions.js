@@ -128,14 +128,14 @@ export default function useWindowDimensions() {
     return {
       width,
       height,
-      isDesktop: width > 720, // ajuste o valor de largura conforme necessário
+      isDesktop: width > 1012, // ajuste o valor de largura conforme necessário
     }
   })
 
   useEffect(() => {
     function handleResize() {
       const { width, height } = getWindowDimensions()
-      const isDesktop = width > 720 // ajuste o valor de largura conforme necessário
+      const isDesktop = width > 1012 // ajuste o valor de largura conforme necessário
 
       // Verifique se a condição isDesktop mudou antes de atualizar o estado
       if (isDesktop !== windowDimensions.isDesktop) {

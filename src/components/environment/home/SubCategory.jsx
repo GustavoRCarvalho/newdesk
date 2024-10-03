@@ -48,11 +48,15 @@ const SubCategoriesContainer = styled(Element)`
   margin-bottom: 1em;
 `
 
-const SectionCardList = styled.div`
+export const SectionCardList = styled.div`
   display: flex;
   flex-wrap: wrap;
 
   gap: 1em;
 
   margin-left: 1.2em;
+
+  @media (max-width: 600px) {
+    margin-left: 0;
+  }
 `

@@ -162,7 +162,6 @@ const UserNoLoggedBlocker = styled.div`
 const ConnectGoogleButton = styled.button`
   background-color: var(--home-card-background);
   color: var(--home-card);
-  font-size: 1em;
 
   display: flex;
   align-items: center;

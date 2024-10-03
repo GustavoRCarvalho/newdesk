@@ -57,7 +57,6 @@ const SearchInput = styled.input`
 
 const SearchContainer = styled(motion.div)`
   width: 100%;
-  height: 3.5em;
 `
 
 const SearchIconContainer = styled(motion.div)`

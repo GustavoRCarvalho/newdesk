@@ -80,7 +80,6 @@ const InputWrapper = styled.div`
 `
 
 const ChangeIconButton = styled.button`
-  font-size: 1em;
   background-color: var(--manipulate-table-head-background);
   color: var(--manipulate-table-head-color);
 

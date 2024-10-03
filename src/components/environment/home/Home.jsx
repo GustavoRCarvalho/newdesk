@@ -45,4 +45,8 @@ const EmptySearch = styled.p`
 const HomeContainer = styled.div`
   padding: 2em;
   width: calc(100% - 4em);
+
+  @media (max-width: 600px) {
+    padding: 1em;
+  }
 `

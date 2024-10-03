@@ -74,7 +74,6 @@ export const Commentary = ({
 }
 
 const DeleteButton = styled.button`
-  font-size: 1em;
   background-color: transparent;
   color: var(--home-card-color);
 

@@ -70,6 +70,11 @@ const CardContainer = styled.div`
     user-select: none;
     pointer-events: none;
   }
+
+  @media (max-width: 405px) {
+    width: 11em;
+    height: 11em;
+  }
 `
 
 const CardTitle = styled.h3`
@@ -117,7 +122,6 @@ const CardButton = styled.button`
   color: var(--card-button-color);
   font-weight: 500;
   line-height: 1px;
-  font-size: 1em;
 
   display: flex;
   align-items: center;
