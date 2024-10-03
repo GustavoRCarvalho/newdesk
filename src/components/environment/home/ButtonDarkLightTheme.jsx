@@ -67,13 +67,13 @@ const ButtonChangelightTheme = styled.button`
   border: 1px solid var(--home-dark-button-background);
   border-radius: 3em;
 
-  width: 3.6em;
-  height: 2em;
+  width: 2.8em;
+  height: 1.5em;
 
   svg {
     position: absolute;
-    width: 1.6em;
-    height: 1.6em;
+    width: 1.2em;
+    height: 1.2em;
     top: 50%;
     left: 50%;
     transition: transform 0.5s;

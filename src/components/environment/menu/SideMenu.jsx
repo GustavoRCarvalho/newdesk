@@ -79,6 +79,13 @@ const BurguerIcon = styled(CiMenuBurger)`
   height: 1.5em;
 
   z-index: 1;
+  &:hover {
+    background-color: var(--home-card-background);
+  }
+  border-radius: 2em;
+
+  padding: 0.5em;
+  cursor: pointer;
 `
 
 const OptionsContainer = styled(motion.div)`

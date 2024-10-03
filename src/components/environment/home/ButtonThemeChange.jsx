@@ -60,8 +60,8 @@ const ButtonChangeThemeColor = styled.button`
   border: none;
   border-radius: 3em;
 
-  width: 1.6em;
-  height: 1.6em;
+  width: 1.2em;
+  height: 1.2em;
 
   display: flex;
   align-items: center;
