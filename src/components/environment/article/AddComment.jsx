@@ -20,8 +20,7 @@ export const AddComment = ({ articleId }) => {
   const [cookies, _setCookies] = useCookies()
   const user = useMemo(() => {
     return cookies.GISuser
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [cookies.GISuser])
 
   async function addCommentary() {
     if (content === "") {
@@ -40,8 +39,8 @@ export const AddComment = ({ articleId }) => {
       const newComment = {
         id: generateUniqueId(),
         articleId: articleId,
-        imageUrl: user.imageUrl,
-        userId: user.id,
+        imageUrl: user.picture,
+        userId: user.sub,
         name: user.name,
         rating: rating,
         date: currentDate(),
@@ -50,6 +49,7 @@ export const AddComment = ({ articleId }) => {
       commentsCopy.unshift(newComment)
       dispatch(setComments(commentsCopy))
       dispatch(createAlertSucess("Comentário adicionado com sucesso!"))
+      setContent("")
     } catch (e) {
       dispatch(createAlertError(e.message))
     } finally {
