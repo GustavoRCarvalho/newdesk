@@ -1,5 +1,5 @@
 import styled, { keyframes } from "styled-components"
-import { PrincipalHeader } from "./PrincipalHeader"
+import { PrincipalHeader } from "./header/PrincipalHeader"
 import { useEffect } from "react"
 import { useDispatch } from "react-redux"
 import { resetData } from "../../store/homeDataSlice"

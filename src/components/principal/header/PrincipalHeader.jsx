@@ -3,8 +3,8 @@ import {
   toggleEnvironmentId,
   toggleLogin,
   toggleManipulate,
-} from "../../store/modalSlice"
-import useWindowDimensions from "../../utils/functions"
+} from "../../../store/modalSlice"
+import useWindowDimensions from "../../../utils/functions"
 import styled from "styled-components"
 import CatFace from "../../assets/images/CatFaceWhite.png"
 import { BiSearch } from "react-icons/bi"
