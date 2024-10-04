@@ -8,8 +8,10 @@ import { createAlertError, createAlertSucess } from "../../../store/alertSlice"
 import { ModalBackground } from "../../../router/Modal"
 import { createContentFile, listFiles } from "../../../utils/GISApi"
 import { useCookies } from "react-cookie"
+import { useTranslation } from "react-i18next"
 
 export const ManipulateEnvironments = () => {
+  const { t } = useTranslation()
   const [cookies, setCookies] = useCookies()
   const isDeleteOpen = useSelector((state) => state.modal.delete)
   const [newEnvironments, setNewEnvironments] = useState("")
@@ -122,7 +124,7 @@ export const ManipulateEnvironments = () => {
           </InputImage>
           <CreateInput
             $alert={inputAlert}
-            placeholder="Nome do novo ambiente"
+            placeholder={t("NameEnvironmentPlaceholder")}
             type="text"
             value={newEnvironments || ""}
             onChange={(e) => {
@@ -131,16 +133,16 @@ export const ManipulateEnvironments = () => {
             }}
           />
           <CreateButton onClick={handleCreate}>
-            Adicionar {createExecuting && <Spinner />}
+            {t("Create")} {createExecuting && <Spinner />}
           </CreateButton>
         </CreateContainer>
         <table>
           <thead>
             <tr>
-              <th>Nome</th>
-              <th>Data</th>
-              <th>Editar</th>
-              <th>Ferramentas</th>
+              <th>{t("Name")}</th>
+              <th>{t("Date")}</th>
+              <th>{t("Edit")}</th>
+              <th>{t("Tools")}</th>
             </tr>
           </thead>
           {list?.length !== 0 && (

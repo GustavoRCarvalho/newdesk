@@ -2,8 +2,10 @@ import { useState } from "react"
 import styled, { css, keyframes } from "styled-components"
 import { HiOutlineMoon, HiOutlineSun } from "react-icons/hi2"
 import { useCookies } from "react-cookie"
+import { useTranslation } from "react-i18next"
 
 export const ButtonDarkLightTheme = () => {
+  const { t } = useTranslation()
   const [cookies, setCookies] = useCookies()
   const [isRotating, setIsRotating] = useState(false)
 
@@ -18,7 +20,7 @@ export const ButtonDarkLightTheme = () => {
 
   return (
     <LightThemeContainer>
-      Modo escuro
+      {t("DarkMode")}
       <ButtonChangelightTheme
         title="change light or dark mode"
         onClick={() => {

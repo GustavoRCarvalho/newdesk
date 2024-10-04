@@ -5,8 +5,10 @@ import { search } from "../../../utils/functions"
 import { useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { searchData } from "../../../store/homeDataSlice"
+import { useTranslation } from "react-i18next"
 
 export const Search = ({ isOpen, setIsOpen }) => {
+  const { t } = useTranslation()
   const homeData = useSelector((state) => state.homeData.environment)
   const dispatch = useDispatch()
   const searchInputRef = useRef(null)
@@ -23,7 +25,7 @@ export const Search = ({ isOpen, setIsOpen }) => {
               )
             )
           }}
-          placeholder="Pesquisar"
+          placeholder={t("Search")}
         />
       ) : (
         <SearchIconContainer

@@ -12,9 +12,12 @@ import { useEffect, useState } from "react"
 import { GoX } from "react-icons/go"
 import { CiMenuBurger } from "react-icons/ci"
 import { useCookies } from "react-cookie"
+import { Language } from "./Language"
+import { useTranslation } from "react-i18next"
 
 export const PrincipalHeader = () => {
   const dispatch = useDispatch()
+  const { t } = useTranslation()
   const [cookies, _setCookies] = useCookies()
   const [navMenuOpen, setNavMenuOpen] = useState(false)
   const { isDesktop } = useWindowDimensions()
@@ -40,13 +43,16 @@ export const PrincipalHeader = () => {
             }
           }}
         >
-          Meus Ambientes
+          {t("My Environments")}
         </button>
         <MenuButton onClick={() => dispatch(toggleEnvironmentId())}>
-          <BiSearch /> Acessar Ambiente
+          <BiSearch /> {t("Acess Environment")}
         </MenuButton>
       </nav>
-      <button onClick={() => dispatch(toggleLogin())}>Conta</button>
+      <UserWrapper>
+        <button onClick={() => dispatch(toggleLogin())}>{t("Account")}</button>
+        <Language />
+      </UserWrapper>
     </HeaderContainer>
   ) : (
     <SideHeader>
@@ -66,16 +72,22 @@ export const PrincipalHeader = () => {
             }
           }}
         >
-          Meus Ambientes
+          {t("My Environments")}
         </button>
         <MenuButtonMobile onClick={() => dispatch(toggleEnvironmentId())}>
-          <BiSearch /> Acessar Ambiente
+          <BiSearch /> {t("Acess Environment")}
         </MenuButtonMobile>
-        <button onClick={() => dispatch(toggleLogin())}>Conta</button>
+        <button onClick={() => dispatch(toggleLogin())}>{t("Account")}</button>
+        <Language />
       </SideNav>
     </SideHeader>
   )
 }
+
+const UserWrapper = styled.div`
+  display: flex;
+  gap: 1em;
+`
 
 const CloseContainer = styled.div`
   width: calc(100% - 2em);
@@ -207,6 +219,7 @@ const HeaderContainer = styled.header`
     font-size: 1em;
     height: 3em;
     background-color: transparent;
+    padding: 0;
 
     border: none;
     color: #fff;

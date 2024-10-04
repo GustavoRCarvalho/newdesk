@@ -1,6 +1,7 @@
 import styled from "styled-components"
 import { FaGithub, FaLinkedin } from "react-icons/fa"
 import { Link } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 
 const NoStyleLink = (props) => {
   return (
@@ -11,10 +12,11 @@ const NoStyleLink = (props) => {
 }
 
 export const DevelopBy = () => {
+  const { t } = useTranslation()
   return (
     <DevelopContainer>
       <DevelopText>
-        Desenvolvido por:
+        {t("Developed By")}:
         <NoStyleLink to="https://www.linkedin.com/in/gustavo-carvalho-0/">
           <FaLinkedin />
         </NoStyleLink>

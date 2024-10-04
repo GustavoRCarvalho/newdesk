@@ -7,8 +7,10 @@ import onlySpaceCat from "../../assets/images/onlySpaceCat.png"
 import onlySpace from "../../assets/images/onlySpace.png"
 import PageTitle from "../../router/PageTitle"
 import { DevelopBy } from "../../router/DevelopBy"
+import { useTranslation } from "react-i18next"
 
 export const Principal = () => {
+  const { t } = useTranslation()
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -22,24 +24,11 @@ export const Principal = () => {
       <PrincipalContent>
         <ContentText>
           <PrincipalTitle>
-            Bem-vindo ao New Desk
+            {t("PrincipalTitle1")}
             <br />
-            Sua Ferramenta de Organização e Colaboração
+            {t("PrincipalTitle2")}
           </PrincipalTitle>
-          <ResumeContainer>
-            Crie artigos de forma gratuita e compartilhe com seus colegas. Com
-            essa plataforma atual você utiliza seu Google Drive e toda sua
-            confiabilidade para armazenar suas ideias.
-            {/* New Desk é uma plataforma inovadora projetada para facilitar a
-            organização e a colaboração no ambiente de trabalho.
-            <div></div>
-            Com nossa ferramenta, você pode criar ambientes personalizados com
-            categorias, subcategorias e artigos, permitindo uma estrutura clara
-            e eficiente para suas tarefas e projetos.
-            <div></div>
-            Compartilhe facilmente ambientes com seus colegas de trabalho, sendo
-            mais colaborativo e produtivo. */}
-          </ResumeContainer>
+          <ResumeContainer>{t("PrincipalSubTitle")}</ResumeContainer>
         </ContentText>
         <SpaceImageWrapper>
           <img src={onlySpace} alt="Imagem de espaço com estrelas e planetas" />

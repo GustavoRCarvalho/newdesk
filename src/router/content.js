@@ -12,10 +12,12 @@ import { createAlertError, createAlertSucess } from "../store/alertSlice"
 import { GISInit } from "../utils/GISApi"
 import { useCookies } from "react-cookie"
 import { changeDarkLightMode, changeTheme } from "../utils/functions"
+import { useTranslation } from "react-i18next"
 
 export default function Content() {
   const dispatch = useDispatch()
   const [cookies, setCookies] = useCookies()
+  const { i18n } = useTranslation()
 
   const handleLoginCallback = (response) => {
     const decoded = jwtDecode(response.credential)
@@ -36,11 +38,21 @@ export default function Content() {
 
   useEffect(() => {
     let isDark = window.matchMedia("(prefers-color-scheme: dark)").matches
+
     setCookies("darkTheme", cookies.darkTheme ?? isDark, {
       path: "/",
       maxAge: 34560000,
     })
     setCookies("colorTheme", cookies.colorTheme ?? "Blue", {
+      path: "/",
+      maxAge: 34560000,
+    })
+
+    const lang = cookies.language ?? "English"
+
+    i18n.changeLanguage(lang)
+
+    setCookies("language", lang, {
       path: "/",
       maxAge: 34560000,
     })
