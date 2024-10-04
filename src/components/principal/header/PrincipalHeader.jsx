@@ -6,7 +6,7 @@ import {
 } from "../../../store/modalSlice"
 import useWindowDimensions from "../../../utils/functions"
 import styled from "styled-components"
-import CatFace from "../../assets/images/CatFaceWhite.png"
+import CatFace from "../../../assets/images/CatFaceWhite.png"
 import { BiSearch } from "react-icons/bi"
 import { useEffect, useState } from "react"
 import { GoX } from "react-icons/go"
