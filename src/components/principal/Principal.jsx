@@ -6,6 +6,7 @@ import { resetData } from "../../store/homeDataSlice"
 import onlySpaceCat from "../../assets/images/onlySpaceCat.png"
 import onlySpace from "../../assets/images/onlySpace.png"
 import PageTitle from "../../router/PageTitle"
+import { DevelopBy } from "../../router/DevelopBy"
 
 export const Principal = () => {
   const dispatch = useDispatch()
@@ -48,6 +49,7 @@ export const Principal = () => {
           />
         </SpaceImageWrapper>
       </PrincipalContent>
+      <DevelopBy />
     </PrincipalContainer>
   )
 }
