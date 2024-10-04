@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { readJsonFile } from "../../../utils/GISApi"
 import { useDispatch } from "react-redux"
-import { createAlertError, createAlertSucess } from "../../../store/alertSlice"
+import { createAlertError } from "../../../store/alertSlice"
 
 export const useFetchData = (fileId) => {
   const dispatch = useDispatch()
@@ -28,7 +28,6 @@ export const useFetchData = (fileId) => {
       try {
         const response = await readJsonFile(fileId, signal)
         setData(response)
-        dispatch(createAlertSucess("Carregado com sucesso!"))
       } catch (error) {
         if (error.name !== "AbortError") {
           setError(error.message)

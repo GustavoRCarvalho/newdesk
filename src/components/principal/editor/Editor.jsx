@@ -20,6 +20,7 @@ import { GoImage } from "react-icons/go"
 import { SaveButtons } from "./SaveButtons"
 import { Settings } from "../../environment/home/Settings"
 import PageTitle from "../../../router/PageTitle"
+import { createAlertSucess } from "../../../store/alertSlice"
 
 export const Editor = () => {
   const location = useLocation()
@@ -104,6 +105,7 @@ export const Editor = () => {
       } catch (e) {
         localStorage.clear()
       }
+      dispatch(createAlertSucess("Carregado com sucesso!"))
       return
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

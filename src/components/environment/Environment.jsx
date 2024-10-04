@@ -11,6 +11,7 @@ import { LoadingScreen } from "../../router/LoadingScreen"
 import { useFetchData } from "../principal/driveApi/useFetchData"
 import PageTitle from "../../router/PageTitle"
 import { useCookies } from "react-cookie"
+import { createAlertSucess } from "../../store/alertSlice"
 
 export const Environment = ({ children }) => {
   const homeData = useSelector((state) => state.homeData.environment)
@@ -64,7 +65,7 @@ export const Environment = ({ children }) => {
       }
 
       dispatch(setInitial(localContent))
-
+      dispatch(createAlertSucess("Carregado com sucesso!"))
       return
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
