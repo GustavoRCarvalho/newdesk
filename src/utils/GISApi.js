@@ -1,5 +1,5 @@
-const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID
-export const API_KEY = process.env.REACT_APP_GOOGLE_API_KEY
+const CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID
+const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
 
 export const GISPermissionToken = (callback) => {
   const client = window.google.accounts.oauth2.initTokenClient({
