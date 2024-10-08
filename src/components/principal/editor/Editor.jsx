@@ -26,10 +26,6 @@ export const Editor = () => {
   const location = useLocation()
   const dispatch = useDispatch()
   const editorState = useSelector((state) => state.editor)
-  const isChanged = useMemo(
-    () => editorState.isChanged,
-    [editorState.isChanged]
-  )
   const editorData = useMemo(
     () => editorState.environment ?? {},
     [editorState.environment]
@@ -113,9 +109,6 @@ export const Editor = () => {
 
   useEffect(() => {
     function beforeUnload(e) {
-      if (isChanged) {
-        return
-      }
       e.preventDefault()
     }
     window.addEventListener("beforeunload", beforeUnload, { capture: true })
@@ -131,7 +124,7 @@ export const Editor = () => {
         capture: true,
       })
     }
-  }, [isChanged])
+  }, [])
 
   function handleFile(e) {
     if (!e.target.files.length) return

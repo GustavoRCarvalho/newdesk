@@ -42,7 +42,7 @@ export const ArticleDropdown = () => {
     [articlesOptions]
   )
 
-  const handleChangeCategory = useMemo(
+  const handleChangeArticle = useMemo(
     () => (newName, oldName) => {
       if (newName === oldName) return
       const articleIndex = articlesTitles.indexOf(oldName)
@@ -71,7 +71,7 @@ export const ArticleDropdown = () => {
     dispatch(createAlertSucess("Artigo removido com sucesso!"))
   }
 
-  const handleSelectCategory = (index) => {
+  const handleSelectArticle = (index) => {
     dispatch(selectArticle(index))
   }
 
@@ -95,8 +95,8 @@ export const ArticleDropdown = () => {
       options={articlesOptions}
       disabled={selectedSubCategoryIndex === -1}
       placeholder={selected()}
-      onSelect={handleSelectCategory}
-      handleChange={handleChangeCategory}
+      onSelect={handleSelectArticle}
+      handleChange={handleChangeArticle}
       handleAdd={handleAddArticle}
       handleRemove={handleRemoveArticle}
       handleReorder={handleReorder}

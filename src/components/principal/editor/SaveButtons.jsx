@@ -2,6 +2,7 @@ import styled from "styled-components"
 import {
   changeBackgroundArticle,
   changeContentArticle,
+  boolArticleChange,
 } from "../../../store/editorSlice"
 import {
   createAlertError,
@@ -17,11 +18,12 @@ import { GISPermissionToken, updateJsonFile } from "../../../utils/GISApi"
 import { VscSettings } from "react-icons/vsc"
 import { IoAlertCircleOutline } from "react-icons/io5"
 
-export const SaveButtons = ({ value, hasChange, setHasChange }) => {
+export const SaveButtons = ({ value }) => {
   const [isSaving, setIsSaving] = useState(false)
   const dispatch = useDispatch()
   const editorState = useSelector((state) => state.editor)
   const editorData = editorState.environment
+  const articleChanged = editorState.articleChanged
 
   const articleBackgroundColor = useMemo(() => {
     if (
@@ -54,7 +56,7 @@ export const SaveButtons = ({ value, hasChange, setHasChange }) => {
   const [cookies, setCookies] = useCookies()
 
   const handleSave = () => {
-    setHasChange(false)
+    articleChanged && dispatch(boolArticleChange(false))
     dispatch(changeContentArticle(value))
     dispatch(createAlertSucess("Salvo!"))
   }
@@ -63,15 +65,15 @@ export const SaveButtons = ({ value, hasChange, setHasChange }) => {
     if (
       color === "#303030" &&
       articleBackgroundColor === "var(--home-card-background)"
-    )
+    ) {
       return
+    }
     if (
       editorState.selectedCategoryIndex !== -1 &&
       editorState.selectedSubCategoryIndex !== -1 &&
       editorState.selectedArticleIndex !== -1
     ) {
       const timeout = setTimeout(() => {
-        handleSave()
         dispatch(changeBackgroundArticle({ newColor: color }))
       }, 50)
       return () => {
@@ -163,8 +165,8 @@ export const SaveButtons = ({ value, hasChange, setHasChange }) => {
         </ColorButton>
       )}
       <SaveWrapper>
-        {value && hasChange && (
-          <button onClick={handleSave}>
+        {articleChanged && (
+          <button onClick={() => handleSave()}>
             <AlertIcon />
             Salvar
           </button>

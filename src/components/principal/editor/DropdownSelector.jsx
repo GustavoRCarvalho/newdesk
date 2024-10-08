@@ -13,6 +13,7 @@ import styled from "styled-components"
 import { DynaminicIcon } from "../../../router/DynamicIcon"
 import { useDispatch } from "react-redux"
 import { toggleChangeIcon } from "../../../store/modalSlice"
+import { useSelector } from "react-redux"
 
 export const DropdownSelector = ({
   options = [],
@@ -25,6 +26,7 @@ export const DropdownSelector = ({
   handleReorder,
 }) => {
   const dispatch = useDispatch()
+  const articleChanged = useSelector((state) => state.editor.articleChanged)
   const [isOpen, setIsOpen] = useState(false)
   const [editable, setEditable] = useState()
   const [newNameValue, setNewNameValue] = useState("")
@@ -99,6 +101,7 @@ export const DropdownSelector = ({
                   key={title}
                   value={options[index]}
                   isEditable={isEditable}
+                  articleChanged={articleChanged}
                 >
                   <DropdownText>
                     {Icon !== undefined && (
@@ -120,7 +123,7 @@ export const DropdownSelector = ({
                       disabled={!isEditable}
                     />
                     <InputClick
-                      onClick={() => onSelect(index)}
+                      onClick={() => !articleChanged && onSelect(index)}
                       $disabled={isEditable}
                     ></InputClick>
                   </DropdownText>
@@ -151,7 +154,7 @@ export const DropdownSelector = ({
   )
 }
 
-const Item = ({ children, value, isEditable }) => {
+const Item = ({ children, value, isEditable, articleChanged }) => {
   const controls = useDragControls()
   const isPresent = useIsPresent()
   const animations = {
@@ -169,9 +172,11 @@ const Item = ({ children, value, isEditable }) => {
       value={value}
       $isEditable={isEditable}
     >
-      <GrabberButton onPointerDown={(e) => controls.start(e)}>
-        <GrabberIcon src={Grabber} />
-      </GrabberButton>
+      {!articleChanged && (
+        <GrabberButton onPointerDown={(e) => controls.start(e)}>
+          <GrabberIcon src={Grabber} />
+        </GrabberButton>
+      )}
       {children}
     </DropdownItem>
   )
