@@ -9,6 +9,7 @@ export const useFetchData = (fileId) => {
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
+  const [progress, setProgress] = useState(0)
 
   useEffect(() => {
     const controller = new AbortController()
@@ -26,7 +27,11 @@ export const useFetchData = (fileId) => {
       }
 
       try {
-        const response = await readJsonFile(fileId, signal)
+        const response = await readJsonFile({
+          fileId: fileId,
+          signal: signal,
+          setProgress: setProgress,
+        })
         setData(response)
       } catch (error) {
         if (error.name !== "AbortError") {
@@ -45,5 +50,5 @@ export const useFetchData = (fileId) => {
     }
   }, [fileId, dispatch])
 
-  return { data, loading, error }
+  return { data, loading, progress, error }
 }

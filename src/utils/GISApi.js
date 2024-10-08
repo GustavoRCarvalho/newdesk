@@ -185,16 +185,22 @@ export const updateJsonFile = async (token, fileId, data) => {
   return response
 }
 
-export const readJsonFile = async (fileId, signal) => {
+export const readJsonAxios = async () => {}
+
+export const readJsonFile = async ({ fileId, signal, setProgress }) => {
   const response = await fetch(
     `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media&key=${API_KEY}`,
     {
       signal,
       headers: {
         "Content-Type": "application/json; charset=utf-8",
+        Range: "bytes=0-",
       },
     }
   )
+  const contentLength = response.headers.get("Content-Length")
+  const total = contentLength ? parseInt(contentLength, 10) : 0
+
   if (response.status === 400) {
     throw new Error(
       "Houve algum problema inesperado. Por favor, tente novamente."
@@ -212,10 +218,34 @@ export const readJsonFile = async (fileId, signal) => {
     )
   }
 
-  const buffer = await response.arrayBuffer()
+  // Variável para rastrear os bytes baixados
+  let loaded = 0
 
-  const decoder = new TextDecoder("utf-8")
-  const decodedString = decoder.decode(buffer)
+  // Cria um ReadableStream para processar os dados conforme são baixados
+  const reader = response.body.getReader()
+  const decoder = new TextDecoder("utf-8") // Para decodificar os bytes em texto
+  let jsonString = ""
+  // eslint-disable-next-line no-constant-condition
+  while (true) {
+    const { done, value } = await reader.read()
 
-  return JSON.parse(decodedString)
+    if (done) {
+      break
+    }
+    loaded += value.length
+    const progress = total ? Math.round((loaded / total) * 100) : "indefinido"
+    setProgress(progress)
+
+    jsonString += decoder.decode(value, { stream: true })
+  }
+
+  jsonString += decoder.decode()
+  return JSON.parse(jsonString)
+
+  // const buffer = await response.arrayBuffer()
+
+  // const decoder = new TextDecoder("utf-8")
+  // const decodedString = decoder.decode(buffer)
+
+  // return JSON.parse(decodedString)
 }
