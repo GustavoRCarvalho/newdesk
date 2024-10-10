@@ -1,10 +1,5 @@
 import { useState, useEffect } from "react"
-import * as ImageResize from "quill-image-resize-module-react"
 import { Quill } from "react-quill-new"
-
-if (typeof window !== "undefined" && Quill) {
-  Quill.register("modules/imageResize", ImageResize)
-}
 
 export const modules = {
   toolbar: [
