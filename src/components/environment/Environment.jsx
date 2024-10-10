@@ -25,16 +25,20 @@ export const Environment = ({ children }) => {
   const environment = searchParams.get("environment")
 
   const environmentContent = useMemo(() => {
-    const content = JSON.parse(localStorage.getItem([environment]))
+    try {
+      const content = JSON.parse(localStorage.getItem([environment]))
 
-    var nowTime = new Date()
-    var expiresTime = new Date(content?.expires)
+      var nowTime = new Date()
+      var expiresTime = new Date(content?.expires)
 
-    if (expiresTime.getTime() - nowTime.getTime() < 0) {
-      localStorage.removeItem([environment])
+      if (expiresTime.getTime() - nowTime.getTime() < 0) {
+        localStorage.removeItem([environment])
+        return null
+      }
+      return content
+    } catch (e) {
       return null
     }
-    return content
   }, [environment])
 
   const { data, loading, progress, error } = useFetchData(

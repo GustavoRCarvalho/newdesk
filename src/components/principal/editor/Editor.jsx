@@ -61,16 +61,20 @@ export const Editor = () => {
   const environment = params.get("environment")
 
   const environmentContent = useMemo(() => {
-    const content = JSON.parse(localStorage.getItem([environment]))
+    try {
+      const content = JSON.parse(localStorage.getItem([environment]))
 
-    var nowTime = new Date()
-    var expiresTime = new Date(content?.expires)
+      var nowTime = new Date()
+      var expiresTime = new Date(content?.expires)
 
-    if (expiresTime.getTime() - nowTime.getTime() < 0) {
-      localStorage.removeItem([environment])
+      if (expiresTime.getTime() - nowTime.getTime() < 0) {
+        localStorage.removeItem([environment])
+        return null
+      }
+      return content
+    } catch (e) {
       return null
     }
-    return content
   }, [environment])
 
   const { data, loading, progress, error } = useFetchData(
@@ -100,7 +104,11 @@ export const Editor = () => {
       try {
         localStorage.setItem(environment, JSON.stringify(content))
       } catch (e) {
-        localStorage.clear()
+        try {
+          localStorage.clear()
+        } catch (e) {
+          null
+        }
       }
       dispatch(createAlertSucess("Carregado com sucesso!"))
       return
