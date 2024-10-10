@@ -8,8 +8,10 @@ import { createAlertError, createAlertSucess } from "../../../store/alertSlice"
 import { ModalBackground } from "../../../router/Modal"
 import { deleteFile } from "../../../utils/GISApi"
 import { useCookies } from "react-cookie"
+import { useTranslation } from "react-i18next"
 
 export const DeleteConfirme = () => {
+  const { t } = useTranslation()
   const dispatch = useDispatch()
   const [cookies, _setCookies] = useCookies()
   const deleteId = useSelector((state) => state.modal.delete)
@@ -18,7 +20,7 @@ export const DeleteConfirme = () => {
   const [value, setValue] = useState("")
 
   async function handleDelete() {
-    if (value !== "EXCLUIR") {
+    if (!["EXCLUIR", "DELETE", "ELIMINAR"].includes(value)) {
       setInputAlert(true)
       return
     }
@@ -48,12 +50,12 @@ export const DeleteConfirme = () => {
       <Container>
         <TrashImage src={Trash} />
         <Message>
-          Para excluir o ambiente permanentemente digite:{" "}
-          <MessageRed>EXCLUIR</MessageRed>
+          {t("DeleteText") + ": "}
+          <MessageRed>{t("Delete")}</MessageRed>
         </Message>
         <DeleteInput
           $alert={inputAlert}
-          placeholder="Confirmação"
+          placeholder={t("Confirmation")}
           type="text"
           value={value}
           onChange={(e) => {
@@ -63,10 +65,10 @@ export const DeleteConfirme = () => {
         />
         <ContainerButtons>
           <CancelButton onClick={() => dispatch(toggleDelete())}>
-            Cancelar
+            {t("Cancel")}
           </CancelButton>
           <DeleteButton onClick={handleDelete}>
-            Excluir {isWaiting && <Spinner />}
+            {t("Delete")} {isWaiting && <Spinner />}
           </DeleteButton>
         </ContainerButtons>
       </Container>
@@ -81,6 +83,7 @@ const TrashImage = styled.img`
 const DeleteButton = styled.button`
   background-color: #cf0000;
   color: var(--manipulate-color);
+  text-transform: uppercase;
 
   display: flex;
   align-items: center;
@@ -114,6 +117,7 @@ const MessageRed = styled.span`
   color: #cf0000;
 
   text-decoration: underline;
+  text-transform: uppercase;
 `
 
 const Message = styled.span`

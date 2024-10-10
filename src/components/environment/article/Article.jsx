@@ -137,7 +137,6 @@ const NavigationArticle = styled.div`
 const ArticleContainer = styled.div`
   width: calc(100% - 6em);
   max-width: 920px;
-  min-height: 100%;
   padding: 3em;
 
   @media (max-width: 720px) {

@@ -1,6 +1,7 @@
 import styled from "styled-components"
 import { FaCheck } from "react-icons/fa6"
 import { useCookies } from "react-cookie"
+import { useTranslation } from "react-i18next"
 
 const colorList = [
   { color: "Red", hexColor: "#f55d5d" },
@@ -12,11 +13,12 @@ const colorList = [
 ]
 
 export const ButtonThemeChange = () => {
+  const { t } = useTranslation()
   const [cookies, setCookies] = useCookies()
 
   return (
     <ThemeColorContainer>
-      Tema
+      {t("Theme")}
       <ColorContainer>
         {colorList.map(({ color, hexColor }, index) => (
           <ButtonChangeThemeColor

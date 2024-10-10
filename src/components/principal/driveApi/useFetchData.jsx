@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { readJsonFile } from "../../../utils/GISApi"
 import { useDispatch } from "react-redux"
-import { createAlertError, createAlertSucess } from "../../../store/alertSlice"
+import { createAlertError } from "../../../store/alertSlice"
 
 export const useFetchData = (fileId) => {
   const dispatch = useDispatch()
@@ -9,6 +9,7 @@ export const useFetchData = (fileId) => {
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
+  const [progress, setProgress] = useState(0)
 
   useEffect(() => {
     const controller = new AbortController()
@@ -26,9 +27,12 @@ export const useFetchData = (fileId) => {
       }
 
       try {
-        const response = await readJsonFile(fileId, signal)
+        const response = await readJsonFile({
+          fileId: fileId,
+          signal: signal,
+          setProgress: setProgress,
+        })
         setData(response)
-        dispatch(createAlertSucess("Carregado com sucesso!"))
       } catch (error) {
         if (error.name !== "AbortError") {
           setError(error.message)
@@ -46,5 +50,5 @@ export const useFetchData = (fileId) => {
     }
   }, [fileId, dispatch])
 
-  return { data, loading, error }
+  return { data, loading, progress, error }
 }

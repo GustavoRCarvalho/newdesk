@@ -14,15 +14,18 @@ export const LoadingScreen = ({ errorMessage = "" }) => {
         </button>
       )}
       <PiCoffeeLight />
-      {errorMessage === "Falha ao carregar. Por favor, verifique o código." && (
+      {["Falha ao carregar. Por favor, verifique o código."].includes(
+        errorMessage
+      ) && (
         <span>
           Ops!!! Parece que este local não existe... <br /> tente algo
           diferente.
         </span>
       )}
-      {(errorMessage ===
-        "Falha no uso das credencias. Aguarde e tente novamente." ||
-        errorMessage === "Failed to fetch") && (
+      {[
+        "Falha no uso das credencias. Aguarde e tente novamente.",
+        "Failed to fetch",
+      ].includes(errorMessage) && (
         <span>
           Hmm, que estranho, <br /> parece que você está muito ansioso por
           novidades, <br /> tente esperar alguns minutos e volte novamente!

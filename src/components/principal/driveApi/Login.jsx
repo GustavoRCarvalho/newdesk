@@ -9,8 +9,10 @@ import { GISLogin, GISLogout, GISPermissionToken } from "../../../utils/GISApi"
 import { useCookies } from "react-cookie"
 import { useMemo } from "react"
 import { GoLinkExternal } from "react-icons/go"
+import { useTranslation } from "react-i18next"
 
 export const Login = () => {
+  const { t } = useTranslation()
   const dispatch = useDispatch()
   const [cookies, setCookies] = useCookies()
   const user = useMemo(() => {
@@ -64,28 +66,28 @@ export const Login = () => {
             <UserInfosWrapper>
               <img alt="foto do perfil" src={user.picture ?? logo} />
               <UserInfos>
-                <label>Nome:</label>
+                <label>{t("Name")}:</label>
                 <span>{user.name}</span>
-                <label>Email:</label>
+                <label>{t("Email")}:</label>
                 <span>{user.email}</span>
               </UserInfos>
             </UserInfosWrapper>
             {!cookies.GISToken && (
               <UserHasDrivePermission onClick={getToken}>
-                Para acessar/editar Meus Ambientes,
+                {t("Permission1")}
                 <span className="underlineSpan">
-                  conceda acesso para o app
+                  {t("Permission2")}
                   <GoLinkExternal />
                 </span>
               </UserHasDrivePermission>
             )}
-            <button onClick={onLogout}>Desconectar</button>
+            <button onClick={onLogout}>{t("Logout")}</button>
           </>
         ) : (
           <>
             <FcGoogle />
-            Faça login na sua conta do Google para acessar a plataforma
-            <button onClick={onLogin}>Conectar</button>
+            {t("LoginText")}
+            <button onClick={onLogin}>{t("Login")}</button>
           </>
         )}
       </LoginContainer>

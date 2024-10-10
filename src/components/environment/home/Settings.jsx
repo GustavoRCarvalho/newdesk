@@ -10,8 +10,11 @@ import { toggleLogin } from "../../../store/modalSlice"
 import { ButtonDarkLightTheme } from "./ButtonDarkLightTheme"
 import { ButtonThemeChange } from "./ButtonThemeChange"
 import { useCookies } from "react-cookie"
+import { useTranslation } from "react-i18next"
+import { Language } from "../../principal/header/Language"
 
 export const Settings = () => {
+  const { t } = useTranslation()
   const dispatch = useDispatch()
   const [cookies, _setCookies] = useCookies()
   const user = useMemo(() => {
@@ -53,16 +56,19 @@ export const Settings = () => {
               ) : (
                 <LuUser2 />
               )}
-              <span>{user?.name ?? "Conectar"}</span>
+              <span>{user?.name ?? t("Login")}</span>
             </LoginContainer>
             <ButtonClose onClick={() => setIsOpen(false)} />
             <OptionsContainer>
               <ButtonDarkLightTheme />
               <ButtonThemeChange />
+              <LanguageWrapper>
+                <span>{t("Change")}</span> <Language />
+              </LanguageWrapper>
             </OptionsContainer>
 
             <LogoutContainer to="/">
-              Voltar ao início <IoIosLogOut />
+              {t("Back to home")} <IoIosLogOut />
             </LogoutContainer>
           </>
         )}
@@ -70,6 +76,23 @@ export const Settings = () => {
     </>
   )
 }
+
+const LanguageWrapper = styled.div`
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+
+  button {
+    background-color: transparent;
+    color: var(--home-card-color);
+
+    border: none;
+    padding: 0;
+  }
+  span {
+    min-height: 1.5em;
+  }
+`
 
 const OptionsContainer = styled.div`
   display: flex;

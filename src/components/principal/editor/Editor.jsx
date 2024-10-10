@@ -14,21 +14,19 @@ import { SubCategoryDropdown } from "./SubCategoryDropdown"
 import { ArticleDropdown } from "./ArticleDropdown"
 import ReactQuill from "react-quill-new"
 import { modules } from "../../../utils/functions"
-import { LoadingScreen } from "../../../router/LoadingScreen"
+// import { LoadingScreen } from "../../../router/LoadingScreen"
 import { useFetchData } from "../driveApi/useFetchData"
 import { GoImage } from "react-icons/go"
 import { SaveButtons } from "./SaveButtons"
 import { Settings } from "../../environment/home/Settings"
 import PageTitle from "../../../router/PageTitle"
+import { createAlertSucess } from "../../../store/alertSlice"
+import { LoadingScreen2 } from "../../../router/LoadingScreen2"
 
 export const Editor = () => {
   const location = useLocation()
   const dispatch = useDispatch()
   const editorState = useSelector((state) => state.editor)
-  const isChanged = useMemo(
-    () => editorState.isChanged,
-    [editorState.isChanged]
-  )
   const editorData = useMemo(
     () => editorState.environment ?? {},
     [editorState.environment]
@@ -75,7 +73,7 @@ export const Editor = () => {
     return content
   }, [environment])
 
-  const { data, loading, error } = useFetchData(
+  const { data, loading, progress, error } = useFetchData(
     environmentContent ? "" : environment
   )
   useEffect(() => {
@@ -104,6 +102,7 @@ export const Editor = () => {
       } catch (e) {
         localStorage.clear()
       }
+      dispatch(createAlertSucess("Carregado com sucesso!"))
       return
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -111,9 +110,6 @@ export const Editor = () => {
 
   useEffect(() => {
     function beforeUnload(e) {
-      if (isChanged) {
-        return
-      }
       e.preventDefault()
     }
     window.addEventListener("beforeunload", beforeUnload, { capture: true })
@@ -129,7 +125,7 @@ export const Editor = () => {
         capture: true,
       })
     }
-  }, [isChanged])
+  }, [])
 
   function handleFile(e) {
     if (!e.target.files.length) return
@@ -143,9 +139,8 @@ export const Editor = () => {
     }
     reader.readAsDataURL(file)
   }
-
   return !hasLoad ? (
-    <LoadingScreen errorMessage={error} />
+    <LoadingScreen2 errorMessage={error} progress={progress} />
   ) : (
     <EditorContainer
       $readOnly={editorState.selectedArticleIndex === -1}

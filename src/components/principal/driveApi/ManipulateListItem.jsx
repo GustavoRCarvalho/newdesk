@@ -6,8 +6,10 @@ import { FaSpinner } from "react-icons/fa"
 import styled, { keyframes } from "styled-components"
 import { convertDate } from "../../../utils/functions"
 import { GoLink, GoLinkExternal, GoTrash } from "react-icons/go"
+import { useTranslation } from "react-i18next"
 
 export const ManipulateListItem = ({ item }) => {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [hasCopy, setHasCopy] = useState(false)
@@ -47,7 +49,7 @@ export const ManipulateListItem = ({ item }) => {
           }}
         >
           <GoLink />
-          <CopyAlert $show={hasCopy}>Copiado !</CopyAlert>
+          <CopyAlert $show={hasCopy}>{t("Copied")} !</CopyAlert>
         </button>
         <button
           onClick={() => dispatch(toggleDelete(item.id))}

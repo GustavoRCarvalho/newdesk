@@ -1,6 +1,9 @@
 import ReactQuill from "react-quill-new"
 import { useDispatch, useSelector } from "react-redux"
-import { changeContentArticle } from "../../../store/editorSlice"
+import {
+  changeContentArticle,
+  boolArticleChange,
+} from "../../../store/editorSlice"
 import { useEffect, useState } from "react"
 import { modules } from "../../../utils/functions"
 import { createAlertSucess } from "../../../store/alertSlice"
@@ -10,22 +13,22 @@ export const EditorComponent = () => {
   const dispatch = useDispatch()
   const editorState = useSelector((state) => state.editor)
   const editorData = editorState.environment
-  const [hasChange, setHasChange] = useState(false)
+  const articleChanged = editorState.articleChanged
   const [value, setValue] = useState("")
 
   const handleKeySave = (e) => {
     if (e.ctrlKey && e.key === "s") {
       e.preventDefault()
 
-      setHasChange(false)
+      articleChanged && dispatch(boolArticleChange(false))
       dispatch(changeContentArticle(value))
       dispatch(createAlertSucess("Salvo!"))
     }
   }
 
-  useEffect(() => {
-    setHasChange(false)
-  }, [editorState.selectedArticleIndex])
+  // useEffect(() => {
+  //   setHasChange(false)
+  // }, [editorState.selectedArticleIndex])
 
   useEffect(() => {
     setValue(
@@ -45,18 +48,14 @@ export const EditorComponent = () => {
       <ReactQuill
         theme="snow"
         value={value}
-        onChange={(value) => {
-          !hasChange && setHasChange(true)
-          setValue(value)
+        onChange={(text) => {
+          !articleChanged && dispatch(boolArticleChange(true))
+          setValue(text)
         }}
         onKeyDown={handleKeySave}
         modules={modules}
       />
-      <SaveButtons
-        value={value}
-        hasChange={hasChange}
-        setHasChange={setHasChange}
-      />
+      <SaveButtons value={value} />
     </>
   )
 }

@@ -7,10 +7,12 @@ import { Settings } from "./home/Settings"
 import { useSearchParams } from "react-router-dom"
 import { resetData, setFavorites, setInitial } from "../../store/homeDataSlice"
 import { useEffect, useMemo } from "react"
-import { LoadingScreen } from "../../router/LoadingScreen"
+// import { LoadingScreen } from "../../router/LoadingScreen"
 import { useFetchData } from "../principal/driveApi/useFetchData"
 import PageTitle from "../../router/PageTitle"
 import { useCookies } from "react-cookie"
+import { createAlertSucess } from "../../store/alertSlice"
+import { LoadingScreen2 } from "../../router/LoadingScreen2"
 
 export const Environment = ({ children }) => {
   const homeData = useSelector((state) => state.homeData.environment)
@@ -35,7 +37,7 @@ export const Environment = ({ children }) => {
     return content
   }, [environment])
 
-  const { data, loading, error } = useFetchData(
+  const { data, loading, progress, error } = useFetchData(
     environmentContent ? "" : environment
   )
 
@@ -64,7 +66,7 @@ export const Environment = ({ children }) => {
       }
 
       dispatch(setInitial(localContent))
-
+      dispatch(createAlertSucess("Carregado com sucesso!"))
       return
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -91,7 +93,7 @@ export const Environment = ({ children }) => {
   }, [favoritesData])
 
   return !categoriesSearched ? (
-    <LoadingScreen errorMessage={error} />
+    <LoadingScreen2 errorMessage={error} progress={progress} />
   ) : (
     <EnvironmentContainer>
       <PageTitle title={titleEnvironment + " - New Desk"} />
