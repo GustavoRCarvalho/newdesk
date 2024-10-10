@@ -5,7 +5,6 @@ module.exports = {
     ecmaFeatures: {
       jsx: true,
     },
-    requireConfigFile: false,
   },
   env: {
     es6: true,
