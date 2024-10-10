@@ -9,10 +9,10 @@ import { Modal } from "./router/Modal"
 import { Alerts } from "./router/Alerts"
 import { Quill } from "react-quill-new"
 
-import ImageResize from "quill-image-resize-module-react"
+import QuillResizeImage from "quill-resize-image"
 
 window.Quill = Quill
-window.Quill.register("modules/imageResize", ImageResize)
+window.Quill.register("modules/resize", QuillResizeImage)
 
 function App() {
   return (

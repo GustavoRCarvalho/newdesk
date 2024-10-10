@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react"
-import { Quill } from "react-quill-new"
 
 export const modules = {
   toolbar: [
@@ -15,9 +14,8 @@ export const modules = {
     ],
     ["link", "image", "video"],
   ],
-  imageResize: {
-    parchment: Quill.import("parchment"),
-    modules: ["Resize", "DisplaySize"],
+  resize: {
+    locale: {},
   },
 }
 
