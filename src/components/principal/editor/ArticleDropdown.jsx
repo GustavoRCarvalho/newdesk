@@ -26,20 +26,16 @@ export const ArticleDropdown = () => {
     (state) => state.editor.selectedArticleIndex
   )
 
-  const articles = useSelector(
-    (state) =>
-      state.editor.environment?.categories[selectedCategoryIndex]
-        ?.subCategories[selectedSubCategoryIndex]?.articles
-  )
-
-  const articlesOptions = useMemo(
-    () => articles ?? [],
-    [articles, selectedSubCategoryIndex, selectedCategoryIndex]
-  )
+  const articles =
+    useSelector(
+      (state) =>
+        state.editor.environment?.categories[selectedCategoryIndex]
+          ?.subCategories[selectedSubCategoryIndex]?.articles
+    ) ?? []
 
   const articlesTitles = useMemo(
-    () => articlesOptions.map(({ title }) => title),
-    [articlesOptions]
+    () => articles.map(({ title }) => title),
+    [articles]
   )
 
   const handleChangeArticle = useMemo(
@@ -79,22 +75,22 @@ export const ArticleDropdown = () => {
     dispatch(changeOrderArticle(newList))
   }
 
-  const selected = () => {
+  const selected = useMemo(() => {
     const objDefault = {
       title: "Artigo",
     }
-    const obj = articlesOptions[selectedArticleIndex]
+    const obj = articles[selectedArticleIndex]
     if (obj) {
       return obj
     }
     return objDefault
-  }
+  }, [articles, selectedArticleIndex])
 
   return (
     <DropdownSelector
-      options={articlesOptions}
+      options={articles}
       disabled={selectedSubCategoryIndex === -1}
-      placeholder={selected()}
+      placeholder={selected}
       onSelect={handleSelectArticle}
       handleChange={handleChangeArticle}
       handleAdd={handleAddArticle}

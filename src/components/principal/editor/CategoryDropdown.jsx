@@ -18,11 +18,8 @@ export const CategoryDropdown = () => {
   const selectedCategoryIndex = useSelector(
     (state) => state.editor.selectedCategoryIndex
   )
-  const categories = useSelector(
-    (state) => state.editor.environment?.categories
-  )
-
-  const categoriesOptions = useMemo(() => categories ?? [], [categories])
+  const categories =
+    useSelector((state) => state.editor.environment?.categories) ?? []
 
   const categoriesTitles = useMemo(
     () => categories.map(({ title }) => title),
@@ -66,22 +63,22 @@ export const CategoryDropdown = () => {
     dispatch(changeOrderCategory(newList))
   }
 
-  const selected = () => {
+  const selected = useMemo(() => {
     const objDefault = {
       title: "Categoria",
       Icon: "",
     }
-    const obj = categoriesOptions[selectedCategoryIndex]
+    const obj = categories[selectedCategoryIndex]
     if (obj) {
       return obj
     }
     return objDefault
-  }
+  }, [categories, selectedCategoryIndex])
 
   return (
     <DropdownSelector
-      options={categoriesOptions}
-      placeholder={selected()}
+      options={categories}
+      placeholder={selected}
       onSelect={handleSelectCategory}
       handleChange={handleChangeCategory}
       handleAdd={handleAddCategory}

@@ -14,6 +14,7 @@ import { DynaminicIcon } from "../../../router/DynamicIcon"
 import { useDispatch } from "react-redux"
 import { toggleChangeIcon } from "../../../store/modalSlice"
 import { useSelector } from "react-redux"
+import { useCallback } from "react"
 
 export const DropdownSelector = ({
   options = [],
@@ -25,31 +26,12 @@ export const DropdownSelector = ({
   handleRemove,
   handleReorder,
 }) => {
-  const dispatch = useDispatch()
   const articleChanged = useSelector((state) => state.editor.articleChanged)
   const [isOpen, setIsOpen] = useState(false)
-  const [editable, setEditable] = useState()
-  const [newNameValue, setNewNameValue] = useState("")
 
   useLayoutEffect(() => {
     if (disabled) setIsOpen(false)
   }, [disabled])
-
-  const handleCheck = () => {
-    if (newNameValue === "") {
-      setEditable("")
-      return
-    }
-    handleChange(newNameValue, editable)
-    setEditable("")
-  }
-
-  useEffect(() => {
-    if (editable === "") {
-      return
-    }
-    setNewNameValue(editable)
-  }, [editable])
 
   return (
     <DropdownContainer
@@ -94,48 +76,17 @@ export const DropdownSelector = ({
       >
         <AnimatePresence>
           <DropdownGroup axis="y" values={options} onReorder={handleReorder}>
-            {options.map(({ title, Icon }, index) => {
-              const isEditable = editable === title
+            {options.map(({ title }, index) => {
               return (
                 <Item
                   key={title}
                   value={options[index]}
-                  isEditable={isEditable}
+                  index={index}
+                  onSelect={onSelect}
+                  handleChange={handleChange}
+                  handleRemove={handleRemove}
                   articleChanged={articleChanged}
-                >
-                  <DropdownText>
-                    {Icon !== undefined && (
-                      <DynaminicIcon
-                        onClick={() => {
-                          dispatch(
-                            toggleChangeIcon({ title: title, Icon: Icon })
-                          )
-                        }}
-                        iconName={Icon}
-                      />
-                    )}
-                    <DropdownInput
-                      type="text"
-                      value={isEditable ? newNameValue || "" : title}
-                      onChange={(e) =>
-                        setNewNameValue(e.target.value.replace("/", ""))
-                      }
-                      disabled={!isEditable}
-                    />
-                    <InputClick
-                      onClick={() => !articleChanged && onSelect(index)}
-                      $disabled={isEditable}
-                    ></InputClick>
-                  </DropdownText>
-                  <OptionIcons>
-                    {isEditable ? (
-                      <GoCheck onClick={handleCheck} />
-                    ) : (
-                      <GoPencil onClick={() => setEditable(title)} />
-                    )}
-                    <GoTrash onClick={() => handleRemove(index)} />
-                  </OptionIcons>
-                </Item>
+                ></Item>
               )
             })}
             <AddDropdown layout onClick={handleAdd}>
@@ -154,7 +105,15 @@ export const DropdownSelector = ({
   )
 }
 
-const Item = ({ children, value, isEditable, articleChanged }) => {
+const Item = ({
+  value,
+  index,
+  onSelect,
+  handleChange,
+  handleRemove,
+  articleChanged,
+}) => {
+  const dispatch = useDispatch()
   const controls = useDragControls()
   const isPresent = useIsPresent()
   const animations = {
@@ -164,20 +123,72 @@ const Item = ({ children, value, isEditable, articleChanged }) => {
     initial: { scale: 0, opacity: 0 },
     animate: { scale: 1, opacity: 1 },
   }
+  const [newNameValue, setNewNameValue] = useState("")
+  const [editable, setEditable] = useState(false)
+
+  const handleClickIcon = useCallback(() => {
+    if (value.Icon === undefined) return
+    dispatch(
+      toggleChangeIcon({
+        title: value.title,
+        Icon: value.Icon,
+      })
+    )
+  }, [dispatch, value.title, value.Icon])
+
+  useEffect(() => {
+    if (!editable) {
+      return
+    }
+    setNewNameValue(value.title)
+  }, [editable])
+
+  const handleCheck = useCallback(() => {
+    if (newNameValue === "") {
+      setEditable(false)
+      return
+    }
+    handleChange(newNameValue, value.title)
+    setEditable(false)
+  }, [newNameValue, value.title])
+
   return (
     <DropdownItem
       {...animations}
       dragListener={false}
       dragControls={controls}
       value={value}
-      $isEditable={isEditable}
+      $isEditable={editable}
     >
       {!articleChanged && (
         <GrabberButton onPointerDown={(e) => controls.start(e)}>
           <GrabberIcon src={Grabber} />
         </GrabberButton>
       )}
-      {children}
+
+      <DropdownText>
+        {value.Icon !== undefined && (
+          <DynaminicIcon onClick={handleClickIcon} iconName={value.Icon} />
+        )}
+        <DropdownInput
+          type="text"
+          value={editable ? newNameValue || "" : value.title}
+          onChange={(e) => setNewNameValue(e.target.value.replace("/", ""))}
+          disabled={!editable}
+        />
+        <InputClick
+          onClick={() => !articleChanged && onSelect(index)}
+          $disabled={editable}
+        ></InputClick>
+      </DropdownText>
+      <OptionIcons>
+        {editable ? (
+          <GoCheck onClick={handleCheck} />
+        ) : (
+          <GoPencil onClick={() => setEditable(true)} />
+        )}
+        <GoTrash onClick={() => handleRemove(index)} />
+      </OptionIcons>
     </DropdownItem>
   )
 }

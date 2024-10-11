@@ -21,19 +21,16 @@ export const SubCategoryDropdown = () => {
   const selectedSubCategoryIndex = useSelector(
     (state) => state.editor.selectedSubCategoryIndex
   )
-  const subCategories = useSelector(
-    (state) =>
-      state.editor.environment?.categories[selectedCategoryIndex]?.subCategories
-  )
-
-  const subCategoriesOptions = useMemo(
-    () => subCategories ?? [],
-    [subCategories, selectedCategoryIndex]
-  )
+  const subCategories =
+    useSelector(
+      (state) =>
+        state.editor.environment?.categories[selectedCategoryIndex]
+          ?.subCategories
+    ) ?? []
 
   const subCategoriesTitles = useMemo(
-    () => subCategoriesOptions.map(({ title }) => title),
-    [subCategoriesOptions]
+    () => subCategories.map(({ title }) => title),
+    [subCategories]
   )
 
   const handleChangeSubCategory = useMemo(
@@ -75,22 +72,22 @@ export const SubCategoryDropdown = () => {
     dispatch(changeOrderSubCategory(newList))
   }
 
-  const selected = () => {
+  const selected = useMemo(() => {
     const objDefault = {
       title: "Sub Categoria",
     }
-    const obj = subCategoriesOptions[selectedSubCategoryIndex]
+    const obj = subCategories[selectedSubCategoryIndex]
     if (obj) {
       return obj
     }
     return objDefault
-  }
+  }, [subCategories, selectedSubCategoryIndex])
 
   return (
     <DropdownSelector
-      options={subCategoriesOptions}
+      options={subCategories}
       disabled={selectedCategoryIndex === -1}
-      placeholder={selected()}
+      placeholder={selected}
       onSelect={handleSelectCategory}
       handleChange={handleChangeSubCategory}
       handleAdd={handleAddSubCategory}
