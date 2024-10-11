@@ -72,7 +72,7 @@ export const SubCategoryDropdown = () => {
     dispatch(changeOrderSubCategory(newList))
   }
 
-  const selected = useMemo(() => {
+  const selected = () => {
     const objDefault = {
       title: "Sub Categoria",
     }
@@ -81,13 +81,13 @@ export const SubCategoryDropdown = () => {
       return obj
     }
     return objDefault
-  }, [subCategories, selectedSubCategoryIndex])
+  }
 
   return (
     <DropdownSelector
       options={subCategories}
       disabled={selectedCategoryIndex === -1}
-      placeholder={selected}
+      placeholder={selected()}
       onSelect={handleSelectCategory}
       handleChange={handleChangeSubCategory}
       handleAdd={handleAddSubCategory}

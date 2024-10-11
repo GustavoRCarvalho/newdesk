@@ -75,7 +75,7 @@ export const ArticleDropdown = () => {
     dispatch(changeOrderArticle(newList))
   }
 
-  const selected = useMemo(() => {
+  const selected = () => {
     const objDefault = {
       title: "Artigo",
     }
@@ -84,13 +84,13 @@ export const ArticleDropdown = () => {
       return obj
     }
     return objDefault
-  }, [articles, selectedArticleIndex])
+  }
 
   return (
     <DropdownSelector
       options={articles}
       disabled={selectedSubCategoryIndex === -1}
-      placeholder={selected}
+      placeholder={selected()}
       onSelect={handleSelectArticle}
       handleChange={handleChangeArticle}
       handleAdd={handleAddArticle}

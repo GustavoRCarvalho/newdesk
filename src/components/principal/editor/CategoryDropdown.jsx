@@ -63,7 +63,7 @@ export const CategoryDropdown = () => {
     dispatch(changeOrderCategory(newList))
   }
 
-  const selected = useMemo(() => {
+  const selected = () => {
     const objDefault = {
       title: "Categoria",
       Icon: "",
@@ -73,12 +73,12 @@ export const CategoryDropdown = () => {
       return obj
     }
     return objDefault
-  }, [categories, selectedCategoryIndex])
+  }
 
   return (
     <DropdownSelector
       options={categories}
-      placeholder={selected}
+      placeholder={selected()}
       onSelect={handleSelectCategory}
       handleChange={handleChangeCategory}
       handleAdd={handleAddCategory}
