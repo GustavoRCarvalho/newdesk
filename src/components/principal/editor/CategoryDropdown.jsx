@@ -63,22 +63,15 @@ export const CategoryDropdown = () => {
     dispatch(changeOrderCategory(newList))
   }
 
-  const selected = () => {
-    const objDefault = {
-      title: "Categoria",
-      Icon: "",
-    }
-    const obj = categories[selectedCategoryIndex]
-    if (obj) {
-      return obj
-    }
-    return objDefault
+  const selected = categories[selectedCategoryIndex] ?? {
+    title: "Categoria",
+    Icon: "",
   }
 
   return (
     <DropdownSelector
       options={categories}
-      placeholder={selected()}
+      placeholder={selected}
       onSelect={handleSelectCategory}
       handleChange={handleChangeCategory}
       handleAdd={handleAddCategory}

@@ -72,22 +72,15 @@ export const SubCategoryDropdown = () => {
     dispatch(changeOrderSubCategory(newList))
   }
 
-  const selected = () => {
-    const objDefault = {
-      title: "Sub Categoria",
-    }
-    const obj = subCategories[selectedSubCategoryIndex]
-    if (obj) {
-      return obj
-    }
-    return objDefault
+  const selected = subCategories[selectedSubCategoryIndex] ?? {
+    title: "Sub Categoria",
   }
 
   return (
     <DropdownSelector
       options={subCategories}
       disabled={selectedCategoryIndex === -1}
-      placeholder={selected()}
+      placeholder={selected}
       onSelect={handleSelectCategory}
       handleChange={handleChangeSubCategory}
       handleAdd={handleAddSubCategory}

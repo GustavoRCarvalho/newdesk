@@ -75,22 +75,15 @@ export const ArticleDropdown = () => {
     dispatch(changeOrderArticle(newList))
   }
 
-  const selected = () => {
-    const objDefault = {
-      title: "Artigo",
-    }
-    const obj = articles[selectedArticleIndex]
-    if (obj) {
-      return obj
-    }
-    return objDefault
+  const selected = articles[selectedArticleIndex] ?? {
+    title: "Artigo",
   }
 
   return (
     <DropdownSelector
       options={articles}
       disabled={selectedSubCategoryIndex === -1}
-      placeholder={selected()}
+      placeholder={selected}
       onSelect={handleSelectArticle}
       handleChange={handleChangeArticle}
       handleAdd={handleAddArticle}
