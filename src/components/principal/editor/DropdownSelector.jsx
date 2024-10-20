@@ -34,19 +34,7 @@ export const DropdownSelector = ({
   }, [disabled])
 
   return (
-    <DropdownContainer
-      layout
-      transition={{ duration: 0 }}
-      animate={isOpen ? "open" : "closed"}
-      variants={{
-        open: {
-          overflowY: "hidden",
-        },
-        closed: {
-          overflowY: "hidden",
-        },
-      }}
-    >
+    <DropdownContainer layout={"position"}>
       <ButtonDropdown
         layout
         onClick={() => !disabled && setIsOpen((state) => !state)}
@@ -89,7 +77,18 @@ export const DropdownSelector = ({
                 ></Item>
               )
             })}
-            <AddDropdown layout onClick={handleAdd}>
+            <AddDropdown
+              layout
+              onClick={handleAdd}
+              animate={isOpen ? "open" : "closed"}
+              variants={{
+                open: { opacity: 1 },
+                closed: {
+                  opacity: 0,
+                },
+              }}
+              transition={{ duration: 0 }}
+            >
               <DropdownText>
                 <FakeIcon></FakeIcon>
                 Adicionar
