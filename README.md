@@ -10,6 +10,7 @@ Bem-vindo ao projeto New Desk, uma aplicação web para criação, organização
 ### Base: 
 
 [React](https://github.com/facebook/react) <br />
+[Vite](https://github.com/vitejs/vite) <br />
 
 ### Estilos:
 
